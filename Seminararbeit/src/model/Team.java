@@ -3,7 +3,8 @@ package model;
 import java.io.*;
 import java.net.*;
 
-public class Team implements Comparable<Team> {
+public class Team implements Comparable<Team> 
+{
 	
 	private static int count = 0;
 	private int id;
@@ -13,6 +14,9 @@ public class Team implements Comparable<Team> {
 	private FootballPlayer striker;
 	
 	private int points;
+	
+	private int round;
+	private String lastInput;
 
 	private Socket clientSocket;
 	private BufferedReader reader;
@@ -45,6 +49,22 @@ public class Team implements Comparable<Team> {
 	
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public void setRound(int round){
+		this.round = round;
+	}
+	
+	public int getRound(){
+		return round;
+	}
+	
+	public void setLastInput(String lastInput){
+		this.lastInput = lastInput;
+	}
+	
+	public String getLastInput(){
+		return lastInput;
 	}
 	
 	public String read()

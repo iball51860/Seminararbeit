@@ -55,8 +55,8 @@ public class WMServer
 			{
 				ioe.printStackTrace();
 			}
-			
 		}
+		(new InputManager(teams)).start();
 	}
 	
 	
