@@ -5,6 +5,7 @@ import java.net.*;
 
 public class Team implements Comparable<Team> {
 	
+	private static int count = 0;
 	private int id;
 	private String name;
 	
@@ -16,6 +17,23 @@ public class Team implements Comparable<Team> {
 	private Socket clientSocket;
 	private BufferedReader reader;
 	private BufferedWriter writer;
+	
+	public Team(Socket clientSocket) //TODO add possibility to ad name and id
+	{
+		this.clientSocket = clientSocket;
+		try
+		{
+		this.reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		this.writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+		}
+		catch(IOException ioe){ioe.printStackTrace();}
+		setID(++count);
+	}
+	
+	public Team(Socket clientSocket, int id){
+		this(clientSocket);
+		setID(id);
+	}
 	
 	public int getID(){
 		return id;
@@ -29,7 +47,28 @@ public class Team implements Comparable<Team> {
 		this.name = name;
 	}
 	
+	public String read()
+	{
+		try
+		{
+			return reader.readLine();
+		}
+		catch(IOException ioe){
+			ioe.printStackTrace();
+			return null;}
+	}
+	
+	public void write(String msg)
+	{
+		try
+		{
+			writer.write(msg);
+		}
+		catch(IOException ioe){ioe.printStackTrace();}
+	}
+	
 	//TODO Javadoc
+	@Override
 	public String toString(){
 		return name + id;
 	}
