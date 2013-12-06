@@ -17,7 +17,7 @@ public class WMServer
 {
 	
 	private int port;
-	private boolean waiting = true;
+	private boolean waitingForClients = true;
 	
 	private ServerSocket serverSocket;
 	private TreeSet<Team> teams;
@@ -44,7 +44,7 @@ public class WMServer
 			ioe.printStackTrace();
 		}
 		
-		while(waiting) 
+		while(waitingForClients) 
 		{
 			Team t = new Team(serverSocket.accept());
 			teams.add(t);
@@ -52,8 +52,8 @@ public class WMServer
 	}
 	
 	
-	public void setWaiting(boolean waiting){
-		this.waiting = waiting;
+	public void setWaitingForClients(boolean waitingForClients){
+		this.waitingForClients = waitingForClients;
 	}	
 	
 	
