@@ -8,6 +8,6 @@ public class Match {
 	int goalsA;
 	int goalsB;
 	
-	final static int SHOOTS = 10;
+	static int shoots;
 	
 }

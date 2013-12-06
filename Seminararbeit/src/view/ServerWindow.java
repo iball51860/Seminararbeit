@@ -1,5 +1,8 @@
 package view;
 
-public class ServerWindow {
+import java.awt.*;
+import javax.swing.*;
+
+public class ServerWindow extends JFrame {
 
 }

@@ -4,7 +4,8 @@ import java.net.*;
 
 public class Team implements Comparable<Team> {
 	
-	String id;
+	int id;
+	String name;
 	
 	FootballPlayer keeper;
 	FootballPlayer striker;
