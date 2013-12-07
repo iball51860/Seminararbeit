@@ -1,5 +1,12 @@
 package viewControl;
 
-public class ShowLogListener {
+import java.awt.event.*;
+
+public class ShowLogListener implements ActionListener {
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		
+	}
 
 }
