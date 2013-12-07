@@ -4,7 +4,7 @@ import java.util.*;
 
 import model.*;
 
-public class InputManager 
+public class CommunicationManager 
 {
 	
 	public void getInput()
