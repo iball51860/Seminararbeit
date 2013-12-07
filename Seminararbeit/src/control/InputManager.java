@@ -7,8 +7,6 @@ import model.*;
 public class InputManager 
 {
 	
-	
-	
 	public void getInput()
 	{
 		long start = System.currentTimeMillis();
@@ -43,6 +41,7 @@ public class InputManager
 					help = (Team)it.next();
 					if(help.getLastInput() == null)
 					{
+						//TODO Client muss mit einem Hilfsclient ersetzt werden
 						help.setInMatch(false);
 					}
 				}
