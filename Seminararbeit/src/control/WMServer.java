@@ -53,7 +53,7 @@ public class WMServer extends Thread
 			try 
 			{
 				Socket s = serverSocket.accept();
-				if(!(ips.contains(s.getInetAddress())))
+				if(!(ips.contains(s.getInetAddress()))) //TODO add backdoor for dummys (own IP)
 				{
 					ips.add(s.getInetAddress());
 					clientsAtServer.add(new Team(s));

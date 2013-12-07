@@ -5,7 +5,7 @@ import view.*;
 
 public class WMTournament {
 	
-	public static final int PORT = 4444;
+	public static final int PORT = 4444; //TODO change to user-oriented port
 
 	/**
 	 * Main-Class of the WM-Game for ProKSy. Creates a Window of the type ServerWindow 
@@ -16,10 +16,10 @@ public class WMTournament {
 	//TODO create final variables for further use
 	
 	public static void main(String[] args) {
-		// TODO Start Window + Server
+		//Start Window + Server
 		
 		ServerWindow w = new ServerWindow();
-		WMServer server = new WMServer(PORT);
+		WMServer server = new WMServer(PORT); //TODO switch Serverstart to "Portlistener" in viewControll -> add Portlistener + Frame
 		server.start();
 		
 
