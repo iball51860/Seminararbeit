@@ -13,7 +13,7 @@ import model.*;
  * Server Class 
  *
  */
-public class WMServer 
+public class WMServer extends Thread
 {
 	
 	private static int port;
@@ -21,19 +21,21 @@ public class WMServer
 	
 	private ServerSocket serverSocket;
 	
-	private static ArrayList<InetAddress> ips;
+	private TreeSet<Team> contestants;
+	private ArrayList<InetAddress> ips;
 	
 	
 	
 	public WMServer (int p)
 	{
 		port = p;
+		contestants = new TreeSet<Team>();
 	}
 	
 	/**
 	 * Server gets initialized and accepts Clients
 	 */
-	public void start() 
+	public void run() 
 	{
 		try 
 		{
@@ -54,7 +56,7 @@ public class WMServer
 				if(!(ips.contains(s.getInetAddress())))
 				{
 					ips.add(s.getInetAddress());
-					Tournament.getContestants().add(new Team(s));
+					contestants.add(new Team(s));
 				}
 			}
 			catch (IOException ioe)
@@ -65,12 +67,17 @@ public class WMServer
 	}
 	
 	
-	public static void setWaitingForClients(boolean wFC){
-		waitingForClients = wFC;
+	public void startGame(int noOfRounds)
+	{
+		TreeSet<Team> copy = (TreeSet<Team>) contestants.clone();
+		(new GameManager(copy, noOfRounds)).startGame();
 	}
 	
-	public void setPort(int p){
-		port = p;
+	
+	
+	
+	public static void setWaitingForClients(boolean wFC){
+		waitingForClients = wFC;
 	}
 	
 	
