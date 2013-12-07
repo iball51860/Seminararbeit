@@ -17,7 +17,7 @@ public class WMServer extends Thread
 {
 	
 	private static int port;
-	private static boolean waitingForClients = true;
+	private boolean isRunning = true;
 	
 	private ServerSocket serverSocket;
 	
@@ -48,7 +48,7 @@ public class WMServer extends Thread
 		
 		ips = new ArrayList<InetAddress>();
 		
-		while(waitingForClients)
+		while(isRunning)
 		{
 			try 
 			{
@@ -73,12 +73,6 @@ public class WMServer extends Thread
 		(new GameManager(copy, noOfRounds)).startGame();
 	}
 	
-	
-	
-	
-	public static void setWaitingForClients(boolean wFC){
-		waitingForClients = wFC;
-	}
 	
 	
 }
