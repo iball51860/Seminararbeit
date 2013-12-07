@@ -7,7 +7,7 @@ public class Team implements Comparable<Team>
 {
 	
 	private static int count = 0;
-	private int id;
+	private int id; //TODO overthink
 	private String name;
 	
 	private FootballPlayer keeper;
@@ -23,7 +23,7 @@ public class Team implements Comparable<Team>
 	private BufferedWriter writer;
 	
 	public Team(Socket clientSocket) //TODO add possibility to ad name and id
-	{
+	{								//TODO generate keeper/striker
 		this.clientSocket = clientSocket;
 		try
 		{

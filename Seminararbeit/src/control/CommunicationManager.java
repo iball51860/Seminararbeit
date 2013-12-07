@@ -6,6 +6,11 @@ import model.*;
 
 public class CommunicationManager 
 {
+	//TODO implement methods for single Team communication (e.g. requestDecision(Team t)), maybe add String-decoder
+	//TODO implement validation of communication (kicking of clients)
+	
+	
+	
 	
 	/*
 	 public void getInput()

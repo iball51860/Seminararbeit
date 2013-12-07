@@ -8,7 +8,7 @@ public class FootballPlayer
 		setStrength(l, m, r);
 	}
 	
-	public int[] getStrength()
+	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
 	{
 		return strength;
 	}
