@@ -17,7 +17,7 @@ public class WMServer
 {
 	
 	private static int port;
-	private boolean waitingForClients = true;
+	private static boolean waitingForClients = true;
 	
 	private ServerSocket serverSocket;
 	
@@ -59,8 +59,8 @@ public class WMServer
 	}
 	
 	
-	public void setWaitingForClients(boolean waitingForClients){
-		this.waitingForClients = waitingForClients;
+	public static void setWaitingForClients(boolean waitingForClients){
+		waitingForClients = waitingForClients;
 	}
 	
 	public void setPort(int p){
