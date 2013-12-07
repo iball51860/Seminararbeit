@@ -21,6 +21,8 @@ public class WMServer
 	
 	private ServerSocket serverSocket;
 	
+	private static ArrayList<InetAddress> ips;
+	
 	
 	
 	public WMServer (int p)
@@ -42,13 +44,18 @@ public class WMServer
 			ioe.printStackTrace();
 		}
 		
+		ips = new ArrayList<InetAddress>();
+		
 		while(waitingForClients)
 		{
 			try 
 			{
-				Team t = new Team(serverSocket.accept());
-				//TODO sockets sollten nur akzeptiert werden wenn die IP noch nicht bekannt ist
-				Tournament.getContestants().add(t);
+				Socket s = serverSocket.accept();
+				if(!(ips.contains(s.getInetAddress())))
+				{
+					ips.add(s.getInetAddress());
+					Tournament.getContestants().add(new Team(s));
+				}
 			}
 			catch (IOException ioe)
 			{
@@ -58,8 +65,8 @@ public class WMServer
 	}
 	
 	
-	public static void setWaitingForClients(boolean waitingForClients){
-		waitingForClients = waitingForClients;
+	public static void setWaitingForClients(boolean wFC){
+		waitingForClients = wFC;
 	}
 	
 	public void setPort(int p){
