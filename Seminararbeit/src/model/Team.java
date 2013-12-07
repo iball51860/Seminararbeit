@@ -9,6 +9,7 @@ public class Team implements Comparable<Team>
 	private static int count = 0;
 	private int id;
 	private String name;
+	private InetAddress ip;
 	
 	private FootballPlayer keeper;
 	private FootballPlayer striker;
@@ -17,6 +18,7 @@ public class Team implements Comparable<Team>
 	
 	private int round;
 	private String lastInput;
+	private boolean inMatch;
 
 	private Socket clientSocket;
 	private BufferedReader reader;
@@ -32,6 +34,7 @@ public class Team implements Comparable<Team>
 		}
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
+		setInMatch(true);
 	}
 	
 	public Team(Socket clientSocket, int id){
@@ -59,12 +62,28 @@ public class Team implements Comparable<Team>
 		return round;
 	}
 	
+	public Socket getSocket(){
+		return clientSocket;
+	}
+	
 	public void setLastInput(String lastInput){
 		this.lastInput = lastInput;
 	}
 	
 	public String getLastInput(){
 		return lastInput;
+	}
+	
+	public void setInMatch(boolean inMatch){
+		this.inMatch = inMatch;
+	}
+	
+	public void setIP(InetAddress ip){
+		this.ip = ip;
+	}
+	
+	public InetAddress getIP(){
+		return ip;
 	}
 	
 	public String read()

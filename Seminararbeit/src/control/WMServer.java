@@ -16,18 +16,16 @@ import model.*;
 public class WMServer 
 {
 	
-	private int port;
+	private static int port;
 	private boolean waitingForClients = true;
 	
 	private ServerSocket serverSocket;
-	private TreeSet<Team> teams;
 	
 	
 	
-	public WMServer (int port)
+	public WMServer (int p)
 	{
-		this.port = port;
-		TreeSet<Team> teams = new TreeSet<Team>();
+		port = p;
 	}
 	
 	/**
@@ -44,25 +42,30 @@ public class WMServer
 			ioe.printStackTrace();
 		}
 		
-		while(waitingForClients) 
+		while(waitingForClients)
 		{
 			try 
 			{
 				Team t = new Team(serverSocket.accept());
-				teams.add(t);
+				t.setIP(t.getSocket().getInetAddress());
+				//TODO sockets sollten nur akzeptiert werden wenn die IP noch nicht bekannt ist
+				Tournament.contestants.add(t);
 			}
 			catch (IOException ioe)
 			{
 				ioe.printStackTrace();
 			}
 		}
-		(new InputManager(teams)).start();
 	}
 	
 	
 	public void setWaitingForClients(boolean waitingForClients){
 		this.waitingForClients = waitingForClients;
-	}	
+	}
+	
+	public void setPort(int p){
+		port = p;
+	}
 	
 	
 }

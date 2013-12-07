@@ -7,28 +7,46 @@ import model.*;
 public class InputManager 
 {
 	
-	private TreeSet<Team> teams;
 	
 	
-	public InputManager(TreeSet<Team> teams)
+	public void getInput()
 	{
-		this.teams = teams;
-	}
-	
-	
-	public void start()
-	{
-		Object[] list = teams.toArray();
-		while(true)
+		long start = System.currentTimeMillis();
+		boolean b = true;
+		Team help;
+		Iterator<Team> it = Tournament.contestants.iterator();
+		while(b)
 		{
-			for(int i = 0; i < list.length; i++)
+			while(it.hasNext())
 			{
-				String s = ((Team)list[i]).read();
-				if(s != null)
+				help = it.next();
+				String msg = help.read();
+				if(msg != null)
 				{
-					((Team)list[i]).setLastInput(s);
+					help.setLastInput(msg);
 				}
-				
+			}
+			it = Tournament.contestants.iterator();
+			b = false;
+			while(it.hasNext())
+			{
+				help = (Team)it.next();
+				if(help.getLastInput() == null)
+				{
+					b = true;
+				}
+			}
+			if((System.currentTimeMillis() - start) > 5000)
+			{
+				while(it.hasNext())
+				{
+					help = (Team)it.next();
+					if(help.getLastInput() == null)
+					{
+						help.setInMatch(false);
+					}
+				}
+				b = false;
 			}
 		}
 	}
