@@ -7,8 +7,9 @@ import model.*;
 public class CommunicationManager 
 {
 	
-	public void getInput()
-	{
+	/*
+	 public void getInput()
+	 {
 		long start = System.currentTimeMillis();
 		boolean b = true;
 		Team help;
@@ -49,5 +50,7 @@ public class CommunicationManager
 			}
 		}
 	}
+	 */
+	
 	
 }
