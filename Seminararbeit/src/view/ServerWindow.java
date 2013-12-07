@@ -11,6 +11,7 @@ public class ServerWindow extends JFrame {
 	
 	public ServerWindow()
 	{
+		//set up basic frame
 		super();
 		setTitle("WM Server");
 		setSize(400, 300);
@@ -18,6 +19,7 @@ public class ServerWindow extends JFrame {
 		c.setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		//create topbar with buttons for control
 		JPanel north = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		c.add(north, BorderLayout.NORTH);
 		
@@ -28,6 +30,7 @@ public class ServerWindow extends JFrame {
 		showLogButton.addActionListener(new ShowLogListener());
 		north.add(showLogButton);
 
+		//create right panel with information about the tournament
 		JPanel east = new JPanel(new GridLayout(0, 1));
 		c.add(east, BorderLayout.EAST);
 		
