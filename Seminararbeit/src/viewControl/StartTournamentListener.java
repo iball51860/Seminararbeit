@@ -1,5 +1,12 @@
 package viewControl;
 
-public class StartTournamentListener {
+import java.awt.event.*;
+
+public class StartTournamentListener implements ActionListener {
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		
+	}
 
 }

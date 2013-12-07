@@ -1,6 +1,7 @@
 package main;
 
 import control.*;
+import view.*;
 
 public class WMTournament {
 	
@@ -17,6 +18,7 @@ public class WMTournament {
 	public static void main(String[] args) {
 		// TODO Start Window + Server
 		
+		ServerWindow w = new ServerWindow();
 		WMServer server = new WMServer(PORT);
 		server.start();
 		
