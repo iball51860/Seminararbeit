@@ -21,7 +21,7 @@ public class WMServer extends Thread
 	
 	private ServerSocket serverSocket;
 	
-	private TreeSet<Team> contestants;
+	private TreeSet<Team> clientsAtServer;
 	private ArrayList<InetAddress> ips;
 	
 	
@@ -29,7 +29,7 @@ public class WMServer extends Thread
 	public WMServer (int p)
 	{
 		port = p;
-		contestants = new TreeSet<Team>();
+		clientsAtServer = new TreeSet<Team>();
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class WMServer extends Thread
 				if(!(ips.contains(s.getInetAddress())))
 				{
 					ips.add(s.getInetAddress());
-					contestants.add(new Team(s));
+					clientsAtServer.add(new Team(s));
 				}
 			}
 			catch (IOException ioe)
@@ -69,7 +69,7 @@ public class WMServer extends Thread
 	
 	public void startGame(int noOfRounds)
 	{
-		TreeSet<Team> copy = (TreeSet<Team>) contestants.clone();
+		TreeSet<Team> copy = (TreeSet<Team>) clientsAtServer.clone();
 		(new GameManager(copy, noOfRounds)).startGame();
 	}
 	
