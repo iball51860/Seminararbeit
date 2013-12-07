@@ -47,9 +47,8 @@ public class WMServer
 			try 
 			{
 				Team t = new Team(serverSocket.accept());
-				t.setIP(t.getSocket().getInetAddress());
 				//TODO sockets sollten nur akzeptiert werden wenn die IP noch nicht bekannt ist
-				Tournament.contestants.add(t);
+				Tournament.getContestants().add(t);
 			}
 			catch (IOException ioe)
 			{

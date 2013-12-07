@@ -9,14 +9,12 @@ public class Team implements Comparable<Team>
 	private static int count = 0;
 	private int id;
 	private String name;
-	private InetAddress ip;
 	
 	private FootballPlayer keeper;
 	private FootballPlayer striker;
 	
 	private int points;
 	
-	private int round;
 	private String lastInput;
 	private boolean inMatch;
 
@@ -54,14 +52,6 @@ public class Team implements Comparable<Team>
 		this.name = name;
 	}
 	
-	public void setRound(int round){
-		this.round = round;
-	}
-	
-	public int getRound(){
-		return round;
-	}
-	
 	public Socket getSocket(){
 		return clientSocket;
 	}
@@ -76,14 +66,6 @@ public class Team implements Comparable<Team>
 	
 	public void setInMatch(boolean inMatch){
 		this.inMatch = inMatch;
-	}
-	
-	public void setIP(InetAddress ip){
-		this.ip = ip;
-	}
-	
-	public InetAddress getIP(){
-		return ip;
 	}
 	
 	public String read()

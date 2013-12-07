@@ -12,7 +12,7 @@ public class InputManager
 		long start = System.currentTimeMillis();
 		boolean b = true;
 		Team help;
-		Iterator<Team> it = Tournament.contestants.iterator();
+		Iterator<Team> it = Tournament.getContestants().iterator();
 		while(b)
 		{
 			while(it.hasNext())
@@ -24,7 +24,7 @@ public class InputManager
 					help.setLastInput(msg);
 				}
 			}
-			it = Tournament.contestants.iterator();
+			it = Tournament.getContestants().iterator();
 			b = false;
 			while(it.hasNext())
 			{

@@ -4,7 +4,12 @@ import java.util.*;
 
 public class Tournament {
 	
-	public static TreeSet<Team> contestants = new TreeSet<Team>();
+	private static TreeSet<Team> contestants = new TreeSet<Team>();
 	
 
+	
+	public static TreeSet<Team> getContestants()
+	{
+		return contestants;
+	}
 }
