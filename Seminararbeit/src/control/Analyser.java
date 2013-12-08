@@ -33,6 +33,11 @@ public class Analyser {
 		return 0;
 	}
 	
+	public static int[] generateStrength() //TODO implement Strength Generator
+	{
+		int[] strength = {0};
+		return strength;
+	}
 	
 	//TODO add logic based on rounds as runtime calculation basis
 }
