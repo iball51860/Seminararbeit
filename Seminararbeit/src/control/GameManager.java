@@ -30,7 +30,7 @@ public class GameManager {
 	{
 		for(int i=1; i<=noOfRounds; i++)
 		{
-			Communication.broadcast(contestantsInGame, Communication.NEWROUND)
+			Communication.broadcast(contestantsInGame, Communication.NEWROUND);
 			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
 			for(Group g : groups)
 			{
