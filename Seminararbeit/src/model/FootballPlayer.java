@@ -4,8 +4,8 @@ public class FootballPlayer
 {
 	private int[] strength = new int[3];
 	
-	public FootballPlayer(int l, int m, int r){
-		setStrength(l, m, r);
+	public FootballPlayer(){
+		strength = Analyser.generateStrength();
 	}
 	
 	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
@@ -13,9 +13,10 @@ public class FootballPlayer
 		return strength;
 	}
 	
-	public void setStrength(int l, int m, int r){
-		strength[0] = l;
-		strength[1] = m;
-		strength[2] = r;
+	
+	public String toString() 
+	{
+		return "" + strength[0] + " " + strength[1] + " " + strength[2];
 	}
+	
 }

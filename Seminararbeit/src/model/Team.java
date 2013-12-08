@@ -33,6 +33,8 @@ public class Team implements Comparable<Team>
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
 		setInMatch(true);
+		keeper = new FootballPlayer();
+		striker = new FootballPlayer();
 	}
 	
 	public Team(Socket clientSocket, int id){
@@ -46,6 +48,10 @@ public class Team implements Comparable<Team>
 	
 	public void setID(int id){
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void setName(String name){
@@ -66,6 +72,14 @@ public class Team implements Comparable<Team>
 	
 	public void setInMatch(boolean inMatch){
 		this.inMatch = inMatch;
+	}
+	
+	public FootballPlayer getKeeper() {
+		return keeper;
+	}
+	
+	public FootballPlayer getStriker() {
+		return striker;
 	}
 	
 	public String read()
