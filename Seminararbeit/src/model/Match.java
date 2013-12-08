@@ -2,12 +2,15 @@ package model;
 
 public class Match {
 	
-	Team a;
-	Team b;
+	private Team[] teams;
 	
-	int goalsA;
-	int goalsB;
+	private int[] goals;
 	
-	static int shoots;
+	static int shots;
+	
+	public Team[] getTeams()
+	{
+		return teams;
+	}
 	
 }
