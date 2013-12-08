@@ -17,17 +17,16 @@ public class Communication
 	static final String SHOT		= "SHO";
 	static final String KEEP		= "KEP";
 	static final String OPPONENT	= "OPP";
-	static final String RESULT		= "MRS";
+	static final String MATCHRESULT	= "MRS";
 	static final String GAMEOVER	= "GOV";
 	
 	
 	
 	public static void broadcast(Set<Team> teams, String msg)
 	{
-		Iterator<Team> it = teams.iterator();
-		while(it.hasNext())
+		for(Team x : teams)
 		{
-			sendMsg(it.next(), msg);
+			sendMsg(x, msg);
 		}
 	}
 	
@@ -40,31 +39,26 @@ public class Communication
 	
 	public static int requestDecision(Team team, String msg)
 	{
+		team.setLastInput(null);
 		sendMsg(team, msg);
 		long start = System.currentTimeMillis();
 		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null)
 		{
 			team.setLastInput(team.read().substring(0, 1));
 		}
-		switch (team.getLastInput())
+		String s = team.getLastInput().toLowerCase();
+		switch (s)
 		{
 			case "l":
 				return 0;
-			case "L":
-				return 0;
 			case "m":
 				return 1;
-			case "M":
-				return 1;
 			case "r":
-				return 2;
-			case "R":
 				return 2;
 			default:
 				return -1;
 				//TODO ersetze Client durch Dummy
 		}
-		//team.setLastInput(null);
 		//return "DummyDecision";
 		
 	}
@@ -72,6 +66,7 @@ public class Communication
 	
 	public static void requestName(Team team)
 	{
+		team.setLastInput(null);
 		sendMsg(team, NAME);
 		String s = null;
 		long start = System.currentTimeMillis();
@@ -85,13 +80,11 @@ public class Communication
 		{
 			//TODO ersetze Client durch Dummy
 		}
-		team.setLastInput(null);
 	}
 	
 	public static void sendStrengths(Team team)
 	{
 		String s = STRENGTH + " K " + team.getKeeper().toString() + " S " + team.getKeeper().toString();
-		
 		sendMsg(team, s);
 	}
 	
