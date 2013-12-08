@@ -53,10 +53,13 @@ public class WMServer extends Thread
 			try 
 			{
 				Socket s = serverSocket.accept();
-				if(!(ips.contains(s.getInetAddress()))) //TODO add backdoor for dummys (own IP)
+				if(!(ips.contains(s.getInetAddress()) || s.getInetAddress() == InetAddress.getLocalHost())) //TODO add backdoor for dummys (own IP)
 				{
 					ips.add(s.getInetAddress());
-					clientsAtServer.add(new Team(s));
+					Team newTeam = new Team(s);
+					Communication.requestName(newTeam);
+					Communication.sendStrengths(newTeam);
+					clientsAtServer.add(newTeam);
 				}
 			}
 			catch (IOException ioe)

@@ -88,5 +88,12 @@ public class Communication
 		team.setLastInput(null);
 	}
 	
+	public static void sendStrengths(Team team)
+	{
+		String s = STRENGTH + " K " + team.getKeeper().toString() + " S " + team.getKeeper().toString();
+		
+		sendMsg(team, s);
+	}
+	
 	
 }
