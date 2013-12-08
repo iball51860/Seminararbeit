@@ -30,7 +30,7 @@ public class GameManager {
 	{
 		for(int i=1; i<=noOfRounds; i++)
 		{
-			//TODO decomment  Communication.broadcast(contestantsInGame, Communication.NEWROUND)
+			Communication.broadcast(contestantsInGame, Communication.NEWROUND)
 			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
 			for(Group g : groups)
 			{
@@ -46,8 +46,8 @@ public class GameManager {
 	{
 		Team a = m.getTeams()[0];
 		Team b = m.getTeams()[1];
-		//Communication.sendMsg(a, Communication.NEWMATCH + b.getName() + b.getID());
-		//Communication.sendMsg(b, Communication.NEWMATCH + a.getName() + a.getID());
+		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
+		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		for(int i=1; i<=noOfShotsPerMatch; i++)
 		{
 			//int decisionA = Communication.requestDecision(a); //TODO implement keeper oder striker schuss
