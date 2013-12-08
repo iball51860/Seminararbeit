@@ -48,9 +48,49 @@ public class GameManager {
 		Team b = m.getTeams()[1];
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
-		for(int i=1; i<=noOfShotsPerMatch; i++)
+		
+		String[] decisionCode = {"l", "m", "r"};
+		
+		for(int i=1; i<=noOfShotsPerMatch; i=+2)
 		{
-			//int decisionA = Communication.requestDecision(a); //TODO implement keeper oder striker schuss
+			{ //Team a shoots on Team b
+				int decisionA = Communication.requestDecision(a, Communication.SHOOT);
+				int decisionB = Communication.requestDecision(b, Communication.KEEP);
+			
+				int nettoStrength = a.getStriker().getStrength()[decisionA];
+				if(decisionA == decisionB)
+				{
+					nettoStrength =- decisionB;
+				}
+			
+				int random = (int) (Math.random() * 100);
+				boolean goal = false;
+				if(random < nettoStrength)
+				{
+					goal = true;
+				}
+				Communication.sendMsg(a, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
+				Communication.sendMsg(b, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
+			}
+			{ //Team b shoots on Team a
+				int decisionA = Communication.requestDecision(a, Communication.KEEP);
+				int decisionB = Communication.requestDecision(b, Communication.SHOOT);
+			
+				int nettoStrength = b.getStriker().getStrength()[decisionB];
+				if(decisionA == decisionB)
+				{
+					nettoStrength =- decisionA;
+				}
+			
+				int random = (int) (Math.random() * 100);
+				boolean goal = false;
+				if(random < nettoStrength)
+				{
+					goal = true;
+				}
+				Communication.sendMsg(a, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
+				Communication.sendMsg(b, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
+			}
 		}
 	}
 }

@@ -14,8 +14,9 @@ public class Communication
 	static final String NEWGAME 	= "NWG";
 	static final String NEWROUND 	= "NWR";
 	static final String NEWMATCH 	= "NWM";
-	static final String SHOT		= "SHO";
+	static final String SHOOT		= "SHO";
 	static final String KEEP		= "KEP";
+	static final String SHOTRESULT	= "SHR";
 	static final String OPPONENT	= "OPP";
 	static final String MATCHRESULT	= "MRS";
 	static final String GAMEOVER	= "GOV";
@@ -36,7 +37,15 @@ public class Communication
 		team.write(msg);
 	}
 	
-	
+	/**
+	 * Sents the decision String to the specified Team(Client), gets an answer and 
+	 * reverts it to an integer that represents the decision. (L,l=0; M,m=1; R,r=2).
+	 * If the answer doesn't fit the decision scheme, the method returns -1 to signal
+	 * a wrong answer.
+	 * @param team from which decision is invoked
+	 * @param msg that calls for decision, musst be Communication.SHOOT or Communication.KEEP
+	 * @return int with value of {0, 1, 2} meaning, in this order left, middle, right or -1 for wrong feedback
+	 */
 	public static int requestDecision(Team team, String msg)
 	{
 		team.setLastInput(null);
@@ -56,7 +65,7 @@ public class Communication
 			case "r":
 				return 2;
 			default:
-				return -1;
+				return -1; //TODO throwable und ne Exception werfen und diese behandeln ist evt. eleganter...
 				//TODO ersetze Client durch Dummy
 		}
 		//return "DummyDecision";
