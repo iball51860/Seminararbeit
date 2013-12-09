@@ -135,7 +135,9 @@ public class GameManager {
 		if(goal)
 		{
 			shooting.setGoals(shooting.getGoals() + 1);
+			shooting.setGoalsInCurrentRound(shooting.getGoalsInCurrentRound() + 1);
 			keeping.setGoalsAgainst(keeping.getGoalsAgainst() + 1);
+			keeping.setGoalsAgainstInCurrentRound(keeping.getGoalsAgainstInCurrentRound() + 1);
 		}
 		return goal;
 	}
