@@ -16,7 +16,18 @@ public class TestClient extends Thread{
 	
 	public TestClient()
 	{
-		socket = new Socket(InetAddress.getLocalHost(), WMServer.getPort());
+		try 
+		{
+			socket = new Socket(InetAddress.getLocalHost(), WMServer.getPort());
+		} 
+		catch (UnknownHostException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -67,7 +78,7 @@ public class TestClient extends Thread{
 					break;
 				case Communication.NEWMATCH:
 					break;
-				case Communication.SHOT:
+				case Communication.SHOOT:
 					sendToServer(generateDecision());
 					break;
 				case Communication.KEEP:
