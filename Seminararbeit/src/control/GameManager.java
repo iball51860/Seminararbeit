@@ -26,7 +26,7 @@ public class GameManager {
 	}
 	
 	
-	public void startGame()
+	public void playGame()
 	{
 		for(int i=1; i<=noOfRounds; i++)
 		{
@@ -94,6 +94,21 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * Simulates a shot of the first Team shooting against the second Team keeping. 
+	 * Returns a boolean, whether a goal was scored by the attacking team.
+	 * Chances of success for a shot are determined by whether the striker and keeper 
+	 * of the teams choose the same side to shoot/jump and their strengths. Sides to 
+	 * choose from are left, middle and right.
+	 * If the keeper decides for the same side as the striker, the chance of scoring 
+	 * is the strikers strength for that side minus the keepers strengths in percent.
+	 * If the keeper is better than the striker, then chances for a goal are zero.
+	 * If the keeper decides for a different side, the chance of scoring is the 
+	 * strikers strength in percent.
+	 * @param shooting - The team attacking
+	 * @param keeping - The team defending
+	 * @return Variable of type boolean, whether a goal was scored.
+	 */
 	public boolean playShot(Team shooting, Team keeping)
 	{
 		String[] decisionCode = {"l", "m", "r"};
@@ -101,15 +116,16 @@ public class GameManager {
 		int decisionA = Communication.requestDecision(shooting, Communication.SHOOT);
 		int decisionB = Communication.requestDecision(keeping, Communication.KEEP);
 	
-		int nettoStrength = shooting.getStriker().getStrength()[decisionA];
+		//Calculate chances
+		double nettoStrength = shooting.getStriker().getStrength()[decisionA];
 		if(decisionA == decisionB)
 		{
-			nettoStrength =- decisionB;
+			nettoStrength =- keeping.getKeeper().getStrength()[decisionA];
 		}
-	
-		int random = (int) (Math.random() * 100);
+		nettoStrength = nettoStrength / 100;
+		
 		boolean goal = false;
-		if(random < nettoStrength)
+		if(Math.random() < nettoStrength)
 		{
 			goal = true;
 		}

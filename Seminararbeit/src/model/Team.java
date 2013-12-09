@@ -46,19 +46,68 @@ public class Team implements Comparable<Team>
 	}
 	
 	
+	public String read()
+	{
+		try
+		{
+			return reader.readLine();
+		}
+		catch(IOException ioe){
+			ioe.printStackTrace();
+			return null;}
+	}
+	
+	public void write(String msg)
+	{
+		try
+		{
+			writer.write(msg);
+		}
+		catch(IOException ioe){ioe.printStackTrace();}
+	}
+	
+	
+	//TODO Javadoc
+	@Override
+	public String toString(){
+		return name + id;
+	}
+	
+	
+	public int compareTo(Team otherTeam) //TODO: Compare Team by points
+	{
+		return 0;
+	}
+	
+	
+	/////////////////////////get- and set-methods///////////////////////////////
+	
+	/**
+	 * Returns the id of the teams instance.
+	 * @return id of the team
+	 */
 	public int getID(){
 		return id;
 	}
-	
+	/**
+	 * Sets the given Integer as id for this team.
+	 * @param id - id to be set for this team
+	 */
 	public void setID(int id){
 		this.id = id;
 	}
 	
-	
+	/**
+	 * Returns the name of the team. Is usually of type uxxxx, where x represents any letter of the alphabet.
+	 * @return name of the team
+	 */
 	public String getName() {
 		return name;
 	}
-	
+	/**
+	 * Sets the given String as name for the team. Should be of type uxxxx, where x represents any letter of the alphabet.
+	 * @param name - String that represents the name, the team shall receive.
+	 */
 	public void setName(String name){
 		this.name = name;
 	}
@@ -92,6 +141,14 @@ public class Team implements Comparable<Team>
 	}
 	
 	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
+	public int getPoints() {
+		return points;
+	}
+	
 	public int getPointsInCurrentRound() {
 		
 		return pointsInCurrentRound;
@@ -119,36 +176,4 @@ public class Team implements Comparable<Team>
 	}
 	
 	
-	public String read()
-	{
-		try
-		{
-			return reader.readLine();
-		}
-		catch(IOException ioe){
-			ioe.printStackTrace();
-			return null;}
-	}
-	
-	public void write(String msg)
-	{
-		try
-		{
-			writer.write(msg);
-		}
-		catch(IOException ioe){ioe.printStackTrace();}
-	}
-	
-	
-	//TODO Javadoc
-	@Override
-	public String toString(){
-		return name + id;
-	}
-	
-	
-	public int compareTo(Team otherTeam) //TODO: Compare Team by points
-	{
-		return 0;
-	}
 }
