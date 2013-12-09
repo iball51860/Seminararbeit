@@ -14,6 +14,9 @@ public class Team implements Comparable<Team>
 	private FootballPlayer striker;
 	
 	private int points;
+	private int pointsInCurrentRound;
+	private int goals;
+	private int goalsAgainst;
 	
 	private String lastInput;
 	private boolean inMatch;
@@ -33,14 +36,15 @@ public class Team implements Comparable<Team>
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
 		setInMatch(true);
-		keeper = new FootballPlayer();
-		striker = new FootballPlayer();
+		this.keeper = new FootballPlayer();
+		this.striker = new FootballPlayer();
 	}
 	
 	public Team(Socket clientSocket, int id){
 		this(clientSocket);
 		setID(id);
 	}
+	
 	
 	public int getID(){
 		return id;
@@ -50,6 +54,7 @@ public class Team implements Comparable<Team>
 		this.id = id;
 	}
 	
+	
 	public String getName() {
 		return name;
 	}
@@ -58,9 +63,11 @@ public class Team implements Comparable<Team>
 		this.name = name;
 	}
 	
+	
 	public Socket getSocket(){
 		return clientSocket;
 	}
+	
 	
 	public void setLastInput(String lastInput){
 		this.lastInput = lastInput;
@@ -70,9 +77,11 @@ public class Team implements Comparable<Team>
 		return lastInput;
 	}
 	
+	
 	public void setInMatch(boolean inMatch){
 		this.inMatch = inMatch;
 	}
+	
 	
 	public FootballPlayer getKeeper() {
 		return keeper;
@@ -81,6 +90,34 @@ public class Team implements Comparable<Team>
 	public FootballPlayer getStriker() {
 		return striker;
 	}
+	
+	
+	public int getPointsInCurrentRound() {
+		
+		return pointsInCurrentRound;
+	}
+	
+	public void setPointsInCurrentRound(int pointsInCurrentRound) {
+		this.pointsInCurrentRound = pointsInCurrentRound;
+	}
+	
+	
+	public void setGoals(int goals) {
+		this.goals = goals;
+	}
+	
+	public int getGoals() {
+		return goals;
+	}
+
+	public void setGoalsAgainst(int goalsAgainst) {
+		this.goalsAgainst = goalsAgainst;
+	}
+	
+	public int getGoalsAgainst() {
+		return goalsAgainst;
+	}
+	
 	
 	public String read()
 	{
@@ -102,11 +139,13 @@ public class Team implements Comparable<Team>
 		catch(IOException ioe){ioe.printStackTrace();}
 	}
 	
+	
 	//TODO Javadoc
 	@Override
 	public String toString(){
 		return name + id;
 	}
+	
 	
 	public int compareTo(Team otherTeam) //TODO: Compare Team by points
 	{

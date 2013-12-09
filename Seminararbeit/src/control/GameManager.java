@@ -34,10 +34,13 @@ public class GameManager {
 			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
 			for(Group g : groups)
 			{
-				for(Match m : g.getMatches())
+				for(Match m : g.getMatches()) //play all matches of the Round
 				{
 					playMatch(m);
 				}
+				
+				contestantsInGame = new TreeSet<Team>();  //create new, empty list to be filled with first half contestants
+				
 			}
 		}
 	}
@@ -46,51 +49,55 @@ public class GameManager {
 	{
 		Team a = m.getTeams()[0];
 		Team b = m.getTeams()[1];
+		int aGoals = 0;
+		int bGoals = 0;
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		String[] decisionCode = {"l", "m", "r"};
 		
-		for(int i=1; i<=noOfShotsPerMatch; i=+2)
+		for(int i=1; i<noOfShotsPerMatch; i=+2)
 		{
-			{ //Team a shoots on Team b
-				int decisionA = Communication.requestDecision(a, Communication.SHOOT);
-				int decisionB = Communication.requestDecision(b, Communication.KEEP);
+			boolean aScores = playShot(a, b);
+			boolean bScores = playShot(b, a);
 			
-				int nettoStrength = a.getStriker().getStrength()[decisionA];
-				if(decisionA == decisionB)
-				{
-					nettoStrength =- decisionB;
-				}
-			
-				int random = (int) (Math.random() * 100);
-				boolean goal = false;
-				if(random < nettoStrength)
-				{
-					goal = true;
-				}
-				Communication.sendMsg(a, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
-				Communication.sendMsg(b, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
+			if(aScores)
+			{
+				aGoals++;
 			}
-			{ //Team b shoots on Team a
-				int decisionA = Communication.requestDecision(a, Communication.KEEP);
-				int decisionB = Communication.requestDecision(b, Communication.SHOOT);
-			
-				int nettoStrength = b.getStriker().getStrength()[decisionB];
-				if(decisionA == decisionB)
-				{
-					nettoStrength =- decisionA;
-				}
-			
-				int random = (int) (Math.random() * 100);
-				boolean goal = false;
-				if(random < nettoStrength)
-				{
-					goal = true;
-				}
-				Communication.sendMsg(a, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
-				Communication.sendMsg(b, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
+			if(bScores)
+			{
+				bGoals++;
 			}
 		}
+	}
+	
+	public boolean playShot(Team shooting, Team keeping)
+	{
+		String[] decisionCode = {"l", "m", "r"};
+		
+		int decisionA = Communication.requestDecision(shooting, Communication.SHOOT);
+		int decisionB = Communication.requestDecision(keeping, Communication.KEEP);
+	
+		int nettoStrength = shooting.getStriker().getStrength()[decisionA];
+		if(decisionA == decisionB)
+		{
+			nettoStrength =- decisionB;
+		}
+	
+		int random = (int) (Math.random() * 100);
+		boolean goal = false;
+		if(random < nettoStrength)
+		{
+			goal = true;
+		}
+		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
+		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
+		
+		if(goal)
+		{
+			shooting.setGoals(shooting.getGoals() + 1);
+			keeping.setGoalsAgainst(keeping.getGoalsAgainst() + 1);
+		}
+		return goal;
 	}
 }
