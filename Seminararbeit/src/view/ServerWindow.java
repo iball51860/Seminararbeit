@@ -9,6 +9,8 @@ import viewControl.*;
 
 public class ServerWindow extends JFrame {
 	
+	
+	
 	public ServerWindow()
 	{
 		//set up basic frame
@@ -46,7 +48,14 @@ public class ServerWindow extends JFrame {
 		JLabel noOfGoals = new JLabel("Goals: xxxxxx");
 		east.add(noOfGoals);
 		
-		
 		setVisible(true);
+		setEnabled(false);
+		
+		//create popup dialog
+		PopupDialog p = new PopupDialog(this);
+		p.setSize(200, 100);
+		p.setLocation(100, 50);
+		p.setVisible(true);
+		
 	}
 }
