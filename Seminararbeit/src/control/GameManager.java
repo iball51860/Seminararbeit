@@ -46,7 +46,7 @@ public class GameManager {
 	}
 	
 	/**
-	 * Simulates a Match given. Calls the playShot method. Winning Teams get 3 Points, 
+	 * Simulates the Match given as parameter. Calls the playShot method. Winning Teams get 3 Points, 
 	 * loosing Teams get none. In case of a draw, both teams gain 1 Point. Method adds the
 	 * Points towards the pointsInCurrentRound- and points variable of the respective Team.
 	 * @param m - Match to be played

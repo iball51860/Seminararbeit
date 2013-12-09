@@ -5,21 +5,17 @@ import java.util.*;
 import model.*;
 
 public class Communication 
-{
-	//TODO implement methods for single Team communication (e.g. requestDecision(Team t)), maybe add String-decoder
-	//TODO implement validation of communication (kicking of clients)
-	
+{	
 	public static final String NAME 		= "NME";
 	public static final String STRENGTH 	= "STR";
-	public static final String NEWGAME 	= "NWG";
+	public static final String NEWGAME 		= "NWG";
 	public static final String NEWROUND 	= "NWR";
 	public static final String NEWMATCH 	= "NWM";
 	public static final String SHOOT		= "SHO";
-	public static final String KEEP		= "KEP";
+	public static final String KEEP			= "KEP";
 	public static final String SHOTRESULT	= "SHR";
-	public static final String OPPONENT	= "OPP";
 	public static final String MATCHRESULT	= "MRS";
-	public static final String GAMEOVER	= "GOV";
+	public static final String GAMEOVER		= "GOV";
 	
 	
 	
