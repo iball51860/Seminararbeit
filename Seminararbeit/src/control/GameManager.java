@@ -30,6 +30,7 @@ public class GameManager {
 	{
 		for(int i=1; i<=noOfRounds; i++)
 		{
+			//TODO reset Round specific variables of teams in Round
 			Communication.broadcast(contestantsInGame, Communication.NEWROUND);
 			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
 			for(Group g : groups)

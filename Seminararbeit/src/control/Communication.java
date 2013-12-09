@@ -21,9 +21,9 @@ public class Communication
 	
 	public static void broadcast(Set<Team> teams, String msg)
 	{
-		for(Team x : teams)
+		for(Team t : teams)
 		{
-			sendMsg(x, msg);
+			sendMsg(t, msg);
 		}
 	}
 	
