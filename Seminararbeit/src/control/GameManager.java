@@ -13,7 +13,7 @@ public class GameManager {
 	private int matchesPerGroup;
 	private int noOfShotsPerMatch;
 	
-	//TODO add game-logic
+
 	public GameManager(TreeSet<Team> contestants, int shots)
 	{
 		this.contestants = contestants;
@@ -45,6 +45,12 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * Simulates a Match given. Calls the playShot method. Winning Teams get 3 Points, 
+	 * loosing Teams get none. In case of a draw, both teams gain 1 Point. Method adds the
+	 * Points towards the pointsInCurrentRound- and points variable of the respective Team.
+	 * @param m - Match to be played
+	 */
 	public void playMatch(Match m)
 	{
 		Team a = m.getTeams()[0];
@@ -54,8 +60,7 @@ public class GameManager {
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		
-		for(int i=1; i<noOfShotsPerMatch; i=+2)
+		for(int i=1; i<=noOfShotsPerMatch; i=+2)
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
@@ -68,6 +73,24 @@ public class GameManager {
 			{
 				bGoals++;
 			}
+		}
+		
+		if(aGoals < bGoals) //Team b wins
+		{
+			b.setPointsInCurrentRound(b.getPointsInCurrentRound() + 3);
+			b.setPoints(b.getPoints() + 3);
+		}
+		if(aGoals == bGoals) //draw
+		{
+			a.setPointsInCurrentRound(a.getPointsInCurrentRound() + 1);
+			a.setPoints(a.getPoints() + 1);
+			b.setPointsInCurrentRound(b.getPointsInCurrentRound() + 1);
+			b.setPoints(b.getPoints() + 1);
+		}
+		else //Team a wins
+		{
+			a.setPointsInCurrentRound(a.getPointsInCurrentRound() + 3);
+			a.setPoints(a.getPoints() + 3);
 		}
 	}
 	
