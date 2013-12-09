@@ -15,6 +15,7 @@ public class StartServerListener implements ActionListener {
 	
 	public StartServerListener(PopupDialog popup, ServerWindow serverWindow)
 	{
+		super();
 		this.popup = popup;
 		this.serverWindow = serverWindow;
 	}
