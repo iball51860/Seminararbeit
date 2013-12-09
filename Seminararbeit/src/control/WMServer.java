@@ -17,7 +17,7 @@ public class WMServer extends Thread
 {
 	
 	private static int port;  //TODO find a way for testclients to get port 
-	public int getPort() {
+	public static int getPort() {
 		return port;
 	}
 
