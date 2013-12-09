@@ -16,7 +16,11 @@ import model.*;
 public class WMServer extends Thread
 {
 	
-	private static int port;
+	private static int port;  //TODO find a way for testclients to get port 
+	public int getPort() {
+		return port;
+	}
+
 	private boolean isRunning = true;
 	
 	private ServerSocket serverSocket;
@@ -73,7 +77,7 @@ public class WMServer extends Thread
 	public void startGame(int noOfRounds)
 	{
 		TreeSet<Team> copy = (TreeSet<Team>) clientsAtServer.clone();
-		(new GameManager(copy, noOfRounds)).startGame();
+		(new GameManager(copy, noOfRounds)).playGame();
 	}
 	
 	
