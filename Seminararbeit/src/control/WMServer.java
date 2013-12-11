@@ -33,6 +33,7 @@ public class WMServer extends Thread
 	{
 		port = p;
 		clientsAtServer = new TreeSet<Team>();
+		System.out.println("WMServer läuft.\n");
 	}
 	
 	/**
