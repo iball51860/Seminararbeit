@@ -56,7 +56,7 @@ public class WMServer extends Thread
 				Socket s = serverSocket.accept();
 				Team newTeam = new Team(s);
 				Communication.requestName(newTeam);
-				Communication.sendStrengths(newTeam);
+				//Communication.sendStrengths(newTeam);	//TODO implement FootballPlayers for Teams so strengths can be generated
 				clientsAtServer.add(newTeam);
 			}
 			catch (IOException ioe)

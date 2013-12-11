@@ -18,7 +18,7 @@ public class TestClient extends Thread{
 	{
 		try 
 		{
-			socket = new Socket(InetAddress.getLocalHost(), WMServer.getPort());
+			socket = new Socket(InetAddress.getLocalHost(), 4444); //WMServer.getPort()); //TODO get getPort() to run!
 		} 
 		catch (UnknownHostException e) 
 		{
