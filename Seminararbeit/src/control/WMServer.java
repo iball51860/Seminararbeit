@@ -33,6 +33,7 @@ public class WMServer extends Thread
 	{
 		port = p;
 		clientsAtServer = new TreeSet<Team>();
+		System.out.println("WMServer läuft.\n");
 	}
 	
 	/**
@@ -58,6 +59,7 @@ public class WMServer extends Thread
 				Communication.requestName(newTeam);
 				//Communication.sendStrengths(newTeam);	//TODO implement FootballPlayers for Teams so strengths can be generated
 				clientsAtServer.add(newTeam);
+				System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getSocket().getInetAddress() + ") an Server. Anzahl Teams: " + clientsAtServer.size());
 			}
 			catch (IOException ioe)
 			{
