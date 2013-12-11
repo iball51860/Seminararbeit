@@ -25,7 +25,7 @@ public class Team implements Comparable<Team>
 
 	private Socket clientSocket;
 	private BufferedReader reader;
-	private BufferedWriter writer;
+	private PrintWriter writer;
 	
 	public Team(Socket clientSocket) //TODO add possibility to ad name and id
 	{								//TODO generate keeper/striker
@@ -33,7 +33,7 @@ public class Team implements Comparable<Team>
 		try
 		{
 		this.reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-		this.writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+		this.writer = new PrintWriter(clientSocket.getOutputStream(), true);
 		}
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
@@ -61,11 +61,7 @@ public class Team implements Comparable<Team>
 	
 	public void write(String msg)
 	{
-		try
-		{
-			writer.write(msg);
-		}
-		catch(IOException ioe){ioe.printStackTrace();}
+		writer.println(msg);
 	}
 	
 	

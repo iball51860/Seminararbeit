@@ -10,7 +10,7 @@ public class TestClient extends Thread{
 	
 	private Socket socket;
 	private BufferedReader fromServer;
-	private BufferedWriter toServer;
+	private PrintWriter toServer;
 	private boolean runForrestRun = true;
 	
 	
@@ -41,7 +41,7 @@ public class TestClient extends Thread{
 		try 
 		{
 			fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			toServer = new BufferedWriter(new PrintWriter(socket.getOutputStream()));
+			toServer = new PrintWriter(socket.getOutputStream(), true);
 		} 
 		catch (IOException ioe) 
 		{
@@ -104,14 +104,7 @@ public class TestClient extends Thread{
 	 */
 	private void sendToServer(String msg)
 	{
-		try
-		{
-			toServer.write(msg);
-		}
-		catch(IOException ioe)
-		{
-			ioe.printStackTrace();
-		}
+		toServer.println(msg);
 	}
 	
 	private String generateDecision()
