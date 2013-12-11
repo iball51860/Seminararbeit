@@ -16,7 +16,7 @@ public class MainClass {
 		for(int i = 0; i < dummy.length; i++)
 		{
 			dummy[i].start();
-			System.out.println("Dummy" + (i+1) + " gestartet.");
+			System.out.println("Dummy" + (i+1) + " started.");
 		}
 		
 		
