@@ -26,7 +26,6 @@ public class WMServer extends Thread
 	private ServerSocket serverSocket;
 	
 	private TreeSet<Team> clientsAtServer;
-	private ArrayList<InetAddress> ips;
 	
 	
 	
@@ -50,22 +49,15 @@ public class WMServer extends Thread
 			ioe.printStackTrace();
 		}
 		
-		ips = new ArrayList<InetAddress>();
-		
 		while(isRunning)
 		{
 			try 
 			{
 				Socket s = serverSocket.accept();
-				if(!(ips.contains(s.getInetAddress()) || 
-						s.getInetAddress().toString().endsWith(InetAddress.getLocalHost().toString()))) //TODO add backdoor for dummys (own IP)
-				{
-					ips.add(s.getInetAddress());
-					Team newTeam = new Team(s);
-					Communication.requestName(newTeam);
-					Communication.sendStrengths(newTeam);
-					clientsAtServer.add(newTeam);
-				}
+				Team newTeam = new Team(s);
+				Communication.requestName(newTeam);
+				//Communication.sendStrengths(newTeam);	//TODO implement FootballPlayers for Teams so strengths can be generated
+				clientsAtServer.add(newTeam);
 			}
 			catch (IOException ioe)
 			{
