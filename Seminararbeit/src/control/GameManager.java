@@ -28,8 +28,14 @@ public class GameManager {
 	
 	public void playGame()
 	{
+		System.out.println("Starting Game.");
+		System.out.println(groupSize + " Teams per Group.");
+		System.out.println(noOfRounds + " Rounds to play");
+		System.out.println(noOfShotsPerMatch + " Shots per Match\n");
+		
 		for(int i=1; i<=noOfRounds; i++)
 		{
+			System.out.println("Round No. " + i + ". " + contestantsInGame.size() + " Teams in Game.");
 			//TODO reset Round specific variables of teams in Round
 			Communication.broadcast(contestantsInGame, Communication.NEWROUND);
 			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
