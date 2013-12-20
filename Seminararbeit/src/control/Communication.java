@@ -21,6 +21,7 @@ public class Communication
 	
 	public static void broadcast(Set<Team> teams, String msg)
 	{
+		System.out.println("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n");
 		for(Team t : teams)
 		{
 			sendMsg(t, msg);
