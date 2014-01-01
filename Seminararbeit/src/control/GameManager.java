@@ -19,10 +19,10 @@ public class GameManager {
 		this.contestants = contestants;
 		this.contestantsInGame = contestants;
 		this.shots = shots;
-		this.noOfRounds = Analyser.recommendNoOfRounds(contestants.size(), shots);
-		this.groupSize = Analyser.recommendGroupSize(contestants.size(), shots);
-		this.matchesPerGroup = Analyser.recommendMatchesPerGroup(contestants.size(), shots);
-		this.noOfShotsPerMatch =Analyser.recommendNoOfShotsPerMatch(contestants.size(), shots);
+		this.noOfRounds = Analyser.calculateNoOfRounds(contestants.size(), shots);
+		this.groupSize = Analyser.calculateGroupSize(contestants.size(), shots);
+		this.matchesPerGroup = Analyser.calculateMatchesPerGroup(contestants.size(), shots);
+		this.noOfShotsPerMatch =Analyser.calculateNoOfShotsPerMatch(contestants.size(), shots);
 	}
 	
 	
