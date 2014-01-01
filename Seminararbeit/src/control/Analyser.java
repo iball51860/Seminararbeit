@@ -10,12 +10,11 @@ import model.Team;
 public class Analyser {
 
 	public static int recommendNoOfRounds(int noOfTeams, int shots){
-		return 10;
+		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
 
-	public static int recommendGroupSize(int size, int shots) {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int recommendGroupSize(int size, int shots) { //TODO move to createGroups
+		return 2;
 	}
 
 	public static int recommendMatchesPerGroup(int size, int shots) {
@@ -24,6 +23,11 @@ public class Analyser {
 	}
 
 	public static TreeSet<Group> createGroups(TreeSet<Team> contestantsInGame, int groupSize) {
+		
+		int noOfGroups = (int) Math.ceil(contestantsInGame.size()/groupSize);
+		int noOfBots = (noOfGroups * groupSize) - contestantsInGame.size();
+		
+		
 		TreeSet<Group> groups = new TreeSet<Group>();
 		
 		for(int i = 1; i <= groupSize; i++)
