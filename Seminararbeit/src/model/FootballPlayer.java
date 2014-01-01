@@ -2,7 +2,7 @@ package model;
 
 import control.*;
 
-public class FootballPlayer //TODO single strength triple, move into team
+public class FootballPlayer 
 {
 	private int[] strength = new int[3];
 	
