@@ -3,6 +3,8 @@ package model;
 import java.io.*;
 import java.net.*;
 
+import control.Analyser;
+
 public class Team implements Comparable<Team> 
 {
 	
@@ -10,8 +12,7 @@ public class Team implements Comparable<Team>
 	private int id; //TODO overthink
 	private String name;
 	
-	private FootballPlayer keeper;
-	private FootballPlayer striker;
+	private int[] strength = new int[3];
 	
 	private int points;
 	private int pointsInCurrentRound;
@@ -38,8 +39,7 @@ public class Team implements Comparable<Team>
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
 		setIsInGame(false);
-		this.keeper = new FootballPlayer();
-		this.striker = new FootballPlayer();
+		strength = Analyser.generateStrength();
 	}
 	
 	public Team(Socket clientSocket, int id){
@@ -160,15 +160,6 @@ public class Team implements Comparable<Team>
 	public boolean isInGame() {
 		return isInGame;
 	}
-
-	
-	public FootballPlayer getKeeper() {
-		return keeper;
-	}
-	
-	public FootballPlayer getStriker() {
-		return striker;
-	}
 	
 	
 	public void setPoints(int points) {
@@ -223,6 +214,12 @@ public class Team implements Comparable<Team>
 	
 	public void setGoalsAgainstInCurrentRound(int goalsAgainstInCurrentRound) {
 		this.goalsAgainstInCurrentRound = goalsAgainstInCurrentRound;
+	}
+	
+	
+	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
+	{
+		return strength;
 	}
 	
 	

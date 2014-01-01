@@ -90,7 +90,7 @@ public class Communication
 	
 	public static void sendStrengths(Team team)
 	{
-		String s = STRENGTH + " K " + team.getKeeper().toString() + " S " + team.getKeeper().toString();
+		String s = STRENGTH + team.getStrength()[0] + team.getStrength()[0] + team.getStrength()[0];
 		sendMsg(team, s);
 	}
 	

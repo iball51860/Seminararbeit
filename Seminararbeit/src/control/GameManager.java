@@ -124,10 +124,10 @@ public class GameManager {
 		int decisionB = Communication.requestDecision(keeping, Communication.KEEP);
 	
 		//Calculate chances
-		double nettoStrength = shooting.getStriker().getStrength()[decisionA];
+		double nettoStrength = shooting.getStrength()[decisionA];
 		if(decisionA == decisionB)
 		{
-			nettoStrength =- keeping.getKeeper().getStrength()[decisionA];
+			nettoStrength =- keeping.getStrength()[decisionA];
 		}
 		nettoStrength = nettoStrength / 100;
 		
