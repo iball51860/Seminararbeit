@@ -2,7 +2,7 @@ package model;
 
 import control.*;
 
-public class FootballPlayer 
+public class FootballPlayer
 {
 	private int[] strength = new int[3];
 	
