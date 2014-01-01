@@ -12,10 +12,6 @@ public class MainClass {
 		{
 			dummy[i] = new TestClient();
 			System.out.println("X" + i);
-		}
-		
-		for(int i = 0; i < dummy.length; i++)
-		{
 			dummy[i].start();
 			System.out.println("Dummy" + (i+1) + " started.");
 		}

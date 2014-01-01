@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import control.*;
+import main.WMTournament;
 
 
 public class TestClient extends Thread{
@@ -18,7 +19,7 @@ public class TestClient extends Thread{
 	{
 		try 
 		{
-			socket = new Socket(InetAddress.getLocalHost(), 4444); //WMServer.getPort()); //TODO get getPort() to run!
+			socket = new Socket(InetAddress.getLocalHost(), 4444);
 			System.out.println("TestClient Const.");
 		} 
 		catch (UnknownHostException e) 

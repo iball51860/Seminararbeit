@@ -39,7 +39,7 @@ public class Team implements Comparable<Team>
 		catch(IOException ioe){ioe.printStackTrace();}
 		setID(++count);
 		setIsInGame(false);
-		strength = Analyser.generateStrength();
+		//strength = Analyser.generateStrength();
 	}
 	
 	public Team(Socket clientSocket, int id){

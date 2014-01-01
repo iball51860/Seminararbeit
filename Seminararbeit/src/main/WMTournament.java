@@ -13,13 +13,19 @@ public class WMTournament {
 	
 	//TODO create final variables for further use
 	
+	private static ServerWindow serverWindow;
+	
 	public static void main(String[] args) {
 		//Start Window + Server
 		
-		ServerWindow w = new ServerWindow();
+		serverWindow = new ServerWindow();
 		
 		
 
+	}
+	
+	public static ServerWindow getServerWindow(){
+		return serverWindow;
 	}
 
 }
