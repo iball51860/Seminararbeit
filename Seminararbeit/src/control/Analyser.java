@@ -9,15 +9,15 @@ import model.Team;
 
 public class Analyser {
 
-	public static int recommendNoOfRounds(int noOfTeams, int shots){
+	public static int calculateNoOfRounds(int noOfTeams, int shots){
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
 
-	public static int recommendGroupSize(int size, int shots) { //TODO move to createGroups
+	public static int calculateGroupSize(int size, int shots) { //TODO move to createGroups
 		return 2;
 	}
 
-	public static int recommendMatchesPerGroup(int size, int shots) {
+	public static int calculateMatchesPerGroup(int size, int shots) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -37,7 +37,7 @@ public class Analyser {
 		return null;
 	}
 
-	public static int recommendNoOfShotsPerMatch(int size, int shots) {
+	public static int calculateNoOfShotsPerMatch(int size, int shots) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
