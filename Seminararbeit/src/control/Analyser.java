@@ -1,6 +1,6 @@
 package control;
 
-import java.util.TreeSet;
+import java.util.*;
 
 import model.Group;
 import model.Team;
@@ -22,17 +22,17 @@ public class Analyser {
 		return 0;
 	}
 
-	public static TreeSet<Group> createGroups(TreeSet<Team> contestantsInGame, int groupSize) {
+	public static HashSet<Group> createGroups(Collection<Team> contestantsInGame, int groupSize) {
 		
 		int noOfGroups = (int) Math.ceil(contestantsInGame.size()/groupSize);
 		int noOfBots = (noOfGroups * groupSize) - contestantsInGame.size();
 		
 		
-		TreeSet<Group> groups = new TreeSet<Group>();
+		HashSet<Group> groups = new HashSet<Group>();
 		
 		for(int i = 1; i <= groupSize; i++)
 		{
-			
+			//TODO add distribution of teams into groups
 		}
 		return null;
 	}
