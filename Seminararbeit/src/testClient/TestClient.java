@@ -15,11 +15,12 @@ public class TestClient extends Thread{
 	private boolean runForrestRun = true;
 	
 	
-	public TestClient()
+	public TestClient(int port)
 	{
 		try 
 		{
-			socket = new Socket(InetAddress.getLocalHost(), 4444);
+			System.out.println(port);
+			socket = new Socket(InetAddress.getLocalHost(), port);
 			System.out.println("TestClient Const.");
 		} 
 		catch (UnknownHostException e) 
