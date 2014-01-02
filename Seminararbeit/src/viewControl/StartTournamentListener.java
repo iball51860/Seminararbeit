@@ -22,9 +22,9 @@ public class StartTournamentListener implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		int shots = 5;	//TODO popup das abfragt wie viele Schüsse gespielt werden soll
+		int shots = 5;	//TODO popup das abfragt wie viele Schüsse gespielt werden sollen und TestClients
 		
-		
+		/*
 		TestClient[] dummy = new TestClient[60];
 		
 		for(int i = 0; i < dummy.length; i++)
@@ -34,7 +34,7 @@ public class StartTournamentListener implements ActionListener {
 			dummy[i].start();
 			System.out.println("Dummy" + (i+1) + " started.");
 		}
-		
+		*/
 		
 		serverWindow.getWMServer().startGame(shots);
 	}
