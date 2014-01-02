@@ -72,8 +72,8 @@ public class WMServer extends Thread
 	
 	public void startGame(int shots)
 	{
-		ArrayTeamSet<Team> copy = (ArrayTeamSet<Team>) clientsAtServer.clone(); //TODO catch CastException
-		(new GameManager(copy, shots)).playGame();
+		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots); //TODO catch CastException
+		GameManager.playGame(t);
 	}
 	
 	
