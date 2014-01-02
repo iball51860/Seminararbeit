@@ -17,19 +17,19 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 		}
 	}
 	
-	public void add(int index, E element){
-		if(!this.contains(element))
+	public void add(int index, E e){
+		if(!this.contains(e))
 		{
-			super.add(index, element);
+			super.add(index, e);
 		}
 	}
 	
 	public boolean addAll(Collection<? extends E> c)
 	{
 		int sizeBefore = this.size();
-		for(E b : c)
+		for(E e : c)
 		{
-			add(b);
+			add(e);
 		}
 		if(this.size() == sizeBefore)
 		{
@@ -42,9 +42,9 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 	{
 		int sizeBefore = this.size();
 		int currentIndex = index;
-		for(E b : c)
+		for(E e : c)
 		{
-			add(currentIndex, b);
+			add(currentIndex, e);
 			currentIndex++;
 		}
 		if(this.size() == sizeBefore)
@@ -53,5 +53,4 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 		}
 		return true;
 	}
-	
 }
