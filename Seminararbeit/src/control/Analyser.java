@@ -13,15 +13,6 @@ public class Analyser {
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
 
-	public static int calculateGroupSize(int size, int shots) { //TODO move to createGroups
-		return 2;
-	}
-
-	public static int calculateMatchesPerGroup(int size, int shots) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public static HashSet<Group> createGroups(Collection<Team> contestantsInGame, int groupSize) {
 		
 		int noOfGroups = (int) Math.ceil(contestantsInGame.size()/groupSize);
@@ -37,9 +28,16 @@ public class Analyser {
 		return null;
 	}
 
-	public static int calculateNoOfShotsPerMatch(int size, int shots) {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int calculateNoOfShotsPerMatch(int noOfTeams, int shots) {
+		int noOfMatches = 0;
+		int noOfRounds = calculateNoOfRounds(noOfTeams);
+		for(int i=0; i<noOfRounds-1; i++) //count matches in each round and add
+		{
+			noOfMatches += Math.pow(2, i);
+		}
+		noOfMatches += (noOfTeams + noOfTeams%2)/2;
+		
+		return (int) shots/noOfMatches;
 	}
 	
 	/**
