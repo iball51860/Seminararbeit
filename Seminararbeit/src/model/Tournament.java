@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Tournament {
 	
-	private static TreeSet<Team> contestants = new TreeSet<Team>(); //TODO delete static
+	private static ArrayTeamSet<Team> contestants = new ArrayTeamSet<Team>(); //TODO delete static
 	
 	//TODO add data from Analyser
 	
-	public static TreeSet<Team> getContestants()
+	public static ArrayTeamSet<Team> getContestants()
 	{
 		return contestants;
 	}

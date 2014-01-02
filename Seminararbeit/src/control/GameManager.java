@@ -5,8 +5,8 @@ import java.util.*;
 
 public class GameManager {
 	
-	private TreeSet<Team> contestants;
-	private TreeSet<Team> contestantsInGame;
+	private ArrayTeamSet<Team> contestants;
+	private ArrayTeamSet<Team> contestantsInGame;
 	private int shots;
 	private int noOfRounds;
 	private int groupSize;
@@ -14,7 +14,7 @@ public class GameManager {
 	private int noOfShotsPerMatch;
 	
 
-	public GameManager(TreeSet<Team> contestants, int shots)
+	public GameManager(ArrayTeamSet<Team> contestants, int shots)
 	{
 		this.contestants = contestants;
 		this.contestantsInGame = contestants;
@@ -38,7 +38,7 @@ public class GameManager {
 			System.out.println("Round No. " + i + ". " + contestantsInGame.size() + " Teams in Game.");
 			//TODO reset Round specific variables of teams in Round
 			Communication.broadcast(contestantsInGame, Communication.NEWROUND);
-			TreeSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
+			HashSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
 			for(Group g : groups)
 			{
 				for(Match m : g.getMatches()) //play all matches of the Round
@@ -46,7 +46,7 @@ public class GameManager {
 					playMatch(m);
 				}
 				
-				contestantsInGame = new TreeSet<Team>();  //create new, empty list to be filled with first half contestants
+				contestantsInGame = new ArrayTeamSet<Team>();  //create new, empty list to be filled with first half contestants
 				
 			}
 		}

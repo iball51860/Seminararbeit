@@ -4,13 +4,13 @@ import java.util.*;
 
 public class Group {
 	
-	private TreeSet<Team> groupTeams;
-	private TreeSet<Match> matches;
+	private ArrayTeamSet<Team> groupTeams;
+	private HashSet<Match> matches;
 	
 	//TODO Constructor
 	public Group(){
-		groupTeams = new TreeSet<Team>();
-		matches = new TreeSet<Match>();
+		groupTeams = new ArrayTeamSet<Team>();
+		matches = new HashSet<Match>();
 	}
 	
 	public void addTeam(Team t){
@@ -21,19 +21,19 @@ public class Group {
 		matches.add(m);
 	}
 	
-	public void setGroupTeams(TreeSet<Team> groupTeams) {
+	public void setGroupTeams(ArrayTeamSet<Team> groupTeams) {
 		this.groupTeams = groupTeams;
 	}
 	
-	public TreeSet<Team> getGroupTeams() {
+	public ArrayTeamSet<Team> getGroupTeams() {
 		return groupTeams;
 	}
 	
-	public void setMatches(TreeSet<Match> matches) {
+	public void setMatches(HashSet<Match> matches) {
 		this.matches = matches;
 	}
 
-	public TreeSet<Match> getMatches() {
+	public HashSet<Match> getMatches() {
 		return matches;
 	}
 }

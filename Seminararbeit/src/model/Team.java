@@ -71,6 +71,32 @@ public class Team implements Comparable<Team>
 		return name + id;
 	}
 	
+
+	public boolean equals(Team otherTeam){
+		try { //check, if other Team is a testclient (own InetAddress)
+			if(this.getSocket().getInetAddress().equals(InetAddress.getLocalHost()))
+			{
+				if(this.getID() == otherTeam.getID())
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			//check, if the teams have the same IP
+			if(this.getSocket().getInetAddress().equals(otherTeam.getSocket().getInetAddress()))
+			{
+				return true;
+			}
+		} catch (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	//TODO fit Javadoc to new implementation
 	/**
 	 * Returns the difference of a special value created for each team.
@@ -78,20 +104,6 @@ public class Team implements Comparable<Team>
 	 */
 	public int compareTo(Team otherTeam) 
 	{
-		try { //check, if other Team has the same InetAddress and is not a testclient (own InetAddress)
-			if(this.getSocket().getInetAddress().equals(otherTeam.getSocket().getInetAddress()) && !(otherTeam.getSocket().getInetAddress().equals(InetAddress.getLocalHost())))
-			{
-				return 0;
-			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
-		if(!isInGame)
-		{
-			return getID() - otherTeam.getID();
-		}
-		
 		//TODO: add if{} for goal-difference interfering with points
 		int ownScore = getPointsInCurrentRound(); 
 		int oppScore = otherTeam.getPointsInCurrentRound();
