@@ -25,14 +25,14 @@ public class WMServer extends Thread
 	
 	private ServerSocket serverSocket;
 	
-	private ArrayTeamSet<Team> clientsAtServer;
+	private TreeSet<Team> clientsAtServer;
 	
 	
 	
 	public WMServer (int p)
 	{
 		port = p;
-		clientsAtServer = new ArrayTeamSet<Team>();
+		clientsAtServer = new TreeSet<Team>();
 		System.out.println("WMServer erzeugt.");
 	}
 	
@@ -72,7 +72,7 @@ public class WMServer extends Thread
 	
 	public void startGame(int noOfRounds)
 	{
-		ArrayTeamSet<Team> copy = (ArrayTeamSet<Team>) clientsAtServer.clone(); //TODO Catch CastException
+		TreeSet<Team> copy = (TreeSet<Team>) clientsAtServer.clone();
 		(new GameManager(copy, noOfRounds)).playGame();
 	}
 	
