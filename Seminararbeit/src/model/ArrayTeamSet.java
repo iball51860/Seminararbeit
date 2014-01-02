@@ -4,6 +4,26 @@ import java.util.*;
 
 public class ArrayTeamSet<E> extends ArrayList<E> {
 
+	public ArrayTeamSet(){
+		super();
+	}
+	
+	public ArrayTeamSet(Collection<E> c){
+			super(c);
+			removeDuplicates();
+	}
+	
+	
+	public void removeDuplicates(){
+		for(E e : this){
+			this.remove(e);
+			if(!this.contains(e))
+			{
+				this.add(e);
+			}
+		}
+	}
+	
 	public boolean add(E e)
 	{
 		if(this.contains(e))
