@@ -9,7 +9,7 @@ import model.Team;
 
 public class Analyser {
 
-	public static int calculateNoOfRounds(int noOfTeams, int shots){
+	public static int calculateNoOfRounds(int noOfTeams){
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
 
@@ -58,19 +58,22 @@ public class Analyser {
 		for(int i = 0; i < strength.length; i++) //generate random values between Bounds
 		{
 			int thisSide;
-			thisSide = lowerBound + 1 + (int) Math.random() * (upperBound - lowerBound);
+			thisSide = lowerBound + (int) (Math.random() * (upperBound - lowerBound + 1));
 			strength[i] = thisSide;
-			testSum =+ thisSide;
+			testSum += thisSide;
 		}
-		
 		int dif = strengthSum - testSum; //calculate difference to correct so strengthSum is met
-		int changer = dif / Math.abs(dif);
+		int changer = 0;
+		if(dif != 0)
+		{
+		changer = dif / Math.abs(dif);
+		}
 		while(dif != 0){ //add the difference on the strengths randomly and assure Bounds
-			int correctedSide = (int) Math.random() * 3;
+			int correctedSide = (int) (Math.random() * 3);
 			if((strength[correctedSide] + changer) >= lowerBound && (strength[correctedSide] + changer) <= upperBound)
 			{
-				strength[correctedSide] =+ changer;
-				dif =- changer;
+				strength[correctedSide] += changer;
+				dif -= changer;
 			}
 		}
 		

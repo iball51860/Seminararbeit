@@ -16,10 +16,9 @@ public class WMTournament {
 	public static void main(String[] args) {
 		//Start Window + Server
 		
-		ServerWindow w = new ServerWindow();
+		ServerWindow serverWindow = new ServerWindow();
 		
 		
 
 	}
-
 }

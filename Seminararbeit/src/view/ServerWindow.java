@@ -5,10 +5,14 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
+import control.*;
+
 import viewControl.*;
 
 public class ServerWindow extends JFrame {
 	
+	
+	private WMServer wmServer;
 	
 	
 	public ServerWindow()
@@ -27,7 +31,7 @@ public class ServerWindow extends JFrame {
 		c.add(north, BorderLayout.NORTH);
 		
 		JButton startButton = new JButton("Start Game");
-		startButton.addActionListener(new StartTournamentListener());
+		startButton.addActionListener(new StartTournamentListener(this));
 		north.add(startButton);
 		JButton showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
@@ -59,4 +63,14 @@ public class ServerWindow extends JFrame {
 		p.setVisible(true);
 		
 	}
+	
+	
+	public void setWMServer(WMServer wmServer){
+		this.wmServer = wmServer;
+	}
+	
+	public WMServer getWMServer(){
+		return this.wmServer;
+	}
+	
 }

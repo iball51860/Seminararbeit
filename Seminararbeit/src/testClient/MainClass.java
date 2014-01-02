@@ -10,12 +10,8 @@ public class MainClass {
 		
 		for(int i = 0; i < dummy.length; i++)
 		{
-			dummy[i] = new TestClient();
+			dummy[i] = new TestClient(4444);
 			System.out.println("X" + i);
-		}
-		
-		for(int i = 0; i < dummy.length; i++)
-		{
 			dummy[i].start();
 			System.out.println("Dummy" + (i+1) + " started.");
 		}
