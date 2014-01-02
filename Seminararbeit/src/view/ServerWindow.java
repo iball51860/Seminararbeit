@@ -14,6 +14,14 @@ public class ServerWindow extends JFrame {
 	
 	private WMServer wmServer;
 	
+	private JPanel north;
+	private JPanel east;
+	private JButton startButton;
+	private JButton showLogButton;
+	private JButton addTestClients;
+	
+	private PopupDialogPort popup;
+	
 	
 	public ServerWindow()
 	{
@@ -27,18 +35,21 @@ public class ServerWindow extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//create topbar with buttons for control
-		JPanel north = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		north = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		c.add(north, BorderLayout.NORTH);
 		
-		JButton startButton = new JButton("Start Game");
+		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(this));
 		north.add(startButton);
-		JButton showLogButton = new JButton("Show Log");
+		showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
 		north.add(showLogButton);
+		addTestClients = new JButton("add Test Clients");
+		addTestClients.addActionListener(new AddTestClientsListener(this));
+		north.add(addTestClients);
 
 		//create right panel with information about the tournament
-		JPanel east = new JPanel(new GridLayout(0, 1));
+		east = new JPanel(new GridLayout(0, 1));
 		c.add(east, BorderLayout.EAST);
 		
 		east.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -56,11 +67,11 @@ public class ServerWindow extends JFrame {
 		setVisible(true);
 		setEnabled(false);
 		
-		//create popup dialog
-		PopupDialog p = new PopupDialog(this);
-		p.setSize(200, 100);
-		p.setLocation(this.getLocationOnScreen().x + 100, this.getLocationOnScreen().y + 22); //TODO center popoup independently of ServerWindow size
-		p.setVisible(true);
+		//create popup dialog to request Port
+		popup = new PopupDialogPort(this);
+		popup.setSize(200, 100);
+		popup.setLocation(this.getLocationOnScreen().x + 100, this.getLocationOnScreen().y + 22); //TODO center popoup independently of ServerWindow size
+		popup.setVisible(true);
 		
 	}
 	
