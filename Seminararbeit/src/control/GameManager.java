@@ -99,7 +99,7 @@ public class GameManager extends Thread{
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		for(int i=1; i<=shots; i=+2)
+		for(int i=1; i<=shots; i+=2)
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
@@ -161,7 +161,7 @@ public class GameManager extends Thread{
 		double nettoStrength = shooting.getStrength()[decisionA];
 		if(decisionA == decisionB)
 		{
-			nettoStrength =- keeping.getStrength()[decisionA];
+			nettoStrength -= keeping.getStrength()[decisionA];
 		}
 		nettoStrength = nettoStrength / 100;
 		
