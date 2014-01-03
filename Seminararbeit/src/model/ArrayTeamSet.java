@@ -9,8 +9,11 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 	}
 	
 	public ArrayTeamSet(Collection<E> c){
-			super(c);
-			removeDuplicates();
+		super();	
+		for(E e : c)
+			{
+				add(e);
+			}
 	}
 	
 	
