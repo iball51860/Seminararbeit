@@ -5,7 +5,19 @@ import java.util.*;
 
 import testClient.TestClient;
 
-public class GameManager {	
+public class GameManager extends Thread{	
+	
+	private Tournament tournament;
+	
+	public GameManager(Tournament t)
+	{
+		this.tournament = t;
+	}
+	
+	public void run()
+	{
+		playGame(tournament);
+	}
 	
 	public static void playGame(Tournament t)
 	{
