@@ -11,15 +11,20 @@ public class Analyser {
 	public static int calculateNoOfRounds(int noOfTeams){
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
-
-	public static int calculateNoOfShotsPerMatch(int noOfTeams, int shots) {
-		int noOfMatches = 0;
+	
+	public static int calculateNoOfMatches(int noOfTeams){
 		int noOfRounds = calculateNoOfRounds(noOfTeams);
-		for(int i=0; i<noOfRounds-1; i++) //count matches in each round and add
+		int noOfMatches = 0;
+		for(int i=0; i<noOfRounds-1; i++)
 		{
 			noOfMatches += Math.pow(2, i);
 		}
-		noOfMatches += (noOfTeams + noOfTeams%2)/2;
+		noOfMatches += Math.ceil(noOfTeams/2);
+		return noOfMatches;
+	}
+
+	public static int calculateNoOfShotsPerMatch(int noOfTeams, int shots) {
+		int noOfMatches = calculateNoOfMatches(noOfTeams);
 		int noOfShots = (int) shots/noOfMatches;
 		if(noOfShots%2 != 0)
 		{

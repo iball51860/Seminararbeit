@@ -1,7 +1,5 @@
 package model;
 
-import java.util.*;
-
 import view.ServerWindow;
 
 import control.*;
@@ -15,15 +13,22 @@ public class Tournament {
 	private int noOfRounds;
 	private ServerWindow masterWindow;
 	private WMServer server;
-	
+	private int currentRound;
+	private int noOfMatches;
+	private int finishedMatches;
+	private int goals;
+
 	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow masterWindow){
 		this.playing = contestants;
-		this.lost = new ArrayTeamSet();
+		this.lost = new ArrayTeamSet<Team>();
 		this.noOfShots = noOfShots;
 		this.noOfShotsPerMatch = Analyser.calculateNoOfShotsPerMatch(contestants.size(), noOfShots);
 		this.noOfRounds = Analyser.calculateNoOfRounds(contestants.size());
 		this.masterWindow = masterWindow;
 		this.server = masterWindow.getWMServer();
+		this.currentRound = 0;
+		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
+		this.finishedMatches = 0;
 	}
 
 	/**
@@ -123,6 +128,60 @@ public class Tournament {
 	public void setServer(WMServer server) {
 		this.server = server;
 	}
+
+	/**
+	 * @return the currentRound
+	 */
+	public int getCurrentRound() {
+		return currentRound;
+	}
+
+	/**
+	 * @param currentRound the currentRound to set
+	 */
+	public void setCurrentRound(int currentRound) {
+		this.currentRound = currentRound;
+	}
+
+	/**
+	 * @return the noOfMatches
+	 */
+	public int getNoOfMatches() {
+		return noOfMatches;
+	}
+
+	/**
+	 * @param noOfMatches the noOfMatches to set
+	 */
+	public void setNoOfMatches(int noOfMatches) {
+		this.noOfMatches = noOfMatches;
+	}
+
+	/**
+	 * @return the finishedMatches
+	 */
+	public int getFinishedMatches() {
+		return finishedMatches;
+	}
+
+	/**
+	 * @param finishedMatches the finishedMatches to set
+	 */
+	public void setFinishedMatches(int finishedMatches) {
+		this.finishedMatches = finishedMatches;
+	}
 	
-	
+	/**
+	 * @return the goals
+	 */
+	public int getGoals() {
+		return goals;
+	}
+
+	/**
+	 * @param goals the goals to set
+	 */
+	public void setGoals(int goals) {
+		this.goals = goals;
+	}
 }
