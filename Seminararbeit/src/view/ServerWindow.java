@@ -89,7 +89,6 @@ public class ServerWindow extends JFrame {
 		//create Panel for Contestants-in-Game-View
 		teamView = new JPanel();
 		c.add(teamView, BorderLayout.CENTER);
-		updateTeamView(new ArrayTeamSet<Team>());
 		
 		setVisible(true);
 		setEnabled(false);
@@ -146,7 +145,7 @@ public class ServerWindow extends JFrame {
 	{
 		this.noOfRound.setText("Round No.: " + t.getCurrentRound());
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
-		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + getNoOfMatches());
+		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 	}
 	
