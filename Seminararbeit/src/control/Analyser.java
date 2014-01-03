@@ -2,8 +2,7 @@ package control;
 
 import java.util.*;
 
-import model.Group;
-import model.Team;
+import model.*;
 
 
 
@@ -11,21 +10,6 @@ public class Analyser {
 
 	public static int calculateNoOfRounds(int noOfTeams){
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
-	}
-
-	public static HashSet<Group> createGroups(Collection<Team> contestantsInGame, int groupSize) {
-		
-		int noOfGroups = (int) Math.ceil(contestantsInGame.size()/groupSize);
-		int noOfBots = (noOfGroups * groupSize) - contestantsInGame.size();
-		
-		
-		HashSet<Group> groups = new HashSet<Group>();
-		
-		for(int i = 1; i <= groupSize; i++)
-		{
-			//TODO add distribution of teams into groups
-		}
-		return null;
 	}
 
 	public static int calculateNoOfShotsPerMatch(int noOfTeams, int shots) {

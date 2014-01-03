@@ -74,9 +74,9 @@ public class WMServer extends Thread
 	}
 	
 	
-	public void startGame(int shots, ServerWindow serverWin) //TODO give ServerWindow in Signature
+	public void startGame(int shots) //TODO give ServerWindow in Signature
 	{
-		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, serverWin); //TODO catch CastException
+		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, masterWindow); //TODO catch CastException
 		GameManager.playGame(t);
 	}
 	
