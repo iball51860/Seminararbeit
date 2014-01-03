@@ -1,12 +1,14 @@
 package view;
 
 import java.awt.*;
+import java.util.*;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.BasicBorders.ButtonBorder;
 
+import model.*;
 import control.*;
-
 import viewControl.*;
 
 public class ServerWindow extends JFrame {
@@ -17,6 +19,7 @@ public class ServerWindow extends JFrame {
 	//private JPanel north;
 	private JPanel west;
 	private JPanel testClientPanel;
+	private JPanel teamView;
 	private JButton startButton;
 	private JButton showLogButton;
 	private JButton addTestClients;
@@ -29,6 +32,8 @@ public class ServerWindow extends JFrame {
 	JLabel noOfGoals;
 	
 	private PopupDialogPort popup;
+	
+	JButton[] teamButtons;
 	
 	
 	public ServerWindow()
@@ -68,7 +73,6 @@ public class ServerWindow extends JFrame {
 		west.add(testClientPanel);
 		testClientPanel.add(addTestClients, BorderLayout.CENTER);
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
-
 		
 		//create Labels for information
 		noOfRound = new JLabel("Round No.: xx");
@@ -82,6 +86,11 @@ public class ServerWindow extends JFrame {
 		noOfGoals = new JLabel("Goals: xx");
 		west.add(noOfGoals);
 		
+		//create Panel for Contestants-in-Game-View
+		teamView = new JPanel();
+		c.add(teamView, BorderLayout.CENTER);
+		updateTeamView(new ArrayTeamSet<Team>());
+		
 		setVisible(true);
 		setEnabled(false);
 		
@@ -93,35 +102,60 @@ public class ServerWindow extends JFrame {
 		
 	}
 	
-	public void updateView()
+	/**
+	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
+	 * @param teamSet
+	 */
+	public void updateTeamView(ArrayTeamSet<Team> teamSet)
 	{
+		int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
 		
+		teamView.setLayout(new GridLayout(size, size, 1, 1));
+		teamButtons = new JButton[Team.getCount() + 1];
+		Iterator it = teamSet.iterator();
+		while(it.hasNext())
+		{
+			Team t = ((Team) it.next());
+			teamButtons[t.getID()] = new JButton(t.getName());
+			teamButtons[t.getID()].setBackground(Color.GREEN);
+			teamButtons[t.getID()].setOpaque(true);
+			teamButtons[t.getID()].setBorderPainted(false);
+			teamView.add(teamButtons[t.getID()]);
+		}
 	}
 	
-	public void updateNoOfRound(int round) 
+	/**
+	 * If Team t is still in Game set Color of it's Button to green 
+	 * else set Color to red
+	 * @param t
+	 */
+	public void updateTeamView(Team t)
 	{
-		this.noOfRound.setText("Round No.: " + round);
+		if(!t.isInGame())
+		{
+			teamButtons[t.getID()].setBackground(Color.RED);
+		}
+		else
+		{
+			teamButtons[t.getID()].setBackground(Color.GREEN);
+		}
 	}
-
-	public void updateNoOfContestants(int contestants) 
+	
+	
+	public void updateMetaData(Tournament t)
 	{
-		this.noOfContestants.setText("Contestants in Game: " + contestants);
+		this.noOfRound.setText("Round No.: " + t.getCurrentRound());
+		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
+		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + getNoOfMatches());
+		this.noOfGoals.setText("Goals: " + t.getGoals());
 	}
+	
 	
 	public void updateNoOfTestClients(int testClients) 
 	{
 		this.noOfTestClients.setText("TestClients in Game: " + testClients);
 	}
-
-	public void updateNoOfPlayedMatches(int playedMatches) 
-	{
-		this.noOfPlayedMatches.setText("Matches played: " + playedMatches);
-	}
-
-	public void updateNoOfGoals(int goals) 
-	{
-		this.noOfGoals.setText("Goals: " + goals);
-	}
+	
 	
 	
 	//////////////////////// Getter and Setter ////////////////////////
