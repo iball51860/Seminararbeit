@@ -5,7 +5,19 @@ import java.util.*;
 
 import testClient.TestClient;
 
-public class GameManager {	
+public class GameManager extends Thread{	
+	
+	private Tournament tournament;
+	
+	public GameManager(Tournament t)
+	{
+		this.tournament = t;
+	}
+	
+	public void run()
+	{
+		playGame(tournament);
+	}
 	
 	public static void playGame(Tournament t)
 	{
@@ -13,6 +25,7 @@ public class GameManager {
 		{
 			te.setIsInGame(true);
 		}
+		t.getMasterWindow().updateTeamView(t.getPlaying());
 		System.out.println("Starting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
@@ -34,7 +47,7 @@ public class GameManager {
 				Team a = copy.get(0);
 				Team b = copy.get(1);
 				copy.remove(0);
-				copy.remove(1);
+				copy.remove(0);
 				a.resetRoundVariables();
 				b.resetRoundVariables();
 				int goalsToPlayInMatch = t.getNoOfShotsPerMatch();
@@ -87,7 +100,7 @@ public class GameManager {
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		for(int i=1; i<=shots; i=+2)
+		for(int i=1; i<=shots; i+=2)
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
@@ -149,7 +162,7 @@ public class GameManager {
 		double nettoStrength = shooting.getStrength()[decisionA];
 		if(decisionA == decisionB)
 		{
-			nettoStrength =- keeping.getStrength()[decisionA];
+			nettoStrength -= keeping.getStrength()[decisionA];
 		}
 		nettoStrength = nettoStrength / 100;
 		
