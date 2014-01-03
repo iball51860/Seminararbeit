@@ -9,41 +9,34 @@ import java.awt.*;
 public class PopupDialog extends JDialog
 {
 	
-	private Container c;
-	private JButton start;
-	private JTextField portInput;
-	private JLabel info;
-	private StartServerListener startServer;
+	Container c;
+	JButton start;
+	JTextField input;
+	JLabel info;
 	
-	public PopupDialog(ServerWindow serverWindow)
+	
+	public PopupDialog()
 	{
 		setUndecorated(true);
 		
 		c = getContentPane();
 		c.setLayout(new GridLayout(3, 1));
 		
-		info = new JLabel("Port eingeben");
-		info.setHorizontalAlignment(SwingConstants.CENTER); //TODO Set something if Enter is hit.
-		portInput = new JTextField("4444");
-		start = new JButton("Start Server");
-		
-		startServer = new StartServerListener(this, serverWindow);
-		portInput.addActionListener(startServer);
-		start.addActionListener(startServer);
-		
+		info = new JLabel();
+		info.setHorizontalAlignment(SwingConstants.CENTER); //TODO Set something if Enter is hit
+		input = new JTextField();
+		start = new JButton();
 		
 		c.add(info);
-		c.add(portInput);
+		c.add(input);
 		c.add(start);
 		
-		
-		setVisible(true);
-		
 	}
 	
 	
-	public JTextField getPortInput(){
-		return portInput;
+	public JTextField getInput(){
+		return input;
 	}
 	
+
 }

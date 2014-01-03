@@ -9,11 +9,11 @@ import view.*;
 public class StartServerListener implements ActionListener {
 	
 	
-	private PopupDialog popup;
+	private PopupDialogPort popup;
 	private ServerWindow serverWindow;
 	
 	
-	public StartServerListener(PopupDialog popup, ServerWindow serverWindow)
+	public StartServerListener(PopupDialogPort popup, ServerWindow serverWindow)
 	{
 		super();
 		this.popup = popup;
@@ -23,9 +23,18 @@ public class StartServerListener implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) 
 	{
+		int port = 4444;
+		try
+		{
+			port = Integer.valueOf(popup.getInput().getText());
+		}
+		catch(NumberFormatException nfe)
+		{
+			popup.getInput().setText("4444");
+			return;
+		}
 		popup.dispose();
 		serverWindow.setEnabled(true);
-		int port = Integer.valueOf(popup.getPortInput().getText());
 		serverWindow.setWMServer(new WMServer(port));
 		serverWindow.getWMServer().start();
 	}
