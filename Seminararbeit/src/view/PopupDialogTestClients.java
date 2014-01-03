@@ -5,7 +5,6 @@ import viewControl.*;
 public class PopupDialogTestClients extends PopupDialog
 {
 	
-	private ServerWindow serverWindow;
 	private PopupTestClientsListener pTCL;
 	
 
@@ -13,7 +12,7 @@ public class PopupDialogTestClients extends PopupDialog
 	{
 		super();
 		
-		info.setText("No of Shots");
+		info.setText("No of TestClients");
 		input.setText("100");
 		start.setText("OK");
 		

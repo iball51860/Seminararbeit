@@ -4,11 +4,11 @@ import java.awt.event.*;
 
 import view.*;
 
+
 public class AddTestClientsListener implements ActionListener
 {
 	
 	private ServerWindow serverWindow;
-	private int noOfTestClients;
 	
 	
 	public AddTestClientsListener(ServerWindow serverWindow)

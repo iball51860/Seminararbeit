@@ -5,7 +5,6 @@ import viewControl.*;
 public class PopupDialogShots extends PopupDialog
 {
 	
-	private ServerWindow serverWindow;
 	private PopupShotListener pIL;
 	
 	

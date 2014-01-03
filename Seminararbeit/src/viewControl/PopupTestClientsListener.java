@@ -10,6 +10,9 @@ public class PopupTestClientsListener implements ActionListener
 	
 	private PopupDialogTestClients popup;
 	private ServerWindow serverWindow;
+	private int noOfTestClients = 0;
+	
+	private static int count = 0;
 	
 	
 	public PopupTestClientsListener(PopupDialogTestClients popup, ServerWindow serverWindow)
@@ -18,32 +21,46 @@ public class PopupTestClientsListener implements ActionListener
 		this.serverWindow = serverWindow;
 	}
 	
+	public PopupTestClientsListener(ServerWindow serverWindow)
+	{
+		this.serverWindow = serverWindow;
+		noOfTestClients = 1;
+	}
+	
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		int noOfTestClients = 0;
-		try
+		if(noOfTestClients == 1)
 		{
-			noOfTestClients = Integer.valueOf(popup.getInput().getText());
+			TestClient newTC = new TestClient(serverWindow.getWMServer().getPort());
+			newTC.start();
+			serverWindow.updateNoOfTestClients(++count);
 		}
-		catch(NumberFormatException nfe)
+		else
 		{
-			popup.getInput().setText("100");
+			try
+			{
+				noOfTestClients = Integer.valueOf(popup.getInput().getText());
+			}
+			catch(NumberFormatException nfe)
+			{
+				popup.getInput().setText("100");
+			}
+			
+			TestClient[] dummy = new TestClient[noOfTestClients];
+			
+			for(int i = 0; i < dummy.length; i++)
+			{
+				dummy[i] = new TestClient(serverWindow.getWMServer().getPort());
+				System.out.println("X" + i);
+				dummy[i].start();
+				System.out.println("Dummy" + (i+1) + " started.");
+			}
+			count += noOfTestClients;
+			serverWindow.updateNoOfTestClients(count);
+			popup.dispose();
+			serverWindow.setEnabled(true);
 		}
-		
-		TestClient[] dummy = new TestClient[noOfTestClients];
-		
-		for(int i = 0; i < dummy.length; i++)
-		{
-			dummy[i] = new TestClient(serverWindow.getWMServer().getPort());
-			System.out.println("X" + i);
-			dummy[i].start();
-			System.out.println("Dummy" + (i+1) + " started.");
-		}
-		
-		
-		popup.dispose();
-		serverWindow.setEnabled(true);
 	}
 	
 	
