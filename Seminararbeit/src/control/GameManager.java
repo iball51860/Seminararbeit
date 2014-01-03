@@ -25,6 +25,7 @@ public class GameManager extends Thread{
 		{
 			te.setIsInGame(true);
 		}
+		t.getMasterWindow().updateTeamView(t.getPlaying());
 		System.out.println("Starting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
