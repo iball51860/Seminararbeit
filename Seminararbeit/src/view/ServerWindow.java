@@ -121,6 +121,7 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setBorderPainted(false);
 			teamView.add(teamButtons[t.getID()]);
 		}
+		teamView.updateUI();
 	}
 	
 	/**
@@ -138,6 +139,7 @@ public class ServerWindow extends JFrame {
 		{
 			teamButtons[t.getID()].setBackground(Color.GREEN);
 		}
+		teamView.updateUI();
 	}
 	
 	
