@@ -35,7 +35,7 @@ public class StartServerListener implements ActionListener {
 		}
 		popup.dispose();
 		serverWindow.setEnabled(true);
-		serverWindow.setWMServer(new WMServer(port));
+		serverWindow.setWMServer(new WMServer(port, serverWindow));
 		serverWindow.getWMServer().start();
 	}
 

@@ -21,7 +21,7 @@ public class PopupShotListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		
+		//add Empfehlung
 		try
 		{
 			serverWindow.getWMServer().startGame(Integer.valueOf(popup.getInput().getText()));
