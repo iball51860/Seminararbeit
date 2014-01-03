@@ -47,7 +47,7 @@ public class GameManager extends Thread{
 				Team a = copy.get(0);
 				Team b = copy.get(1);
 				copy.remove(0);
-				copy.remove(1);
+				copy.remove(0);
 				a.resetRoundVariables();
 				b.resetRoundVariables();
 				int goalsToPlayInMatch = t.getNoOfShotsPerMatch();
