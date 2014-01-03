@@ -13,6 +13,7 @@ public class TestClient extends Thread{
 	private BufferedReader fromServer;
 	private PrintWriter toServer;
 	private boolean runForrestRun = true;
+	private String name;
 	
 	
 	public TestClient(int port)
@@ -22,6 +23,7 @@ public class TestClient extends Thread{
 			System.out.println(port);
 			socket = new Socket(InetAddress.getLocalHost(), port);
 			System.out.println("TestClient Const.");
+			this.name = "dummy";
 		} 
 		catch (UnknownHostException e) 
 		{
@@ -31,6 +33,12 @@ public class TestClient extends Thread{
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public TestClient(int port, String name)
+	{
+		this(port);
+		this.name = name;
 	}
 	
 	/**
@@ -71,7 +79,7 @@ public class TestClient extends Thread{
 			switch(frontSubString)
 			{
 				case Communication.NAME:
-					sendToServer("dummy");
+					sendToServer(name);
 					break;
 				case Communication.STRENGTH:
 					break;

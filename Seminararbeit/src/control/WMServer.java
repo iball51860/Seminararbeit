@@ -5,6 +5,9 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+import testClient.TestClient;
+import view.ServerWindow;
+
 import model.*;
 
 
@@ -15,7 +18,7 @@ import model.*;
  */
 public class WMServer extends Thread
 {
-	
+	ServerWindow masterWindow;
 	private int port;
 	public int getPort() {
 		return this.port;
@@ -29,8 +32,9 @@ public class WMServer extends Thread
 	
 	
 	
-	public WMServer (int p)
+	public WMServer (int p, ServerWindow masterWindow)
 	{
+		this.masterWindow = masterWindow;
 		port = p;
 		clientsAtServer = new ArrayTeamSet<Team>();
 		System.out.println("WMServer erzeugt.");
@@ -70,12 +74,23 @@ public class WMServer extends Thread
 	}
 	
 	
-	public void startGame(int shots)
+	public void startGame(int shots, ServerWindow serverWin) //TODO give ServerWindow in Signature
 	{
-		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots); //TODO catch CastException
+		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, serverWin); //TODO catch CastException
 		GameManager.playGame(t);
 	}
 	
-	
-	
+	public Team createBot()
+	{
+		TestClient tc = new TestClient(getPort(), "bottt");
+		tc.start();
+		for(Team t : clientsAtServer)
+		{
+			if(t.getName().equals("bottt"))
+			{
+				return t;
+			}
+		}
+		return null;
+	}	
 }

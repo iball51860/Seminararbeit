@@ -36,8 +36,13 @@ public class Analyser {
 			noOfMatches += Math.pow(2, i);
 		}
 		noOfMatches += (noOfTeams + noOfTeams%2)/2;
+		int noOfShots = (int) shots/noOfMatches;
+		if(noOfShots%2 != 0)
+		{
+			--noOfShots;
+		}
 		
-		return (int) shots/noOfMatches;
+		return noOfShots;
 	}
 	
 	/**
@@ -45,11 +50,8 @@ public class Analyser {
 	 * are element of the interval [40,80]. The sum of the three values equals exactly 180.
 	 * @return Triple of Strengths
 	 */
-	public static int[] generateStrength()
+	public static int[] generateStrength(int lowerBound, int upperBound, int strengthSum)
 	{
-		int lowerBound = 40;
-		int upperBound = 80;
-		int strengthSum = 180;
 		int[] strength = new int[3];
 		int testSum  = 0;
 		

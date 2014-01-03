@@ -73,4 +73,10 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 		}
 		return true;
 	}
+	
+	public ArrayTeamSet<E> clone()
+	{
+		ArrayTeamSet<E> clone = new ArrayTeamSet<E>(this);
+		return clone;
+	}
 }
