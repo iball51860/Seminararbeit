@@ -3,51 +3,56 @@ package control;
 import model.*;
 import java.util.*;
 
-public class GameManager {
-	
-	private ArrayTeamSet<Team> contestants;
-	private ArrayTeamSet<Team> contestantsInGame;
-	private int shots;
-	private int noOfRounds;
-	private int groupSize;
-	private int matchesPerGroup;
-	private int noOfShotsPerMatch;
-	
+import testClient.TestClient;
 
-	public GameManager(ArrayTeamSet<Team> contestants, int shots)
-	{
-		this.contestants = contestants;
-		this.contestantsInGame = contestants;
-		this.shots = shots;
-		this.noOfRounds = Analyser.calculateNoOfRounds(contestants.size());
-		this.groupSize = Analyser.calculateGroupSize(contestants.size(), shots);
-		this.matchesPerGroup = Analyser.calculateMatchesPerGroup(contestants.size(), shots);
-		this.noOfShotsPerMatch =Analyser.calculateNoOfShotsPerMatch(contestants.size(), shots);
-	}
+public class GameManager {	
 	
-	
-	public void playGame()
+	public static void playGame(Tournament t)
 	{
 		System.out.println("Starting Game.");
-		System.out.println(groupSize + " Teams per Group.");
-		System.out.println(noOfRounds + " Rounds to play");
-		System.out.println(noOfShotsPerMatch + " Shots per Match\n");
+		System.out.println(t.getNoOfRounds() + " Rounds to play");
+		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
 		
-		for(int i=1; i<=noOfRounds; i++)
+		for(int i=1; i<=t.getNoOfRounds(); i++)
 		{
-			System.out.println("Round No. " + i + ". " + contestantsInGame.size() + " Teams in Game.");
+			System.out.println("Round No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
 			//TODO reset Round specific variables of teams in Round
-			Communication.broadcast(contestantsInGame, Communication.NEWROUND);
-			HashSet<Group> groups = Analyser.createGroups(contestantsInGame, groupSize);
-			for(Group g : groups)
+			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
+			ArrayTeamSet<Team> copy = t.getPlaying().clone();
+			Collections.shuffle(copy);
+			if(copy.size()%2 != 0)
 			{
-				for(Match m : g.getMatches()) //play all matches of the Round
+				copy.add(t.getServer().createBot());
+			}
+			int sizeAtStart = copy.size();
+			for(int j=0; j<sizeAtStart; j+=2)
+			{
+				Team a = copy.get(0);
+				Team b = copy.get(1);
+				copy.remove(0);
+				copy.remove(1);
+				Team winner = playMatch(a, b, t.getNoOfShotsPerMatch());
+				if(winner.equals(a))
 				{
-					playMatch(m);
+					t.getPlaying().remove(b);
+					t.getLost().add(b);
 				}
-				
-				contestantsInGame = new ArrayTeamSet<Team>();  //create new, empty list to be filled with first half contestants
-				
+				else
+				{
+					t.getPlaying().remove(a);
+					t.getLost().add(a);
+				}
+			}
+			if(i == 1) //Relegation in erster Runde
+			{
+				int dif = (int) (Math.pow(2, t.getNoOfRounds()-1) - t.getPlaying().size());
+				Collections.sort(t.getLost());
+				for(int j=0; j<dif; j++)
+				{
+					Team rescued = t.getLost().get(0);
+					t.getLost().remove(0);
+					t.getPlaying().add(rescued);
+				}
 			}
 		}
 	}
@@ -58,16 +63,14 @@ public class GameManager {
 	 * Points towards the pointsInCurrentRound- and points variable of the respective Team.
 	 * @param m - Match to be played
 	 */
-	public void playMatch(Match m)
+	public static Team playMatch(Team a, Team b, int shots)
 	{
-		Team a = m.getTeams()[0];
-		Team b = m.getTeams()[1];
 		int aGoals = 0;
 		int bGoals = 0;
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		for(int i=1; i<=noOfShotsPerMatch; i=+2)
+		for(int i=1; i<=shots; i=+2)
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
@@ -84,20 +87,22 @@ public class GameManager {
 		
 		if(aGoals < bGoals) //Team b wins
 		{
-			b.setPointsInCurrentRound(b.getPointsInCurrentRound() + 3);
-			b.setPoints(b.getPoints() + 3);
+			return b;
 		}
-		if(aGoals == bGoals) //draw
+		if(aGoals == bGoals) //draw: draw lots
 		{
-			a.setPointsInCurrentRound(a.getPointsInCurrentRound() + 1);
-			a.setPoints(a.getPoints() + 1);
-			b.setPointsInCurrentRound(b.getPointsInCurrentRound() + 1);
-			b.setPoints(b.getPoints() + 1);
+			if(Math.random() < 0.5)
+			{
+				return a;
+			}
+			else
+			{
+				return b;
+			}
 		}
 		else //Team a wins
 		{
-			a.setPointsInCurrentRound(a.getPointsInCurrentRound() + 3);
-			a.setPoints(a.getPoints() + 3);
+			return a;
 		}
 	}
 	
@@ -116,7 +121,7 @@ public class GameManager {
 	 * @param keeping - The team defending
 	 * @return Variable of type boolean, whether a goal was scored.
 	 */
-	public boolean playShot(Team shooting, Team keeping)
+	public static boolean playShot(Team shooting, Team keeping)
 	{
 		String[] decisionCode = {"l", "m", "r"};
 		
