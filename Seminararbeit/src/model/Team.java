@@ -15,11 +15,11 @@ public class Team implements Comparable<Team>
 	private int[] strength = new int[3];
 	
 	private int points;
-	private int pointsInCurrentRound;
 	private int goals;
 	private int goalsInCurrentRound;
 	private int goalsAgainst;
 	private int goalsAgainstInCurrentRound;
+	private int wonMatches;
 	
 	private String lastInput;
 	private boolean isInGame;
@@ -47,6 +47,11 @@ public class Team implements Comparable<Team>
 		setID(id);
 	}
 	
+	public void resetRoundVariables()
+	{
+		setGoalsAgainstInCurrentRound(0);
+		setGoalsInCurrentRound(0);
+	}
 	
 	public String read()
 	{
@@ -97,29 +102,26 @@ public class Team implements Comparable<Team>
 		return false;
 	}
 	
-	//TODO fit Javadoc to new implementation
-	/**
-	 * Returns the difference of a special value created for each team.
-	 * The value puts weight on the actual score of the Team IN ITS CURRENT ROUND.
-	 */
 	public int compareTo(Team otherTeam) 
 	{
-		//TODO: add if{} for goal-difference interfering with points
-		int ownScore = getPointsInCurrentRound(); 
-		int oppScore = otherTeam.getPointsInCurrentRound();
-		
-		ownScore = ownScore * 1000000; //increase weight of points
-		oppScore = oppScore * 1000000;
-		
-		ownScore =+ goalsInCurrentRound - goalsAgainstInCurrentRound; //add goal difference
-		oppScore =+ otherTeam.getGoalsInCurrentRound() - otherTeam.getGoalsAgainstInCurrentRound();
-		
-		return ownScore - oppScore; //return difference to the otherTeam
+		if(wonMatches != otherTeam.getWonMatches())
+		{
+			return wonMatches - otherTeam.getWonMatches();
+		}
+		else 
+		{
+			return (goals - goalsAgainst) - (otherTeam.getGoals() - otherTeam.getGoalsAgainst());
+		}
 	}
 
 	
 	/////////////////////////get- and set-methods///////////////////////////////
 	
+
+	public static int getCount()
+	{
+	return count;
+	}
 	/**
 	 * Returns the id of the teams instance.
 	 * @return id of the team
@@ -182,16 +184,6 @@ public class Team implements Comparable<Team>
 		return points;
 	}
 	
-	public int getPointsInCurrentRound() {
-		
-		return pointsInCurrentRound;
-	}
-	
-	public void setPointsInCurrentRound(int pointsInCurrentRound) {
-		this.pointsInCurrentRound = pointsInCurrentRound;
-	}
-	
-	
 	public void setGoals(int goals) {
 		this.goals = goals;
 	}
@@ -228,6 +220,10 @@ public class Team implements Comparable<Team>
 		this.goalsAgainstInCurrentRound = goalsAgainstInCurrentRound;
 	}
 	
+	private int getWonMatches() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
 	{

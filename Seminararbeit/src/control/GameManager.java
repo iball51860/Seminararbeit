@@ -9,14 +9,18 @@ public class GameManager {
 	
 	public static void playGame(Tournament t)
 	{
+		for(Team te : t.getPlaying())
+		{
+			te.setIsInGame(true);
+		}
 		System.out.println("Starting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
 		
-		for(int i=1; i<=t.getNoOfRounds(); i++)
+		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
+		for(int i=t.getNoOfRounds(); i>=1; i--) //counts rounds down for better consistency with no of Teams playing
 		{
 			System.out.println("Round No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
-			//TODO reset Round specific variables of teams in Round
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
@@ -31,19 +35,30 @@ public class GameManager {
 				Team b = copy.get(1);
 				copy.remove(0);
 				copy.remove(1);
-				Team winner = playMatch(a, b, t.getNoOfShotsPerMatch());
+				a.resetRoundVariables();
+				b.resetRoundVariables();
+				int goalsToPlayInMatch = t.getNoOfShotsPerMatch();
+				if(i==1)
+				{
+					goalsToPlayInMatch += finalExtraShots;
+				}
+				Team winner = playMatch(a, b, goalsToPlayInMatch);
+				Team looser;
 				if(winner.equals(a))
 				{
-					t.getPlaying().remove(b);
-					t.getLost().add(b);
+					looser = b;
 				}
 				else
 				{
-					t.getPlaying().remove(a);
-					t.getLost().add(a);
+					looser = a;				
 				}
+				t.getPlaying().remove(looser);
+				t.getLost().add(looser);
+				looser.setIsInGame(false);
+				t.getMasterWindow().updateTeamView(looser);
+				
 			}
-			if(i == 1) //Relegation in erster Runde
+			if(i == t.getNoOfRounds()) //Relegation in erster Runde
 			{
 				int dif = (int) (Math.pow(2, t.getNoOfRounds()-1) - t.getPlaying().size());
 				Collections.sort(t.getLost());
@@ -52,6 +67,8 @@ public class GameManager {
 					Team rescued = t.getLost().get(0);
 					t.getLost().remove(0);
 					t.getPlaying().add(rescued);
+					rescued.setIsInGame(true);
+					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
 		}
