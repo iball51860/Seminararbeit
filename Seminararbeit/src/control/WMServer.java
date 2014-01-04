@@ -30,7 +30,9 @@ public class WMServer extends Thread
 	
 	private ArrayTeamSet<Team> clientsAtServer;
 	
-	
+	public ArrayTeamSet<Team> getClientsAtServer(){
+		return this.clientsAtServer;
+	}
 	
 	public WMServer (int p, ServerWindow masterWindow)
 	{
