@@ -168,7 +168,7 @@ public class ServerWindow extends JFrame {
 	public void updateClientsAtServer(int clientsAtServer)
 	{
 		this.noOfClients.setText("Clients at server: " + clientsAtServer);
-		if(clientsAtServer >=1)
+		if(clientsAtServer >=2)
 		{
 			this.startButton.setEnabled(true);
 		}
