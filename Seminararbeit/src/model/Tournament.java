@@ -171,6 +171,10 @@ public class Tournament {
 		this.finishedMatches = finishedMatches;
 	}
 	
+	public void incrementFinishedMatches(int increment) {
+		this.finishedMatches += increment;
+	}
+	
 	/**
 	 * @return the goals
 	 */
@@ -183,5 +187,9 @@ public class Tournament {
 	 */
 	public void setGoals(int goals) {
 		this.goals = goals;
+	}
+	
+	public void incrementGoals(int increment) {
+		this.goals += increment;
 	}
 }
