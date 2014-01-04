@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.*;
 
 import model.*;
@@ -19,12 +18,16 @@ public class ServerWindow extends JFrame {
 	//private JPanel north;
 	private JPanel west;
 	private JPanel testClientPanel;
-	private JPanel teamView;
 	private JButton startButton;
+	private JButton showResult;
 	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
 	private JProgressBar progress;
+	
+	JTabbedPane tabPane;
+	private JPanel teamView;
+	private JTextArea resultList;
 	
 	private JLabel currentRound;
 	private JLabel noOfContestants;
@@ -58,10 +61,12 @@ public class ServerWindow extends JFrame {
 		c.add(west, BorderLayout.WEST);
 		west.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
-		//create Buttons for starting game and show log
+		//create Buttons for starting game, show Result list and show log
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(this));
 		west.add(startButton);
+		showResult = new JButton("Show Result");
+		west.add(showResult);
 		showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
 		west.add(showLogButton);
@@ -94,9 +99,16 @@ public class ServerWindow extends JFrame {
 		c.add(progress, BorderLayout.SOUTH);
 		//progress.setStringPainted(true);
 		
-		//create Panel for Contestants-in-Game-View
+		//create JTabedPane for "Team-Matrix" and "Result-List"
+		tabPane = new JTabbedPane(JTabbedPane.TOP);
+		c.add(tabPane, BorderLayout.CENTER);
 		teamView = new JPanel();
-		c.add(teamView, BorderLayout.CENTER);
+		resultList = new JTextArea();
+		ScrollPane sp = new ScrollPane();
+		resultList.setEditable(false);
+		sp.add(resultList);
+		tabPane.addTab("Matrix", teamView);
+		tabPane.addTab("Result", sp);
 		
 		setVisible(true);
 		setEnabled(false);
@@ -116,7 +128,7 @@ public class ServerWindow extends JFrame {
 	public void updateTeamView(ArrayTeamSet<Team> teamSet)
 	{
 		teamView.removeAll();
-		this.teamSet = teamSet;
+		this.teamSet = teamSet.clone();
 		int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
 		teamView.setLayout(new GridLayout(size, size, 1, 1));
 		teamButtons = new JButton[Team.getCount() + 1];
@@ -169,7 +181,21 @@ public class ServerWindow extends JFrame {
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
-		progress.setValue((int)((double)t.getFinishedShots() / (double)t.getNoOfShots() * 100));
+		progress.setMaximum(t.getNoOfShots());
+		progress.setValue(t.getFinishedShots());
+		updateResultList();
+	}
+	
+	
+	public void updateResultList()
+	{
+		Collections.sort(teamSet);
+		StringBuffer sb = new StringBuffer();
+		for(Team t : teamSet)
+		{
+			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals\n");
+		}
+		resultList.setText(sb.toString());
 	}
 	
 	
