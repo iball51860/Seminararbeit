@@ -76,7 +76,7 @@ public class Communication
 		sendMsg(team, NAME);
 		String s = null;
 		long start = System.currentTimeMillis();
-		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null)
+		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null) //TODO switch to return if received name
 		{
 			s = team.read().substring(0, 5);
 			team.setLastInput(s);

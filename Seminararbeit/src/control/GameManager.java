@@ -12,6 +12,7 @@ public class GameManager extends Thread{
 	public GameManager(Tournament t)
 	{
 		this.tournament = t;
+		this.setName("GameManagerThread");
 	}
 	
 	public void run()
@@ -40,8 +41,11 @@ public class GameManager extends Thread{
 			Collections.shuffle(copy);
 			if(copy.size()%2 != 0)
 			{
-				copy.add(t.getServer().createBot());
+				Team bot = t.getServer().createBot();
+				System.out.println(bot);
+				copy.add(bot);
 			}
+			
 			int sizeAtStart = copy.size();
 			for(int j=0; j<sizeAtStart; j+=2)
 			{
@@ -70,11 +74,14 @@ public class GameManager extends Thread{
 					looser = a;				
 				}
 				t.getPlaying().remove(looser);
-				t.getLost().add(looser);
-				looser.setIsInGame(false);
-				t.getMasterWindow().updateTeamView(looser);
-				
+				if(!looser.getName().equals("bottt"))
+				{
+					t.getLost().add(looser);
+					looser.setIsInGame(false);
+					t.getMasterWindow().updateTeamView(looser);
+				}
 			}
+			
 			if(i == t.getNoOfRounds()) //Relegation in erster Runde
 			{
 				int dif = (int) (Math.pow(2, t.getNoOfRounds()-1) - t.getPlaying().size());

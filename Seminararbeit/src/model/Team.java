@@ -13,7 +13,7 @@ public class Team implements Comparable<Team>
 	private String name;
 	
 	private int[] strength = new int[3];
-	
+	//TODO delete unnecessary variables
 	private int points;
 	private int goals;
 	private int goalsInCurrentRound;
@@ -28,8 +28,8 @@ public class Team implements Comparable<Team>
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
-	public Team(Socket clientSocket) //TODO add possibility to ad name and id
-	{								//TODO generate keeper/striker
+	public Team(Socket clientSocket) //TODO add possibility to ad name
+	{
 		this.clientSocket = clientSocket;
 		try
 		{
@@ -141,15 +141,21 @@ public class Team implements Comparable<Team>
 	 * Returns the name of the team. Is usually of type uxxxx, where x represents any letter of the alphabet.
 	 * @return name of the team
 	 */
-	public String getName() {
+	public synchronized String getName() {
+		if(name == null){
+			try{
+				wait();
+			}catch(InterruptedException ie){ie.printStackTrace();}
+		}
 		return name;
 	}
 	/**
 	 * Sets the given String as name for the team. Should be of type uxxxx, where x represents any letter of the alphabet.
 	 * @param name - String that represents the name, the team shall receive.
 	 */
-	public void setName(String name){
+	public synchronized void setName(String name){
 		this.name = name;
+		notifyAll();
 	}
 	
 	
