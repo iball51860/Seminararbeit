@@ -33,6 +33,7 @@ public class GameManager extends Thread{
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1; i--) //counts rounds down for better consistency with no of Teams playing
 		{
+			t.setCurrentRound(i);
 			System.out.println("Round No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
@@ -56,6 +57,9 @@ public class GameManager extends Thread{
 					goalsToPlayInMatch += finalExtraShots;
 				}
 				Team winner = playMatch(a, b, goalsToPlayInMatch);
+				t.incrementFinishedMatches(1);
+				t.incrementGoals(a.getGoalsInCurrentRound() + b.getGoalsInCurrentRound());
+				t.getMasterWindow().updateMetaData(t);
 				Team looser;
 				if(winner.equals(a))
 				{
