@@ -201,7 +201,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public void updateNoOfTestClients(int testClients) 
+	public void updateNoOfTestClients(int testClients)
 	{
 		this.noOfTestClients.setText("TestClients in Game: " + testClients);
 	}
