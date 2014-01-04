@@ -79,10 +79,15 @@ public class WMServer extends Thread
 		Communication.sendStrengths(newTeam);
 		clientsAtServer.add(newTeam);
 		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getSocket().getInetAddress() + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
+		masterWindow.updateClientsAtServer(clientsAtServer.size());
 	}
 	
 	public void startGame(int shots)
 	{
+		if(clientsAtServer.isEmpty())
+		{
+			return;
+		}
 		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, masterWindow); //TODO catch CastException
 		(new GameManager(t)).start();
 	}

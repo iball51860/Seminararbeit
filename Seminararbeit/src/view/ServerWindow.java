@@ -30,7 +30,7 @@ public class ServerWindow extends JFrame {
 	private JTextArea resultList;
 	
 	private JLabel currentRound;
-	private JLabel noOfContestants;
+	private JLabel noOfClients;
 	private JLabel noOfTestClients;
 	private JLabel noOfPlayedMatches;
 	private JLabel noOfGoals;
@@ -63,6 +63,7 @@ public class ServerWindow extends JFrame {
 		//create Buttons for starting game, show Result list and show log
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(this));
+		startButton.setEnabled(false);
 		west.add(startButton);
 		showResult = new JButton("Update Result");
 		showResult.addActionListener(new UpdateResultListener(this));
@@ -82,15 +83,15 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 				
 		//create Labels for information
-		currentRound = new JLabel("Round No: xx");
+		currentRound = new JLabel("Round No: 0");
 		west.add(currentRound);
-		noOfContestants = new JLabel("Contestants in Game: xx");
-		west.add(noOfContestants);
-		noOfTestClients = new JLabel("TestClients in Game: xx");
+		noOfClients = new JLabel("Clients at Server: 0");
+		west.add(noOfClients);
+		noOfTestClients = new JLabel("TestClients in Game: 0");
 		west.add(noOfTestClients);
-		noOfPlayedMatches = new JLabel("Matches played: xx");
+		noOfPlayedMatches = new JLabel("Matches played: 0");
 		west.add(noOfPlayedMatches);
-		noOfGoals = new JLabel("Goals: xx");
+		noOfGoals = new JLabel("Goals: 0");
 		west.add(noOfGoals);
 		
 		
@@ -164,6 +165,14 @@ public class ServerWindow extends JFrame {
 		teamView.updateUI();
 	}
 	
+	public void updateClientsAtServer(int clientsAtServer)
+	{
+		this.noOfClients.setText("Clients at server: " + clientsAtServer);
+		if(clientsAtServer >=1)
+		{
+			this.startButton.setEnabled(true);
+		}
+	}
 	
 	/**
 	 * removes all teams who loose from the teamView-Panel
@@ -195,7 +204,6 @@ public class ServerWindow extends JFrame {
 	public void updateMetaData(Tournament t)
 	{
 		this.currentRound.setText("Round No: " + t.getCurrentRound());
-		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setMaximum(t.getNoOfShots());
