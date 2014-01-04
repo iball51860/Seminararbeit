@@ -62,6 +62,7 @@ public class GameManager extends Thread{
 				}
 				Team winner = playMatch(a, b, goalsToPlayInMatch);
 				t.incrementFinishedMatches(1);
+				t.incrementFinishedShots(t.getNoOfShotsPerMatch()); //TODO add correct Term for last round (excess shots)
 				t.incrementGoals(a.getGoalsInCurrentRound() + b.getGoalsInCurrentRound());
 				t.getMasterWindow().updateMetaData(t);
 				Team looser;
