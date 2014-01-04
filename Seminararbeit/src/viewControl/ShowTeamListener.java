@@ -1,6 +1,9 @@
 package viewControl;
 
+import java.awt.Point;
 import java.awt.event.*;
+
+import javax.swing.JButton;
 
 import model.*;
 import view.*;
@@ -25,8 +28,6 @@ public class ShowTeamListener implements ActionListener
 		serverWindow.setEnabled(false);
 		
 		TeamPopupDialog p = new TeamPopupDialog(serverWindow, t);
-		p.setSize(200, 180);
-		p.setLocation(serverWindow.getLocationOnScreen().x + 300, serverWindow.getLocationOnScreen().y + 150); //TODO center popoup independently of ServerWindow size
 		p.setVisible(true);
 		
 	}

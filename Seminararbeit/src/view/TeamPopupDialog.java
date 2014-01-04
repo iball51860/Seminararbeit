@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import viewControl.*;
@@ -25,6 +26,8 @@ public class TeamPopupDialog extends JDialog
 	{
 		setUndecorated(true);
 		this.serverWindow = serverWindow;
+		setSize(200, 180);
+		setLocation(serverWindow.getLocationOnScreen().x + 300, serverWindow.getLocationOnScreen().y + 150); //TODO set Location in relation to invoking Button
 		
 		c = getContentPane();
 		c.setLayout(new GridLayout(6, 1));

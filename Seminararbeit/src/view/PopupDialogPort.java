@@ -14,7 +14,7 @@ public class PopupDialogPort extends PopupDialog
 	
 	public PopupDialogPort(ServerWindow serverWindow)
 	{
-		super();
+		super(serverWindow);
 		
 		info.setText("Port eingeben");
 		input.setText("4444");

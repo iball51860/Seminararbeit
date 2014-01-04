@@ -14,10 +14,18 @@ public class PopupDialog extends JDialog
 	JTextField input;
 	JLabel info;
 	
+	public PopupDialog(ServerWindow serverWindow)
+	{
+		this();
+		int x = (int) (serverWindow.getLocation().getX() + (serverWindow.getWidth()/2) - (getWidth()/2));
+		int y = (int) (serverWindow.getLocation().getY() + 22);
+		this.setLocation(x, y);
+	}
 	
 	public PopupDialog()
 	{
 		setUndecorated(true);
+		setSize(200, 100);
 		
 		c = getContentPane();
 		c.setLayout(new GridLayout(3, 1));

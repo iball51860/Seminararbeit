@@ -10,7 +10,7 @@ public class PopupDialogShots extends PopupDialog
 	
 	public PopupDialogShots(ServerWindow serverWindow) 
 	{
-		super();
+		super(serverWindow);
 		
 		info.setText("No of Shots");
 		input.setText("100000");

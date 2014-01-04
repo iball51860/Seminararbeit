@@ -47,7 +47,6 @@ public class ServerWindow extends JFrame {
 		super();
 		setTitle("WM Server");
 		setSize(800, 600);
-		setLocation(200, 100);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,8 +115,6 @@ public class ServerWindow extends JFrame {
 		
 		//create popup dialog to request Port
 		popup = new PopupDialogPort(this);
-		popup.setSize(200, 100);
-		popup.setLocation(this.getLocationOnScreen().x + 100, this.getLocationOnScreen().y + 22); //TODO center popoup independently of ServerWindow size
 		popup.setVisible(true);
 		
 	}
