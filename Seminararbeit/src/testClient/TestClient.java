@@ -120,7 +120,16 @@ public class TestClient extends Thread{
 	
 	private String generateDecision()
 	{
-		return "m";
+		double random = Math.random();
+		if(random < 1/3) 
+		{
+			return "l";
+		}
+		if(random > 2/3)
+		{
+			return "m";
+		}
+		return "r";
 	}
 	
 	public Socket getSocket()
