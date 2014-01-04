@@ -60,6 +60,7 @@ public class GameManager extends Thread{
 					goalsToPlayInMatch += finalExtraShots;
 				}
 				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
+				winner.incrementWonMatches(1);
 				t.incrementFinishedMatches(1);
 				t.getMasterWindow().updateMetaData(t);
 				Team looser;

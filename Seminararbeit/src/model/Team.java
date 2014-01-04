@@ -231,6 +231,14 @@ public class Team implements Comparable<Team>
 		return wonMatches;
 	}
 	
+	public void setWonMatches(int wonMatches) {
+		this.wonMatches = wonMatches;
+	}
+	
+	public void incrementWonMatches(int increment) {
+		this.wonMatches += increment;
+	}
+	
 	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
 	{
 		return strength;
