@@ -26,11 +26,11 @@ public class ServerWindow extends JFrame {
 	private JButton plusTestClient;
 	private JProgressBar progress;
 	
-	JLabel noOfRound;
-	JLabel noOfContestants;
-	JLabel noOfTestClients;
-	JLabel noOfPlayedMatches;
-	JLabel noOfGoals;
+	private JLabel noOfRound;
+	private JLabel noOfContestants;
+	private JLabel noOfTestClients;
+	private JLabel noOfPlayedMatches;
+	private JLabel noOfGoals;
 	
 	private PopupDialogPort popup;
 	
@@ -126,6 +126,8 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setBackground(Color.GREEN);
 			teamButtons[t.getID()].setOpaque(true);
 			teamButtons[t.getID()].setBorderPainted(false);
+			teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+			teamButtons[t.getID()].setToolTipText(t.getName());
 			teamView.add(teamButtons[t.getID()]);
 		}
 		teamView.updateUI();
@@ -154,7 +156,7 @@ public class ServerWindow extends JFrame {
 	{
 		this.noOfRound.setText("Round No: " + t.getCurrentRound());
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
-		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + t.getNoOfMatches());
+		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setValue((int)((double)t.getFinishedMatches() / (double)t.getNoOfMatches() * 100)); //TODO switch from Matches to shots
 	}
