@@ -72,7 +72,7 @@ public class ServerWindow extends JFrame {
 		showLogButton.addActionListener(new ShowLogListener());
 		west.add(showLogButton);
 		
-		//create panel and Buttons for starting TestClients
+		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
 		addTestClients = new JButton("add Test Clients");
 		addTestClients.addActionListener(new AddTestClientsListener(this));
@@ -81,7 +81,7 @@ public class ServerWindow extends JFrame {
 		west.add(testClientPanel);
 		testClientPanel.add(addTestClients, BorderLayout.CENTER);
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
-		
+				
 		//create Labels for information
 		currentRound = new JLabel("Round No: xx");
 		west.add(currentRound);
