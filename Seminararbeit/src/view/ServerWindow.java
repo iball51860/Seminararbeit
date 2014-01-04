@@ -5,7 +5,6 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.BasicBorders.ButtonBorder;
 
 import model.*;
 import control.*;
@@ -24,6 +23,7 @@ public class ServerWindow extends JFrame {
 	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
+	private JProgressBar progress;
 	
 	JLabel noOfRound;
 	JLabel noOfContestants;
@@ -86,6 +86,10 @@ public class ServerWindow extends JFrame {
 		noOfGoals = new JLabel("Goals: xx");
 		west.add(noOfGoals);
 		
+		//create ProgressBar
+		progress = new JProgressBar();
+		c.add(progress, BorderLayout.SOUTH);
+		
 		//create Panel for Contestants-in-Game-View
 		teamView = new JPanel();
 		c.add(teamView, BorderLayout.CENTER);
@@ -111,10 +115,10 @@ public class ServerWindow extends JFrame {
 		
 		teamView.setLayout(new GridLayout(size, size, 1, 1));
 		teamButtons = new JButton[Team.getCount() + 1];
-		Iterator it = teamSet.iterator();
+		Iterator<Team> it = teamSet.iterator();
 		while(it.hasNext())
 		{
-			Team t = ((Team) it.next());
+			Team t = it.next();
 			teamButtons[t.getID()] = new JButton(t.getName());
 			teamButtons[t.getID()].setBackground(Color.GREEN);
 			teamButtons[t.getID()].setOpaque(true);
@@ -149,6 +153,7 @@ public class ServerWindow extends JFrame {
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
+		progress.setValue((int)((double)t.getFinishedMatches() / (double)t.getNoOfMatches() * 100)); //TODO switch from Matches to shots
 	}
 	
 	
