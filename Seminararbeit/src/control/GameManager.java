@@ -42,7 +42,6 @@ public class GameManager extends Thread{
 			if(copy.size()%2 != 0)
 			{
 				Team bot = t.getServer().createBot();
-				System.out.println(bot);
 				copy.add(bot);
 			}
 			
@@ -60,10 +59,8 @@ public class GameManager extends Thread{
 				{
 					goalsToPlayInMatch += finalExtraShots;
 				}
-				Team winner = playMatch(a, b, goalsToPlayInMatch);
+				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
 				t.incrementFinishedMatches(1);
-				t.incrementFinishedShots(t.getNoOfShotsPerMatch()); //TODO add correct Term for last round (excess shots)
-				t.incrementGoals(a.getGoalsInCurrentRound() + b.getGoalsInCurrentRound());
 				t.getMasterWindow().updateMetaData(t);
 				Team looser;
 				if(winner.equals(a))
@@ -99,13 +96,7 @@ public class GameManager extends Thread{
 		}
 	}
 	
-	/**
-	 * Simulates the Match given as parameter. Calls the playShot method. Winning Teams get 3 Points, 
-	 * loosing Teams get none. In case of a draw, both teams gain 1 Point. Method adds the
-	 * Points towards the pointsInCurrentRound- and points variable of the respective Team.
-	 * @param m - Match to be played
-	 */
-	public static Team playMatch(Team a, Team b, int shots)
+	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
 		int aGoals = 0;
 		int bGoals = 0;
@@ -116,15 +107,19 @@ public class GameManager extends Thread{
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
+			t.incrementFinishedShots(2);
 			
 			if(aScores)
 			{
 				aGoals++;
+				t.incrementGoals(1);
 			}
 			if(bScores)
 			{
 				bGoals++;
+				t.incrementGoals(1);
 			}
+			t.getMasterWindow().updateMetaData(t);
 		}
 		
 		if(aGoals < bGoals) //Team b wins
