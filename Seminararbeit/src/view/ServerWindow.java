@@ -65,7 +65,8 @@ public class ServerWindow extends JFrame {
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(this));
 		west.add(startButton);
-		showResult = new JButton("Show Result");
+		showResult = new JButton("Update Result");
+		showResult.addActionListener(new UpdateResultListener(this));
 		west.add(showResult);
 		showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
@@ -144,6 +145,7 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setToolTipText(t.getName());
 			teamView.add(teamButtons[t.getID()]);
 		}
+		updateResultList();
 		teamView.updateUI();
 	}
 	
@@ -183,7 +185,6 @@ public class ServerWindow extends JFrame {
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setMaximum(t.getNoOfShots());
 		progress.setValue(t.getFinishedShots());
-		updateResultList();
 	}
 	
 	
@@ -193,7 +194,8 @@ public class ServerWindow extends JFrame {
 		StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
-			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals\n");
+			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
+					"" + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
 	}

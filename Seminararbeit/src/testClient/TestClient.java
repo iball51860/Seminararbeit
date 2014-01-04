@@ -121,11 +121,11 @@ public class TestClient extends Thread{
 	private String generateDecision()
 	{
 		double random = Math.random();
-		if(random < 1/3) 
+		if(random < 1.0/3.0) 
 		{
 			return "l";
 		}
-		if(random > 2/3)
+		if(random > 2.0/3.0)
 		{
 			return "m";
 		}
