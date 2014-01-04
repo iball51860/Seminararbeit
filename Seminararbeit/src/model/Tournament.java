@@ -16,6 +16,7 @@ public class Tournament {
 	private int currentRound;
 	private int noOfMatches;
 	private int finishedMatches;
+	private int finishedShots;
 	private int goals;
 
 	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow masterWindow){
@@ -173,6 +174,24 @@ public class Tournament {
 	
 	public void incrementFinishedMatches(int increment) {
 		this.finishedMatches += increment;
+	}
+	
+	/**
+	 * @return the finishedShots
+	 */
+	public int getFinishedShots() {
+		return finishedShots;
+	}
+
+	/**
+	 * @param finishedShots the finishedShots to set
+	 */
+	public void setFinishedShots(int finishedShots) {
+		this.finishedShots = finishedShots;
+	}
+	
+	public void incrementFinishedShots(int increment) {
+		this.finishedShots += increment;
 	}
 	
 	/**

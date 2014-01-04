@@ -9,6 +9,7 @@ import main.WMTournament;
 
 public class TestClient extends Thread{
 	
+	private static int count;
 	private Socket socket;
 	private BufferedReader fromServer;
 	private PrintWriter toServer;
@@ -16,14 +17,19 @@ public class TestClient extends Thread{
 	private String name;
 	
 	
-	public TestClient(int port)
+	public TestClient(int port) //TODO delete constructor
+	{
+		this(port, "dummy");
+	}
+	
+	public TestClient(int port, String name)
 	{
 		try 
 		{
-			System.out.println(port);
+			count++;
 			socket = new Socket(InetAddress.getLocalHost(), port);
-			System.out.println("TestClient Const.");
-			this.name = "dummy";
+			this.name = name;
+			this.setName("TestClientThread-" + count); //set Name of Thread, NOT of the Team
 		} 
 		catch (UnknownHostException e) 
 		{
@@ -33,12 +39,6 @@ public class TestClient extends Thread{
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public TestClient(int port, String name)
-	{
-		this(port);
-		this.name = name;
 	}
 	
 	/**
@@ -123,6 +123,9 @@ public class TestClient extends Thread{
 		return "m";
 	}
 	
-	
+	public Socket getSocket()
+	{
+		return this.socket;
+	}
 	
 }
