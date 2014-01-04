@@ -170,10 +170,29 @@ public class ServerWindow extends JFrame {
 	
 	/**
 	 * removes all teams who loose from the teamView-Panel
+	 * 
+	 * @deprecated
 	 */
 	public void removeLoosingTeams()
 	{
 		//TODO implement method
+		teamView.removeAll();
+		Iterator<Team> it = teamSet.iterator();
+		teamButtons = new JButton[teamSet.size() + 1];
+		while(it.hasNext())
+		{
+			Team t = it.next();
+			if(t.isInGame())
+			{
+				teamButtons[t.getID()] = new JButton(t.getName());
+				teamButtons[t.getID()].setBackground(Color.GREEN);
+				teamButtons[t.getID()].setOpaque(true);
+				teamButtons[t.getID()].setBorderPainted(false);
+				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+				teamButtons[t.getID()].setToolTipText(t.getName());
+				teamView.add(teamButtons[t.getID()]);
+			}
+		}
 	}
 	
 	
