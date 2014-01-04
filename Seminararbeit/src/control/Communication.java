@@ -78,7 +78,7 @@ public class Communication
 		long start = System.currentTimeMillis();
 		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null) //TODO switch to return if received name
 		{
-			s = team.read().substring(0, 5);
+			s = team.read().substring(0, 5); //TODO add fix for shorter names (they throw exceptions)
 			team.setLastInput(s);
 			team.setName(s);
 		}
