@@ -26,7 +26,7 @@ public class ServerWindow extends JFrame {
 	private JButton plusTestClient;
 	private JProgressBar progress;
 	
-	private JLabel noOfRound;
+	private JLabel currentRound;
 	private JLabel noOfContestants;
 	private JLabel noOfTestClients;
 	private JLabel noOfPlayedMatches;
@@ -34,6 +34,7 @@ public class ServerWindow extends JFrame {
 	
 	private PopupDialogPort popup;
 	
+	ArrayTeamSet<Team> teamSet;
 	JButton[] teamButtons;
 	
 	
@@ -76,8 +77,8 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 		
 		//create Labels for information
-		noOfRound = new JLabel("Round No: xx");
-		west.add(noOfRound);
+		currentRound = new JLabel("Round No: xx");
+		west.add(currentRound);
 		noOfContestants = new JLabel("Contestants in Game: xx");
 		west.add(noOfContestants);
 		noOfTestClients = new JLabel("TestClients in Game: xx");
@@ -114,8 +115,9 @@ public class ServerWindow extends JFrame {
 	 */
 	public void updateTeamView(ArrayTeamSet<Team> teamSet)
 	{
+		teamView.removeAll();
+		this.teamSet = teamSet;
 		int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
-		
 		teamView.setLayout(new GridLayout(size, size, 1, 1));
 		teamButtons = new JButton[Team.getCount() + 1];
 		Iterator<Team> it = teamSet.iterator();
@@ -152,13 +154,22 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
+	/**
+	 * removes all teams who loose from the teamView-Panel
+	 */
+	public void removeLoosingTeams()
+	{
+		//TODO implement method
+	}
+	
+	
 	public void updateMetaData(Tournament t)
 	{
-		this.noOfRound.setText("Round No: " + t.getCurrentRound());
+		this.currentRound.setText("Round No: " + t.getCurrentRound());
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
-		progress.setValue((int)((double)t.getFinishedMatches() / (double)t.getNoOfMatches() * 100)); //TODO switch from Matches to shots
+		progress.setValue((int)((double)t.getFinishedShots() / (double)t.getNoOfShots() * 100));
 	}
 	
 	

@@ -4,14 +4,14 @@ import java.awt.event.*;
 
 import view.*;
 
-public class CloseTeamPopupListener implements ActionListener, KeyListener
+public class ClosePopupListener implements ActionListener, KeyListener
 {
 	
 	ServerWindow serverWindow;
 	TeamPopupDialog popup;
 	
 	
-	public CloseTeamPopupListener(ServerWindow serverWindow, TeamPopupDialog popup)
+	public ClosePopupListener(ServerWindow serverWindow, TeamPopupDialog popup)
 	{
 		this.serverWindow = serverWindow;
 		this.popup = popup;
@@ -33,18 +33,9 @@ public class CloseTeamPopupListener implements ActionListener, KeyListener
 	}
 
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyPressed(KeyEvent e) {}
 
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 	
 	
 	
