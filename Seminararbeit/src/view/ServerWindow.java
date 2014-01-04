@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.*;
 
 import model.*;
@@ -75,7 +76,7 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 		
 		//create Labels for information
-		noOfRound = new JLabel("Round No.: xx");
+		noOfRound = new JLabel("Round No: xx");
 		west.add(noOfRound);
 		noOfContestants = new JLabel("Contestants in Game: xx");
 		west.add(noOfContestants);
@@ -86,9 +87,11 @@ public class ServerWindow extends JFrame {
 		noOfGoals = new JLabel("Goals: xx");
 		west.add(noOfGoals);
 		
+		
 		//create ProgressBar
 		progress = new JProgressBar();
 		c.add(progress, BorderLayout.SOUTH);
+		//progress.setStringPainted(true);
 		
 		//create Panel for Contestants-in-Game-View
 		teamView = new JPanel();
@@ -149,7 +152,7 @@ public class ServerWindow extends JFrame {
 	
 	public void updateMetaData(Tournament t)
 	{
-		this.noOfRound.setText("Round No.: " + t.getCurrentRound());
+		this.noOfRound.setText("Round No: " + t.getCurrentRound());
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
