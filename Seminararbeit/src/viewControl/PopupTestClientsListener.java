@@ -55,9 +55,9 @@ public class PopupTestClientsListener implements ActionListener
 				System.out.println("X" + i);
 				dummy[i].start();
 				System.out.println("Dummy" + (i+1) + " started.");
+				serverWindow.updateNoOfTestClients(++count);
 			}
-			count += noOfTestClients;
-			serverWindow.updateNoOfTestClients(count);
+			
 			popup.dispose();
 			serverWindow.setEnabled(true);
 		}

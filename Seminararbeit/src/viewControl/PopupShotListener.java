@@ -28,7 +28,7 @@ public class PopupShotListener implements ActionListener
 		}
 		catch(NumberFormatException nfe)
 		{
-			popup.getInput().setText("1000");
+			popup.getInput().setText("100000");
 		}
 		
 		

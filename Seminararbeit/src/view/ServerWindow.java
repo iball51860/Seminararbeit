@@ -4,8 +4,8 @@ import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.BasicBorders.ButtonBorder;
 
 import model.*;
 import control.*;
@@ -24,15 +24,17 @@ public class ServerWindow extends JFrame {
 	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
+	private JProgressBar progress;
 	
-	JLabel noOfRound;
-	JLabel noOfContestants;
-	JLabel noOfTestClients;
-	JLabel noOfPlayedMatches;
-	JLabel noOfGoals;
+	private JLabel currentRound;
+	private JLabel noOfContestants;
+	private JLabel noOfTestClients;
+	private JLabel noOfPlayedMatches;
+	private JLabel noOfGoals;
 	
 	private PopupDialogPort popup;
 	
+	ArrayTeamSet<Team> teamSet;
 	JButton[] teamButtons;
 	
 	
@@ -75,8 +77,8 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 		
 		//create Labels for information
-		noOfRound = new JLabel("Round No.: xx");
-		west.add(noOfRound);
+		currentRound = new JLabel("Round No: xx");
+		west.add(currentRound);
 		noOfContestants = new JLabel("Contestants in Game: xx");
 		west.add(noOfContestants);
 		noOfTestClients = new JLabel("TestClients in Game: xx");
@@ -85,6 +87,12 @@ public class ServerWindow extends JFrame {
 		west.add(noOfPlayedMatches);
 		noOfGoals = new JLabel("Goals: xx");
 		west.add(noOfGoals);
+		
+		
+		//create ProgressBar
+		progress = new JProgressBar();
+		c.add(progress, BorderLayout.SOUTH);
+		//progress.setStringPainted(true);
 		
 		//create Panel for Contestants-in-Game-View
 		teamView = new JPanel();
@@ -107,18 +115,21 @@ public class ServerWindow extends JFrame {
 	 */
 	public void updateTeamView(ArrayTeamSet<Team> teamSet)
 	{
+		teamView.removeAll();
+		this.teamSet = teamSet;
 		int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
-		
 		teamView.setLayout(new GridLayout(size, size, 1, 1));
 		teamButtons = new JButton[Team.getCount() + 1];
-		Iterator it = teamSet.iterator();
+		Iterator<Team> it = teamSet.iterator();
 		while(it.hasNext())
 		{
-			Team t = ((Team) it.next());
+			Team t = it.next();
 			teamButtons[t.getID()] = new JButton(t.getName());
 			teamButtons[t.getID()].setBackground(Color.GREEN);
 			teamButtons[t.getID()].setOpaque(true);
 			teamButtons[t.getID()].setBorderPainted(false);
+			teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+			teamButtons[t.getID()].setToolTipText(t.getName());
 			teamView.add(teamButtons[t.getID()]);
 		}
 		teamView.updateUI();
@@ -143,12 +154,22 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
+	/**
+	 * removes all teams who loose from the teamView-Panel
+	 */
+	public void removeLoosingTeams()
+	{
+		//TODO implement method
+	}
+	
+	
 	public void updateMetaData(Tournament t)
 	{
-		this.noOfRound.setText("Round No.: " + t.getCurrentRound());
+		this.currentRound.setText("Round No: " + t.getCurrentRound());
 		this.noOfContestants.setText("Contestants in Game: " + t.getPlaying().size());
-		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " von " + t.getNoOfMatches());
+		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
+		progress.setValue((int)((double)t.getFinishedShots() / (double)t.getNoOfShots() * 100));
 	}
 	
 	
