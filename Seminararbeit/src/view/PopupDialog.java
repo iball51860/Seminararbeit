@@ -31,7 +31,7 @@ public class PopupDialog extends JDialog
 		c.setLayout(new GridLayout(3, 1));
 		
 		info = new JLabel();
-		info.setHorizontalAlignment(SwingConstants.CENTER); //TODO Set something if Enter is hit
+		info.setHorizontalAlignment(SwingConstants.CENTER);
 		input = new JTextField();
 		start = new JButton();
 		

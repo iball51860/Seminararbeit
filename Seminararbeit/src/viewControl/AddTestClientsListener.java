@@ -26,7 +26,6 @@ public class AddTestClientsListener implements ActionListener
 		
 		PopupDialogTestClients p = new PopupDialogTestClients(serverWindow);
 		p.setSize(200, 100);
-		//p.setLocation(serverWindow.getLocationOnScreen().x + 100, serverWindow.getLocationOnScreen().y + 22); //TODO center popoup independently of ServerWindow size
 		p.setVisible(true);
 		
 		

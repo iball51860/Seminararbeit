@@ -172,7 +172,6 @@ public class ServerWindow extends JFrame {
 	 */
 	public void removeLoosingTeams()
 	{
-		//TODO implement method
 		teamView.removeAll();
 		Iterator<Team> it = teamSet.iterator();
 		teamButtons = new JButton[teamSet.size() + 1];
