@@ -226,9 +226,9 @@ public class Team implements Comparable<Team>
 		this.goalsAgainstInCurrentRound = goalsAgainstInCurrentRound;
 	}
 	
-	private int getWonMatches() {
+	public int getWonMatches() {
 		// TODO Auto-generated method stub
-		return 0;
+		return wonMatches;
 	}
 	
 	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r

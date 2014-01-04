@@ -93,7 +93,7 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
-		}
+		} //TODO add handling for the winner and to end the game properly
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
