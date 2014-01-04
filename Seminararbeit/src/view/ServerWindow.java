@@ -65,13 +65,14 @@ public class ServerWindow extends JFrame {
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(this));
 		west.add(startButton);
-		showResult = new JButton("Show Result");
+		showResult = new JButton("Update Result");
+		showResult.addActionListener(new UpdateResultListener(this));
 		west.add(showResult);
 		showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
 		west.add(showLogButton);
 		
-		//create panel and Buttons for starting TestClients
+		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
 		addTestClients = new JButton("add Test Clients");
 		addTestClients.addActionListener(new AddTestClientsListener(this));
@@ -80,7 +81,7 @@ public class ServerWindow extends JFrame {
 		west.add(testClientPanel);
 		testClientPanel.add(addTestClients, BorderLayout.CENTER);
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
-		
+				
 		//create Labels for information
 		currentRound = new JLabel("Round No: xx");
 		west.add(currentRound);
@@ -144,6 +145,7 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setToolTipText(t.getName());
 			teamView.add(teamButtons[t.getID()]);
 		}
+		updateResultList();
 		teamView.updateUI();
 	}
 	
@@ -168,10 +170,29 @@ public class ServerWindow extends JFrame {
 	
 	/**
 	 * removes all teams who loose from the teamView-Panel
+	 * 
+	 * @deprecated
 	 */
 	public void removeLoosingTeams()
 	{
 		//TODO implement method
+		teamView.removeAll();
+		Iterator<Team> it = teamSet.iterator();
+		teamButtons = new JButton[teamSet.size() + 1];
+		while(it.hasNext())
+		{
+			Team t = it.next();
+			if(t.isInGame())
+			{
+				teamButtons[t.getID()] = new JButton(t.getName());
+				teamButtons[t.getID()].setBackground(Color.GREEN);
+				teamButtons[t.getID()].setOpaque(true);
+				teamButtons[t.getID()].setBorderPainted(false);
+				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+				teamButtons[t.getID()].setToolTipText(t.getName());
+				teamView.add(teamButtons[t.getID()]);
+			}
+		}
 	}
 	
 	
@@ -183,7 +204,6 @@ public class ServerWindow extends JFrame {
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setMaximum(t.getNoOfShots());
 		progress.setValue(t.getFinishedShots());
-		updateResultList();
 	}
 	
 	
@@ -193,13 +213,14 @@ public class ServerWindow extends JFrame {
 		StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
-			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals\n");
+			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
+					"" + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
 	}
 	
 	
-	public void updateNoOfTestClients(int testClients) 
+	public void updateNoOfTestClients(int testClients)
 	{
 		this.noOfTestClients.setText("TestClients in Game: " + testClients);
 	}

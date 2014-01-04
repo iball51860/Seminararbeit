@@ -19,7 +19,7 @@ public class Analyser {
 		{
 			noOfMatches += Math.pow(2, i);
 		}
-		noOfMatches += Math.ceil(noOfTeams/2);
+		noOfMatches += Math.ceil(noOfTeams/2.0);
 		return noOfMatches;
 	}
 
