@@ -106,11 +106,11 @@ public class Team implements Comparable<Team>
 	{
 		if(wonMatches != otherTeam.getWonMatches())
 		{
-			return wonMatches - otherTeam.getWonMatches();
+			return  otherTeam.getWonMatches() - wonMatches;
 		}
 		else 
 		{
-			return (goals - goalsAgainst) - (otherTeam.getGoals() - otherTeam.getGoalsAgainst());
+			return (otherTeam.getGoals() - otherTeam.getGoalsAgainst()) - (goals - goalsAgainst);
 		}
 	}
 
