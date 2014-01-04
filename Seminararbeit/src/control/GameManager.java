@@ -29,7 +29,9 @@ public class GameManager extends Thread{
 		t.getMasterWindow().updateTeamView(t.getPlaying());
 		System.out.println("Starting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
+		System.out.println(t.getNoOfMatches() + " Matches to Play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
+		
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1; i--) //counts rounds down for better consistency with no of Teams playing
