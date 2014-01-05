@@ -80,6 +80,7 @@ public class GameManager extends Thread{
 					t.getLost().add(looser);
 					looser.setIsInGame(false);
 					t.getMasterWindow().updateTeamView(looser);
+					t.getMasterWindow().updateTeamView(winner);
 				}
 				t.getMasterWindow().updateMetaData(t);
 			}
@@ -102,6 +103,7 @@ public class GameManager extends Thread{
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
+		t.getMasterWindow().updateTeamInMatchView(a, b);
 		int aGoals = 0;
 		int bGoals = 0;
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
@@ -192,6 +194,7 @@ public class GameManager extends Thread{
 			keeping.setGoalsAgainst(keeping.getGoalsAgainst() + 1);
 			keeping.setGoalsAgainstInCurrentRound(keeping.getGoalsAgainstInCurrentRound() + 1);
 		}
+		shooting.incrementFinishedShots(1);
 		return goal;
 	}
 }

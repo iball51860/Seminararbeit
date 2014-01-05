@@ -86,7 +86,7 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 				
 		//create Labels for information
-		currentRound = new JLabel("Round No: 0");
+		currentRound = new JLabel("Round: 0");
 		west.add(currentRound);
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
@@ -100,7 +100,7 @@ public class ServerWindow extends JFrame {
 		west.add(noOfGoals);
 		successRate = new JLabel("Success Rate: 0 %");
 		west.add(successRate);
-		shotsPerMatch = new JLabel("Shots per Match: ?");
+		shotsPerMatch = new JLabel("Shots per Match: wois i no et");
 		west.add(shotsPerMatch);
 		
 		//create reset-Server-Button
@@ -185,6 +185,12 @@ public class ServerWindow extends JFrame {
 		teamView.updateUI();
 	}
 	
+	public void updateTeamInMatchView(Team a, Team b)
+	{
+		teamButtons[a.getID()].setBackground(Color.BLUE);
+		teamButtons[b.getID()].setBackground(Color.BLUE);
+	}
+	
 	public void updateClientsAtServer(int clientsAtServer)
 	{
 		this.noOfClients.setText("Clients at server: " + clientsAtServer);
@@ -224,7 +230,7 @@ public class ServerWindow extends JFrame {
 	public void updateMetaData(Tournament t)
 	{
 		this.tournament = t;
-		this.currentRound.setText("Round No: " + t.getCurrentRound());
+		this.currentRound.setText("Round: " + Analyser.getCurrentRoundName(t));
 		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
@@ -244,8 +250,9 @@ public class ServerWindow extends JFrame {
 		StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
+			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
 			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
-					"" + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
+					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
 	}

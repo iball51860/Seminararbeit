@@ -22,6 +22,7 @@ public class Team implements Comparable<Team>
 	private int goalsAgainst;
 	private int goalsAgainstInCurrentRound;
 	private int wonMatches;
+	private int finishedShots;
 	
 	private String lastInput;
 	private boolean isInGame;
@@ -364,6 +365,14 @@ public class Team implements Comparable<Team>
 	 */
 	public void setServer(WMServer server) {
 		this.server = server;
+	}
+
+	public int getFinishedShots() {
+		return finishedShots;
+	}
+
+	public void incrementFinishedShots(int increment) {
+		this.finishedShots += increment;
 	}
 	
 
