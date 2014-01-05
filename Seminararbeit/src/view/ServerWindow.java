@@ -230,7 +230,7 @@ public class ServerWindow extends JFrame {
 	public void updateMetaData(Tournament t)
 	{
 		this.tournament = t;
-		this.currentRound.setText("Round: " /*+ Analyser.getCurrentRoundName(t)*/);
+		this.currentRound.setText("Round: " + Analyser.getCurrentRoundName(t));
 		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
