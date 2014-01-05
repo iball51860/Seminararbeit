@@ -32,6 +32,7 @@ public class ServerWindow extends JFrame {
 	private JLabel currentRound;
 	private JLabel noOfClients;
 	private JLabel noOfTestClients;
+	private JLabel noPlaying;
 	private JLabel noOfPlayedMatches;
 	private JLabel noOfGoals;
 	
@@ -87,8 +88,10 @@ public class ServerWindow extends JFrame {
 		west.add(currentRound);
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
-		noOfTestClients = new JLabel("TestClients in Game: 0");
+		noOfTestClients = new JLabel("TestClients at Server: 0");
 		west.add(noOfTestClients);
+		noPlaying = new JLabel("Teams playing: 0");
+		west.add(noPlaying);
 		noOfPlayedMatches = new JLabel("Matches played: 0");
 		west.add(noOfPlayedMatches);
 		noOfGoals = new JLabel("Goals: 0");
@@ -204,6 +207,7 @@ public class ServerWindow extends JFrame {
 	public void updateMetaData(Tournament t)
 	{
 		this.currentRound.setText("Round No: " + t.getCurrentRound());
+		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setMaximum(t.getNoOfShots());

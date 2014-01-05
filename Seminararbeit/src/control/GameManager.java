@@ -64,7 +64,6 @@ public class GameManager extends Thread{
 				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
 				winner.incrementWonMatches(1);
 				t.incrementFinishedMatches(1);
-				t.getMasterWindow().updateMetaData(t);
 				Team looser;
 				if(winner.equals(a))
 				{
@@ -81,6 +80,7 @@ public class GameManager extends Thread{
 					looser.setIsInGame(false);
 					t.getMasterWindow().updateTeamView(looser);
 				}
+				t.getMasterWindow().updateMetaData(t);
 			}
 			
 			if(i == t.getNoOfRounds()) //Relegation in erster Runde
