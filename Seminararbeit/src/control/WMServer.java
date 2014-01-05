@@ -88,7 +88,7 @@ public class WMServer extends Thread
 		{
 			return;
 		}
-		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, masterWindow); //TODO catch CastException
+		Tournament t = new Tournament(clientsAtServer.clone(), shots, masterWindow);
 		(new GameManager(t)).start();
 	}
 	
