@@ -22,7 +22,7 @@ public class ResetServerListener implements ActionListener
 		serverWindow.getWMServer().shutDown();
 		if(serverWindow.getTournament() != null)
 		{
-			serverWindow.getTournament().setRunning = false;
+			serverWindow.getTournament().setRunning(false);
 		}
 		for(TestClient tc : PopupTestClientsListener.getTestClients())
 		{
