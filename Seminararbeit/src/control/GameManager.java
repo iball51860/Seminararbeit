@@ -194,6 +194,7 @@ public class GameManager extends Thread{
 			keeping.setGoalsAgainst(keeping.getGoalsAgainst() + 1);
 			keeping.setGoalsAgainstInCurrentRound(keeping.getGoalsAgainstInCurrentRound() + 1);
 		}
+		shooting.incrementFinishedShots(1);
 		return goal;
 	}
 }

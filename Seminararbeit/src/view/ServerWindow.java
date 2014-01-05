@@ -86,7 +86,7 @@ public class ServerWindow extends JFrame {
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
 				
 		//create Labels for information
-		currentRound = new JLabel("Round No: 0");
+		currentRound = new JLabel("Round: 0");
 		west.add(currentRound);
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
@@ -230,7 +230,7 @@ public class ServerWindow extends JFrame {
 	public void updateMetaData(Tournament t)
 	{
 		this.tournament = t;
-		this.currentRound.setText("Round No: " + t.getCurrentRound());
+		this.currentRound.setText("Round: " /*+ Analyser.getCurrentRoundName(t)*/);
 		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
@@ -250,8 +250,9 @@ public class ServerWindow extends JFrame {
 		StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
+			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
 			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
-					"" + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
+					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
 	}
