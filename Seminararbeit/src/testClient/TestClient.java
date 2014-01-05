@@ -137,4 +137,8 @@ public class TestClient extends Thread{
 		return this.socket;
 	}
 	
+	public void setRunForrestRun(boolean b){
+		this.runForrestRun = b;
+	}
+	
 }

@@ -1,6 +1,8 @@
 package viewControl;
 
 import java.awt.event.*;
+
+import testClient.*;
 import view.*;
 
 public class ResetServerListener implements ActionListener
@@ -17,11 +19,16 @@ public class ResetServerListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		//serverWindow.getWMServer().shutDown();
+		serverWindow.getWMServer().shutDown();
 		if(serverWindow.getTournament() != null)
 		{
-			//serverWindow.getTournament().setRunning = false;
+			serverWindow.getTournament().setRunning = false;
 		}
+		for(TestClient tc : PopupTestClientsListener.getTestClients())
+		{
+			tc.setRunForrestRun(false);
+		}
+		PopupTestClientsListener.setCount(0);
 		serverWindow.dispose();
 		serverWindow = new ServerWindow();
 	}
