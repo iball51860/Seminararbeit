@@ -90,7 +90,7 @@ public class WMServer extends Thread
 	
 	public void registerTeam(Socket s)
 	{
-		Team newTeam = new Team(s);
+		Team newTeam = new Team(s, this);
 		Communication.requestName(newTeam);
 		Communication.sendStrengths(newTeam);
 		clientsAtServer.add(newTeam);

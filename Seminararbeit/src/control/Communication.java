@@ -1,5 +1,6 @@
 package control;
 
+import java.io.IOException;
 import java.util.*;
 
 import model.*;
@@ -87,9 +88,13 @@ public class Communication
 		}
 		if(team.getLastInput() == null)
 		{
-
-			team.switchToBot();
-			requestName(team);
+			team.getServer().getClientsAtServer().remove(team);
+			try {
+				team.getClientSocket().close();
+			} catch (IOException ioe) {
+				// TODO Auto-generated catch block
+				ioe.printStackTrace();
+			}
 		}
 	}
 	

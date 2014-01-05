@@ -6,12 +6,13 @@ import java.net.*;
 import testClient.TestClient;
 
 import control.Analyser;
+import control.WMServer;
 
 public class Team implements Comparable<Team> 
 {
 	
 	private static int count = 0;
-	private int id; //TODO overthink
+	private int id;
 	private String name;
 	
 	private int[] strength = new int[3];
@@ -28,6 +29,7 @@ public class Team implements Comparable<Team>
 	private Socket clientSocket;
 	private BufferedReader reader;
 	private PrintWriter writer;
+	private WMServer server;
 	
 	public Team(Socket clientSocket)
 	{
@@ -43,9 +45,10 @@ public class Team implements Comparable<Team>
 		strength = Analyser.generateStrength(40, 80, 180);
 	}
 	
-	public Team(Socket clientSocket, int id){
+	public Team(Socket clientSocket, WMServer server)
+	{
 		this(clientSocket);
-		setID(id);
+		this.server = server;
 	}
 	
 	public void resetRoundVariables()
@@ -72,7 +75,7 @@ public class Team implements Comparable<Team>
 	
 	public void switchToBot() {
 		int port = clientSocket.getPort();
-		TestClient tc = new TestClient(port);
+		new TestClient(port);
 	}
 	
 	//TODO Javadoc
@@ -150,6 +153,20 @@ public class Team implements Comparable<Team>
 	
 	public void setIsInGame(boolean inGame){
 		this.isInGame = inGame;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -333,6 +350,20 @@ public class Team implements Comparable<Team>
 	 */
 	public void setInGame(boolean isInGame) {
 		this.isInGame = isInGame;
+	}
+
+	/**
+	 * @return the server
+	 */
+	public WMServer getServer() {
+		return server;
+	}
+
+	/**
+	 * @param server the server to set
+	 */
+	public void setServer(WMServer server) {
+		this.server = server;
 	}
 	
 
