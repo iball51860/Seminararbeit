@@ -1,6 +1,7 @@
 package viewControl;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import testClient.*;
 import view.*;
@@ -12,6 +13,7 @@ public class PopupTestClientsListener implements ActionListener
 	private ServerWindow serverWindow;
 	private int noOfTestClients = 0;
 	
+	private static ArrayList<TestClient> testClients = new ArrayList<TestClient>();
 	private static int count = 0;
 	
 	
@@ -35,6 +37,7 @@ public class PopupTestClientsListener implements ActionListener
 			TestClient newTC = new TestClient(serverWindow.getWMServer().getPort());
 			newTC.start();
 			serverWindow.updateNoOfTestClients(++count);
+			testClients.add(newTC);
 		}
 		else
 		{
@@ -56,6 +59,7 @@ public class PopupTestClientsListener implements ActionListener
 				dummy[i].start();
 				System.out.println("Dummy" + (i+1) + " started.");
 				serverWindow.updateNoOfTestClients(++count);
+				testClients.add(dummy[i]);
 			}
 			
 			popup.dispose();
@@ -64,9 +68,13 @@ public class PopupTestClientsListener implements ActionListener
 	}
 	
 	
-	public static int getCount()
+	public static void setCount(int c)
 	{
-		return count;
+		count = c;
+	}
+
+	public static ArrayList<TestClient> getTestClients() {
+		return testClients;
 	}
 	
 	
