@@ -100,7 +100,7 @@ public class ServerWindow extends JFrame {
 		west.add(noOfGoals);
 		successRate = new JLabel("Success Rate: 0 %");
 		west.add(successRate);
-		shotsPerMatch = new JLabel("Shots per Match: ?");
+		shotsPerMatch = new JLabel("Shots per Match: wois i no et");
 		west.add(shotsPerMatch);
 		
 		//create reset-Server-Button
@@ -183,6 +183,12 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setBackground(Color.GREEN);
 		}
 		teamView.updateUI();
+	}
+	
+	public void updateTeamInMatchView(Team a, Team b)
+	{
+		teamButtons[a.getID()].setBackground(Color.BLUE);
+		teamButtons[b.getID()].setBackground(Color.BLUE);
 	}
 	
 	public void updateClientsAtServer(int clientsAtServer)
