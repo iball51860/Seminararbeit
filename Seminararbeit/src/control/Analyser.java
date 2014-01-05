@@ -1,10 +1,5 @@
 package control;
 
-import java.util.*;
-
-import model.*;
-
-
 /**
  * 
  * @author Jan Frederic Fritze & Manuel Kaiser
