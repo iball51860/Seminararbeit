@@ -157,10 +157,17 @@ public class Analyser {
 		return strength;
 	}
 	
-	public static String getCurrentRoundName(Tournament t)
+	/**
+	 * Returns the name of the round the given tournament is in, as in common language. 
+	 * (Final, Seminfinal, Quarterfinal, Last 16, etc.)
+	 * Returns Relegation if the tournament is in Relegation.
+	 * @param tournament: The tournament for which the name shall be calculated
+	 * @return Round name of current round of tournament
+	 */
+	public static String getCurrentRoundName(Tournament tournament)
 	{
-		int noOfRounds = t.getNoOfRounds();
-		int currentRound = t.getCurrentRound();
+		int noOfRounds = tournament.getNoOfRounds();
+		int currentRound = tournament.getCurrentRound();
 		
 		if(noOfRounds == currentRound)
 		{
