@@ -38,6 +38,8 @@ public class ServerWindow extends JFrame {
 	private JLabel noPlaying;
 	private JLabel noOfPlayedMatches;
 	private JLabel noOfGoals;
+	private JLabel successRate;
+	private JLabel shotsPerMatch;
 	
 	private PopupDialogPort popup;
 	
@@ -96,6 +98,10 @@ public class ServerWindow extends JFrame {
 		west.add(noOfPlayedMatches);
 		noOfGoals = new JLabel("Goals: 0");
 		west.add(noOfGoals);
+		successRate = new JLabel("Success Rate: 0 %");
+		west.add(successRate);
+		shotsPerMatch = new JLabel("Shots per Match: ?");
+		west.add(shotsPerMatch);
 		
 		//create reset-Server-Button
 		resetServer = new JButton("Reset Server");
@@ -222,6 +228,9 @@ public class ServerWindow extends JFrame {
 		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
 		this.noOfGoals.setText("Goals: " + t.getGoals());
+		int rate = (int)((double)t.getGoals() / (double)t.getFinishedShots() * 100);
+		this.successRate.setText("Success Rate: " + rate + " %");
+		this.shotsPerMatch.setText("Shots per Match: " + t.getNoOfShotsPerMatch());
 		progress.setMaximum(t.getNoOfShots());
 		progress.setValue(t.getFinishedShots());
 		updateResult.setEnabled(true);
