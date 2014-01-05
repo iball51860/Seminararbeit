@@ -17,10 +17,10 @@ public class ResetServerListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		serverWindow.getWMServer().shutDown();
+		//serverWindow.getWMServer().shutDown();
 		if(serverWindow.getTournament() != null)
 		{
-			serverWindow.getTournament().setRunning = false;
+			//serverWindow.getTournament().setRunning = false;
 		}
 		serverWindow.dispose();
 		serverWindow = new ServerWindow();

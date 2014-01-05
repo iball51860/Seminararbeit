@@ -21,7 +21,7 @@ public class ServerWindow extends JFrame {
 	private JPanel testClientPanel;
 	private JButton startButton;
 	private JButton resetServer;
-	private JButton showResult;
+	private JButton updateResult;
 	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
@@ -29,6 +29,7 @@ public class ServerWindow extends JFrame {
 	
 	JTabbedPane tabPane;
 	private JPanel teamView;
+	private JPanel result;
 	private JTextArea resultList;
 	
 	private JLabel currentRound;
@@ -68,9 +69,6 @@ public class ServerWindow extends JFrame {
 		startButton.addActionListener(new StartTournamentListener(this));
 		startButton.setEnabled(false);
 		west.add(startButton);
-		showResult = new JButton("Update Result");
-		showResult.addActionListener(new UpdateResultListener(this));
-		west.add(showResult);
 		showLogButton = new JButton("Show Log");
 		showLogButton.addActionListener(new ShowLogListener());
 		west.add(showLogButton);
@@ -115,11 +113,17 @@ public class ServerWindow extends JFrame {
 		c.add(tabPane, BorderLayout.CENTER);
 		teamView = new JPanel();
 		resultList = new JTextArea();
-		ScrollPane sp = new ScrollPane();
 		resultList.setEditable(false);
+		updateResult = new JButton("Update Result");
+		updateResult.setEnabled(false);
+		updateResult.addActionListener(new UpdateResultListener(this));
+		ScrollPane sp = new ScrollPane();
+		result = new JPanel(new BorderLayout());
+		result.add(sp, BorderLayout.CENTER);
+		result.add(updateResult, BorderLayout.SOUTH);
 		sp.add(resultList);
 		tabPane.addTab("Matrix", teamView);
-		tabPane.addTab("Result", sp);
+		tabPane.addTab("Result", result);
 		
 		setVisible(true);
 		setEnabled(false);
@@ -220,6 +224,7 @@ public class ServerWindow extends JFrame {
 		this.noOfGoals.setText("Goals: " + t.getGoals());
 		progress.setMaximum(t.getNoOfShots());
 		progress.setValue(t.getFinishedShots());
+		updateResult.setEnabled(true);
 	}
 	
 	
