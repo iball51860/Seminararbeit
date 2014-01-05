@@ -12,7 +12,7 @@ public class PopupTestClientsListener implements ActionListener
 	private ServerWindow serverWindow;
 	private int noOfTestClients = 0;
 	
-	public int count = 0;
+	private static int count = 0;
 	
 	
 	public PopupTestClientsListener(PopupDialogTestClients popup, ServerWindow serverWindow)
@@ -61,6 +61,12 @@ public class PopupTestClientsListener implements ActionListener
 			popup.dispose();
 			serverWindow.setEnabled(true);
 		}
+	}
+	
+	
+	public static int getCount()
+	{
+		return count;
 	}
 	
 	

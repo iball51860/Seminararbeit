@@ -217,11 +217,12 @@ public class ServerWindow extends JFrame {
 	
 	public void updateResultList()
 	{
+		int count = 1;
 		Collections.sort(teamSet);
 		StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
-			sb.append(t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
+			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
 					"" + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
@@ -230,7 +231,7 @@ public class ServerWindow extends JFrame {
 	
 	public void updateNoOfTestClients(int testClients)
 	{
-		this.noOfTestClients.setText("TestClients in Game: " + testClients);
+		this.noOfTestClients.setText("TestClients at Server: " + testClients);
 	}
 	
 	
