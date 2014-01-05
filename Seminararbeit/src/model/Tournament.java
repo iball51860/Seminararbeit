@@ -18,6 +18,8 @@ public class Tournament {
 	private int finishedMatches;
 	private int finishedShots;
 	private int goals;
+	
+	private boolean isRunning;
 
 	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow masterWindow){
 		this.playing = contestants;
@@ -30,6 +32,7 @@ public class Tournament {
 		this.currentRound = 0;
 		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
 		this.finishedMatches = 0;
+		this.isRunning = true;
 	}
 
 	/**
@@ -210,5 +213,19 @@ public class Tournament {
 	
 	public void incrementGoals(int increment) {
 		this.goals += increment;
+	}
+
+	/**
+	 * @return the isRunning
+	 */
+	public boolean isRunning() {
+		return isRunning;
+	}
+
+	/**
+	 * @param isRunning the isRunning to set
+	 */
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
 	}
 }

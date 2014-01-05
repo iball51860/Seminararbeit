@@ -62,11 +62,10 @@ public class Communication
 			case "r":
 				return 2;
 			default:
-				return -1; //TODO throwable und ne Exception werfen und diese behandeln ist evt. eleganter...
-				//TODO ersetze Client durch Dummy
+				team.switchToBot();
+				return requestDecision(team, msg);
 		}
-		//return "DummyDecision";
-		
+		//return "DummyDecision";		
 	}
 	
 	
@@ -88,7 +87,9 @@ public class Communication
 		}
 		if(team.getLastInput() == null)
 		{
-			//TODO ersetze Client durch Dummy
+
+			team.switchToBot();
+			requestName(team);
 		}
 	}
 	

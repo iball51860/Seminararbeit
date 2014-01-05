@@ -20,16 +20,16 @@ public class WMServer extends Thread
 {
 	ServerWindow masterWindow;
 	private int port;
-	public int getPort() {
-		return this.port;
-	}
-
 	private boolean isRunning = true;
 	
 	private ServerSocket serverSocket;
 	
 	private ArrayTeamSet<Team> clientsAtServer;
 	
+	public int getPort() {
+		return this.port;
+	}
+
 	public ArrayTeamSet<Team> getClientsAtServer(){
 		return this.clientsAtServer;
 	}
@@ -68,8 +68,24 @@ public class WMServer extends Thread
 			{
 				ioe.printStackTrace();
 			}
+			catch (NullPointerException npe) {
+				npe.printStackTrace();
+			}
 		}
 		System.out.println("WMServer ended.");
+	}
+	
+	public void shutDown() {
+		this.isRunning = false;
+		try {
+			this.serverSocket.close();
+			for(Team team : clientsAtServer)
+			{
+				team.getClientSocket().close();
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
 	public void registerTeam(Socket s)
@@ -78,7 +94,7 @@ public class WMServer extends Thread
 		Communication.requestName(newTeam);
 		Communication.sendStrengths(newTeam);
 		clientsAtServer.add(newTeam);
-		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getSocket().getInetAddress() + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
+		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
 		masterWindow.updateClientsAtServer(clientsAtServer.size());
 	}
 	

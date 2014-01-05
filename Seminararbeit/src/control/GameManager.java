@@ -33,8 +33,9 @@ public class GameManager extends Thread{
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
 		
 		
+		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
-		for(int i=t.getNoOfRounds(); i>=1; i--) //counts rounds down for better consistency with no of Teams playing
+		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds down for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
 			System.out.println("Round No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
@@ -48,7 +49,7 @@ public class GameManager extends Thread{
 			}
 			
 			int sizeAtStart = copy.size();
-			for(int j=0; j<sizeAtStart; j+=2)
+			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
 				Team a = copy.get(0);
 				Team b = copy.get(1);
@@ -106,7 +107,7 @@ public class GameManager extends Thread{
 		Communication.sendMsg(a, Communication.NEWMATCH + " " + b.getName() + b.getID());
 		Communication.sendMsg(b, Communication.NEWMATCH + " " + a.getName() + a.getID());
 		
-		for(int i=1; i<=shots; i+=2)
+		for(int i=1; i<=shots && t.isRunning(); i+=2)
 		{
 			boolean aScores = playShot(a, b);
 			boolean bScores = playShot(b, a);
