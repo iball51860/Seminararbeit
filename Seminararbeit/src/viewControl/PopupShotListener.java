@@ -2,6 +2,8 @@ package viewControl;
 
 import java.awt.event.*;
 
+import control.Analyser;
+
 import view.*;
 
 public class PopupShotListener implements ActionListener
@@ -21,10 +23,16 @@ public class PopupShotListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		//TODO add Empfehlung
 		try
 		{
-			serverWindow.getWMServer().startGame(Integer.valueOf(popup.getInput().getText()));
+			Integer shots = Integer.valueOf(popup.getInput().getText());
+			int minShots = 2 * Analyser.calculateNoOfMatches(serverWindow.getWMServer().getClientsAtServer().size());
+			if(shots < minShots)
+			{
+				popup.getInput().setText("" + minShots);
+				return;
+			}
+			serverWindow.getWMServer().startGame(shots);
 		}
 		catch(NumberFormatException nfe)
 		{

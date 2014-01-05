@@ -17,7 +17,7 @@ public class TestClient extends Thread{
 	private String name;
 	
 	
-	public TestClient(int port) //TODO delete constructor
+	public TestClient(int port)
 	{
 		this(port, "dummy");
 	}

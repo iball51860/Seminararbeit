@@ -14,7 +14,6 @@ public class Team implements Comparable<Team>
 	
 	private int[] strength = new int[3];
 	//TODO delete unnecessary variables
-	private int points;
 	private int goals;
 	private int goalsInCurrentRound;
 	private int goalsAgainst;
@@ -28,7 +27,7 @@ public class Team implements Comparable<Team>
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
-	public Team(Socket clientSocket) //TODO add possibility to ad name
+	public Team(Socket clientSocket)
 	{
 		this.clientSocket = clientSocket;
 		try
@@ -181,15 +180,6 @@ public class Team implements Comparable<Team>
 		return isInGame;
 	}
 	
-	
-	public void setPoints(int points) {
-		this.points = points;
-	}
-	
-	public int getPoints() {
-		return points;
-	}
-	
 	public void setGoals(int goals) {
 		this.goals = goals;
 	}
@@ -227,7 +217,6 @@ public class Team implements Comparable<Team>
 	}
 	
 	public int getWonMatches() {
-		// TODO Auto-generated method stub
 		return wonMatches;
 	}
 	
@@ -239,7 +228,7 @@ public class Team implements Comparable<Team>
 		this.wonMatches += increment;
 	}
 	
-	public int[] getStrength() //TODO overwrite or overload with return int in dependance on l/m/r
+	public int[] getStrength()
 	{
 		return strength;
 	}

@@ -30,7 +30,9 @@ public class WMServer extends Thread
 	
 	private ArrayTeamSet<Team> clientsAtServer;
 	
-	
+	public ArrayTeamSet<Team> getClientsAtServer(){
+		return this.clientsAtServer;
+	}
 	
 	public WMServer (int p, ServerWindow masterWindow)
 	{
@@ -77,11 +79,16 @@ public class WMServer extends Thread
 		Communication.sendStrengths(newTeam);
 		clientsAtServer.add(newTeam);
 		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getSocket().getInetAddress() + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
+		masterWindow.updateClientsAtServer(clientsAtServer.size());
 	}
 	
 	public void startGame(int shots)
 	{
-		Tournament t = new Tournament((ArrayTeamSet<Team>) clientsAtServer.clone(), shots, masterWindow); //TODO catch CastException
+		if(clientsAtServer.isEmpty())
+		{
+			return;
+		}
+		Tournament t = new Tournament(clientsAtServer.clone(), shots, masterWindow);
 		(new GameManager(t)).start();
 	}
 	

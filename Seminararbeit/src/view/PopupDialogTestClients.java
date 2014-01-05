@@ -10,7 +10,7 @@ public class PopupDialogTestClients extends PopupDialog
 
 	public PopupDialogTestClients(ServerWindow serverWindow)
 	{
-		super();
+		super(serverWindow);
 		
 		info.setText("No of TestClients");
 		input.setText("100");

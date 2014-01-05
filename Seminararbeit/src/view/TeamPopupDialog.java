@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import viewControl.*;
@@ -15,7 +16,7 @@ public class TeamPopupDialog extends JDialog
 	private JLabel ip;
 	private JLabel strength;
 	private JLabel goals;
-	private JLabel points;
+	private JLabel victories;
 	private JButton close;
 	
 	private ServerWindow serverWindow;
@@ -25,6 +26,8 @@ public class TeamPopupDialog extends JDialog
 	{
 		setUndecorated(true);
 		this.serverWindow = serverWindow;
+		setSize(200, 180);
+		setLocation(serverWindow.getLocationOnScreen().x + 300, serverWindow.getLocationOnScreen().y + 150); //TODO set Location in relation to invoking Button
 		
 		c = getContentPane();
 		c.setLayout(new GridLayout(6, 1));
@@ -33,7 +36,7 @@ public class TeamPopupDialog extends JDialog
 		ip = new JLabel(t.getSocket().getInetAddress().toString());
 		strength = new JLabel("Left: " + t.getStrength()[0] + " | Middle: " + t.getStrength()[1] + " | Right: " + t.getStrength()[2]);
 		goals = new JLabel("Goals: " + t.getGoals());
-		points = new JLabel("Points: " + t.getPoints());
+		victories = new JLabel("Victories: " + t.getWonMatches());
 		//info.setHorizontalAlignment(SwingConstants.CENTER);
 		close = new JButton("close");
 		close.addActionListener(new ClosePopupListener(serverWindow, this));
@@ -43,7 +46,7 @@ public class TeamPopupDialog extends JDialog
 		c.add(ip);
 		c.add(strength);
 		c.add(goals);
-		c.add(points);
+		c.add(victories);
 		c.add(close);
 		
 	}
