@@ -14,11 +14,13 @@ public class ServerWindow extends JFrame {
 	
 	
 	private WMServer wmServer;
+	private Tournament tournament;
 	
 	//private JPanel north;
 	private JPanel west;
 	private JPanel testClientPanel;
 	private JButton startButton;
+	private JButton resetServer;
 	private JButton showResult;
 	private JButton showLogButton;
 	private JButton addTestClients;
@@ -96,6 +98,11 @@ public class ServerWindow extends JFrame {
 		west.add(noOfPlayedMatches);
 		noOfGoals = new JLabel("Goals: 0");
 		west.add(noOfGoals);
+		
+		//create reset-Server-Button
+		resetServer = new JButton("Reset Server");
+		resetServer.addActionListener(new ResetServerListener(this));
+		west.add(resetServer);
 		
 		
 		//create ProgressBar
@@ -206,6 +213,7 @@ public class ServerWindow extends JFrame {
 	
 	public void updateMetaData(Tournament t)
 	{
+		this.tournament = t;
 		this.currentRound.setText("Round No: " + t.getCurrentRound());
 		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
 		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
@@ -244,6 +252,14 @@ public class ServerWindow extends JFrame {
 	
 	public WMServer getWMServer(){
 		return this.wmServer;
+	}
+	
+	public JButton getStartButton(){
+		return startButton;
+	}
+	
+	public Tournament getTournament(){
+		return this.tournament;
 	}
 	
 }
