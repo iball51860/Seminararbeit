@@ -3,13 +3,16 @@ package model;
 import java.io.*;
 import java.net.*;
 
+import testClient.TestClient;
+
 import control.Analyser;
+import control.WMServer;
 
 public class Team implements Comparable<Team> 
 {
 	
 	private static int count = 0;
-	private int id; //TODO overthink
+	private int id;
 	private String name;
 	
 	private int[] strength = new int[3];
@@ -26,6 +29,7 @@ public class Team implements Comparable<Team>
 	private Socket clientSocket;
 	private BufferedReader reader;
 	private PrintWriter writer;
+	private WMServer server;
 	
 	public Team(Socket clientSocket)
 	{
@@ -41,9 +45,10 @@ public class Team implements Comparable<Team>
 		strength = Analyser.generateStrength(40, 80, 180);
 	}
 	
-	public Team(Socket clientSocket, int id){
+	public Team(Socket clientSocket, WMServer server)
+	{
 		this(clientSocket);
-		setID(id);
+		this.server = server;
 	}
 	
 	public void resetRoundVariables()
@@ -68,6 +73,10 @@ public class Team implements Comparable<Team>
 		writer.println(msg);
 	}
 	
+	public void switchToBot() {
+		int port = clientSocket.getPort();
+		new TestClient(port);
+	}
 	
 	//TODO Javadoc
 	@Override
@@ -78,7 +87,7 @@ public class Team implements Comparable<Team>
 
 	public boolean equals(Team otherTeam){
 		try { //check, if other Team is a testclient (own InetAddress)
-			if(this.getSocket().getInetAddress().equals(InetAddress.getLocalHost()))
+			if(this.getClientSocket().getInetAddress().equals(InetAddress.getLocalHost()))
 			{
 				if(this.getID() == otherTeam.getID())
 				{
@@ -90,7 +99,7 @@ public class Team implements Comparable<Team>
 				}
 			}
 			//check, if the teams have the same IP
-			if(this.getSocket().getInetAddress().equals(otherTeam.getSocket().getInetAddress()))
+			if(this.getClientSocket().getInetAddress().equals(otherTeam.getClientSocket().getInetAddress()))
 			{
 				return true;
 			}
@@ -116,25 +125,6 @@ public class Team implements Comparable<Team>
 	
 	/////////////////////////get- and set-methods///////////////////////////////
 	
-
-	public static int getCount()
-	{
-	return count;
-	}
-	/**
-	 * Returns the id of the teams instance.
-	 * @return id of the team
-	 */
-	public int getID(){
-		return id;
-	}
-	/**
-	 * Sets the given Integer as id for this team.
-	 * @param id - id to be set for this team
-	 */
-	public void setID(int id){
-		this.id = id;
-	}
 	
 	/**
 	 * Returns the name of the team. Is usually of type uxxxx, where x represents any letter of the alphabet.
@@ -157,81 +147,224 @@ public class Team implements Comparable<Team>
 		notifyAll();
 	}
 	
-	
-	public Socket getSocket(){
-		return clientSocket;
-	}
-	
-	
-	public void setLastInput(String lastInput){
-		this.lastInput = lastInput;
-	}
-	
-	public String getLastInput(){
-		return lastInput;
-	}
-	
-	
-	public void setIsInGame(boolean isInGame){
-		this.isInGame = isInGame;
-	}
-	
 	public boolean isInGame() {
 		return isInGame;
 	}
 	
-	public void setGoals(int goals) {
-		this.goals = goals;
+	public void setIsInGame(boolean inGame){
+		this.isInGame = inGame;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the count
+	 */
+	public static int getCount() {
+		return count;
+	}
+
+	/**
+	 * @param count the count to set
+	 */
+	public static void setCount(int count) {
+		Team.count = count;
 	}
 	
+	public static void incrementCount(int increment) {
+		count += increment;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getID() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the strength
+	 */
+	public int[] getStrength() {
+		return strength;
+	}
+
+	/**
+	 * @param strength the strength to set
+	 */
+	public void setStrength(int[] strength) {
+		this.strength = strength;
+	}
+
+	/**
+	 * @return the goals
+	 */
 	public int getGoals() {
 		return goals;
 	}
 
-	public void setGoalsAgainst(int goalsAgainst) {
-		this.goalsAgainst = goalsAgainst;
-	}
-	
-	public int getGoalsAgainst() {
-		return goalsAgainst;
+	/**
+	 * @param goals the goals to set
+	 */
+	public void setGoals(int goals) {
+		this.goals = goals;
 	}
 
-	
+	/**
+	 * @return the goalsInCurrentRound
+	 */
 	public int getGoalsInCurrentRound() {
 		return goalsInCurrentRound;
 	}
 
-	
+	/**
+	 * @param goalsInCurrentRound the goalsInCurrentRound to set
+	 */
 	public void setGoalsInCurrentRound(int goalsInCurrentRound) {
 		this.goalsInCurrentRound = goalsInCurrentRound;
 	}
 
-	
+	/**
+	 * @return the goalsAgainst
+	 */
+	public int getGoalsAgainst() {
+		return goalsAgainst;
+	}
+
+	/**
+	 * @param goalsAgainst the goalsAgainst to set
+	 */
+	public void setGoalsAgainst(int goalsAgainst) {
+		this.goalsAgainst = goalsAgainst;
+	}
+
+	/**
+	 * @return the goalsAgainstInCurrentRound
+	 */
 	public int getGoalsAgainstInCurrentRound() {
 		return goalsAgainstInCurrentRound;
 	}
 
-	
+	/**
+	 * @param goalsAgainstInCurrentRound the goalsAgainstInCurrentRound to set
+	 */
 	public void setGoalsAgainstInCurrentRound(int goalsAgainstInCurrentRound) {
 		this.goalsAgainstInCurrentRound = goalsAgainstInCurrentRound;
 	}
-	
+
+	/**
+	 * @return the wonMatches
+	 */
 	public int getWonMatches() {
 		return wonMatches;
 	}
-	
+
+	/**
+	 * @param wonMatches the wonMatches to set
+	 */
 	public void setWonMatches(int wonMatches) {
 		this.wonMatches = wonMatches;
 	}
-	
+
 	public void incrementWonMatches(int increment) {
 		this.wonMatches += increment;
 	}
 	
-	public int[] getStrength()
-	{
-		return strength;
+	/**
+	 * @return the lastInput
+	 */
+	public String getLastInput() {
+		return lastInput;
+	}
+
+	/**
+	 * @param lastInput the lastInput to set
+	 */
+	public void setLastInput(String lastInput) {
+		this.lastInput = lastInput;
+	}
+
+	/**
+	 * @return the clientSocket
+	 */
+	public Socket getClientSocket() {
+		return clientSocket;
+	}
+
+	/**
+	 * @param clientSocket the clientSocket to set
+	 */
+	public void setClientSocket(Socket clientSocket) {
+		this.clientSocket = clientSocket;
+	}
+
+	/**
+	 * @return the reader
+	 */
+	public BufferedReader getReader() {
+		return reader;
+	}
+
+	/**
+	 * @param reader the reader to set
+	 */
+	public void setReader(BufferedReader reader) {
+		this.reader = reader;
+	}
+
+	/**
+	 * @return the writer
+	 */
+	public PrintWriter getWriter() {
+		return writer;
+	}
+
+	/**
+	 * @param writer the writer to set
+	 */
+	public void setWriter(PrintWriter writer) {
+		this.writer = writer;
+	}
+
+	/**
+	 * @param isInGame the isInGame to set
+	 */
+	public void setInGame(boolean isInGame) {
+		this.isInGame = isInGame;
+	}
+
+	/**
+	 * @return the server
+	 */
+	public WMServer getServer() {
+		return server;
+	}
+
+	/**
+	 * @param server the server to set
+	 */
+	public void setServer(WMServer server) {
+		this.server = server;
 	}
 	
-	
+
 }

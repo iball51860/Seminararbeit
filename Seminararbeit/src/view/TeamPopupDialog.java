@@ -33,7 +33,7 @@ public class TeamPopupDialog extends JDialog
 		c.setLayout(new GridLayout(6, 1));
 		
 		name = new JLabel(t.getName());
-		ip = new JLabel(t.getSocket().getInetAddress().toString());
+		ip = new JLabel(t.getClientSocket().getInetAddress().toString());
 		strength = new JLabel("Left: " + t.getStrength()[0] + " | Middle: " + t.getStrength()[1] + " | Right: " + t.getStrength()[2]);
 		goals = new JLabel("Goals: " + t.getGoals());
 		victories = new JLabel("Victories: " + t.getWonMatches());

@@ -1,13 +1,17 @@
 package control;
 
-import java.util.*;
-
-import model.*;
-
-
-
+/**
+ * 
+ * @author Jan Frederic Fritze & Manuel Kaiser
+ *
+ */
 public class Analyser {
 
+	/**
+	 * 
+	 * @param noOfTeams
+	 * @return
+	 */
 	public static int calculateNoOfRounds(int noOfTeams){
 		return (int) Math.ceil((Math.log(noOfTeams) / Math.log(2)));
 	}
