@@ -187,8 +187,14 @@ public class ServerWindow extends JFrame {
 	
 	public void updateTeamInMatchView(Team a, Team b)
 	{
-		teamButtons[a.getID()].setBackground(Color.BLUE);
-		teamButtons[b.getID()].setBackground(Color.BLUE);
+		if(!a.getName().equals("bottt"))
+		{
+			teamButtons[a.getID()].setBackground(Color.BLUE);
+		}
+		if(!b.getName().equals("bottt"))
+		{
+			teamButtons[b.getID()].setBackground(Color.BLUE);
+		}
 		teamView.updateUI();
 	}
 	
