@@ -31,8 +31,7 @@ public class GameManager extends Thread{
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(t.getNoOfMatches() + " Matches to Play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
-		
-		
+	
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds down for better consistency with no of Teams playing
@@ -58,7 +57,7 @@ public class GameManager extends Thread{
 				a.resetRoundVariables();
 				b.resetRoundVariables();
 				int goalsToPlayInMatch = t.getNoOfShotsPerMatch();
-				if(i==1)
+				if(i==1) //add excess shots in final
 				{
 					goalsToPlayInMatch += finalExtraShots;
 				}
@@ -80,6 +79,9 @@ public class GameManager extends Thread{
 					t.getLost().add(looser);
 					looser.setIsInGame(false);
 					t.getMasterWindow().updateTeamView(looser);
+				}
+				if(!winner.getName().equals("bottt"))
+				{
 					t.getMasterWindow().updateTeamView(winner);
 				}
 				t.getMasterWindow().updateMetaData(t);

@@ -160,7 +160,7 @@ public class ServerWindow extends JFrame {
 			teamButtons[t.getID()].setOpaque(true);
 			teamButtons[t.getID()].setBorderPainted(false);
 			teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
-			teamButtons[t.getID()].setToolTipText(t.getName());
+			teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
 			teamView.add(teamButtons[t.getID()]);
 		}
 		updateResultList();
@@ -189,6 +189,7 @@ public class ServerWindow extends JFrame {
 	{
 		teamButtons[a.getID()].setBackground(Color.BLUE);
 		teamButtons[b.getID()].setBackground(Color.BLUE);
+		teamView.updateUI();
 	}
 	
 	public void updateClientsAtServer(int clientsAtServer)
@@ -215,7 +216,7 @@ public class ServerWindow extends JFrame {
 			Team t = it.next();
 			if(t.isInGame())
 			{
-				teamButtons[t.getID()] = new JButton(t.getName());
+				teamButtons[t.getID()] = new JButton(t.getName() + t.getID());
 				teamButtons[t.getID()].setBackground(Color.GREEN);
 				teamButtons[t.getID()].setOpaque(true);
 				teamButtons[t.getID()].setBorderPainted(false);
