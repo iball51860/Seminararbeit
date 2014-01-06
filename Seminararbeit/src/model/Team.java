@@ -2,6 +2,8 @@ package model;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import testClient.TestClient;
 
@@ -10,6 +12,9 @@ import control.WMServer;
 
 public class Team implements Comparable<Team> 
 {
+	public static final int WEAKEST = 0;
+	public static final int MIDDLE = 1;
+	public static final int STRONGEST = 2;
 	
 	private static int count = 0;
 	private int id;
@@ -31,6 +36,7 @@ public class Team implements Comparable<Team>
 	private BufferedReader reader;
 	private PrintWriter writer;
 	private WMServer server;
+	private boolean isOnline = true;
 	
 	public Team(Socket clientSocket)
 	{
@@ -62,11 +68,16 @@ public class Team implements Comparable<Team>
 	{
 		try
 		{
-			return reader.readLine();
+			String read = reader.readLine();
+			if (read == null)
+			{
+				read = "x";
+			}
+			return read;
 		}
 		catch(IOException ioe){
 			ioe.printStackTrace();
-			return null;}
+			return "x";}
 	}
 	
 	public void write(String msg)
@@ -74,10 +85,22 @@ public class Team implements Comparable<Team>
 		writer.println(msg);
 	}
 	
-	public void switchToBot() {
+	/*public void switchToBot() {
+		System.out.println("SwitchToBot");
 		int port = clientSocket.getPort();
+				
+		try {
+			clientSocket.close();
+			clientSocket = new Socket("localhost", port);
+			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			writer = new PrintWriter(clientSocket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		new TestClient(port);
-	}
+	}*/
 	
 	//TODO Javadoc
 	@Override
@@ -85,10 +108,10 @@ public class Team implements Comparable<Team>
 		return name + id;
 	}
 	
-
-	public boolean equals(Team otherTeam){
+	public boolean equals(Object o){
+		Team otherTeam = (Team) o;
 		try { //check, if other Team is a testclient (own InetAddress)
-			if(this.getClientSocket().getInetAddress().equals(InetAddress.getLocalHost()))
+			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("172.20.10.3"))
 			{
 				if(this.getID() == otherTeam.getID())
 				{
@@ -100,7 +123,7 @@ public class Team implements Comparable<Team>
 				}
 			}
 			//check, if the teams have the same IP
-			if(this.getClientSocket().getInetAddress().equals(otherTeam.getClientSocket().getInetAddress()))
+			if(this.getClientSocket().getInetAddress().getHostAddress().equals(otherTeam.getClientSocket().getInetAddress().getHostAddress()))
 			{
 				return true;
 			}
@@ -157,20 +180,6 @@ public class Team implements Comparable<Team>
 	}
 
 	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
 	 * @return the count
 	 */
 	public static int getCount() {
@@ -216,6 +225,25 @@ public class Team implements Comparable<Team>
 		this.strength = strength;
 	}
 
+	public int getIndexOfStrength(int strength)
+	{
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(Integer i : this.strength)
+		{
+			list.add(i);
+		}
+		Collections.sort(list);
+		int toSearch = list.get(strength);
+		for(int i=0; i<this.strength.length; i++)
+		{
+			if(toSearch == this.strength[i])
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	/**
 	 * @return the goals
 	 */
@@ -290,6 +318,13 @@ public class Team implements Comparable<Team>
 		this.wonMatches += increment;
 	}
 	
+	/**
+	 * @param finishedShots the finishedShots to set
+	 */
+	public void setFinishedShots(int finishedShots) {
+		this.finishedShots = finishedShots;
+	}
+
 	/**
 	 * @return the lastInput
 	 */
@@ -373,6 +408,20 @@ public class Team implements Comparable<Team>
 
 	public void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
+	}
+
+	/**
+	 * @return the isOnline
+	 */
+	public boolean isOnline() {
+		return isOnline;
+	}
+
+	/**
+	 * @param isOnline the isOnline to set
+	 */
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
 	}
 	
 

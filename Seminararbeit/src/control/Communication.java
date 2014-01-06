@@ -46,6 +46,10 @@ public class Communication
 	 */
 	public static int requestDecision(Team team, String msg)
 	{
+		if(!team.isOnline())
+		{
+			return team.getIndexOfStrength(Team.WEAKEST);
+		}
 		team.setLastInput(null);
 		sendMsg(team, msg);
 		long start = System.currentTimeMillis();
@@ -63,7 +67,7 @@ public class Communication
 			case "r":
 				return 2;
 			default:
-				team.switchToBot();
+				team.setOnline(false);
 				return requestDecision(team, msg);
 		}
 		//return "DummyDecision";		
