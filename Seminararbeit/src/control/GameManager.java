@@ -78,12 +78,9 @@ public class GameManager extends Thread{
 				{
 					t.getLost().add(looser);
 					looser.setIsInGame(false);
-					t.getMasterWindow().updateTeamView(looser);
 				}
-				if(!winner.getName().equals("bottt"))
-				{
-					t.getMasterWindow().updateTeamView(winner);
-				}
+				t.getMasterWindow().updateTeamView(looser);	
+				t.getMasterWindow().updateTeamView(winner);
 				t.getMasterWindow().updateMetaData(t);
 			}
 			
