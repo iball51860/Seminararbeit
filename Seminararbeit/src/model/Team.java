@@ -5,9 +5,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import testClient.TestClient;
-
 import control.Analyser;
+import control.Logger;
 import control.WMServer;
 
 public class Team implements Comparable<Team> 
@@ -421,6 +420,7 @@ public class Team implements Comparable<Team>
 	 * @param isOnline the isOnline to set
 	 */
 	public void setOnline(boolean isOnline) {
+		Logger.log(name + " set offline. Replaced by bot.", this, Logger.SERVER);
 		this.isOnline = isOnline;
 	}
 	

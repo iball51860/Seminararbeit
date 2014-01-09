@@ -2,6 +2,7 @@ package model;
 
 import java.util.*;
 
+@SuppressWarnings("serial")
 public class ArrayTeamSet<E> extends ArrayList<E> {
 
 	public ArrayTeamSet(){

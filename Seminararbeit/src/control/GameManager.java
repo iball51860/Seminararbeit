@@ -3,8 +3,6 @@ package control;
 import model.*;
 import java.util.*;
 
-import testClient.TestClient;
-
 public class GameManager extends Thread{	
 	
 	private Tournament tournament;

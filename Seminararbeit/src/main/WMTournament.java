@@ -1,6 +1,5 @@
 package main;
 
-import control.*;
 import view.*;
 
 public class WMTournament {
@@ -13,6 +12,7 @@ public class WMTournament {
 	
 	//TODO create final variables for further use
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ServerWindow serverWindow = new ServerWindow();
 	}

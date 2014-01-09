@@ -22,7 +22,7 @@ public class Communication
 	
 	public static void broadcast(Collection<Team> teams, String msg)
 	{
-		System.out.println("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n");
+		Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n", Logger.COMMUNICATION);
 		for(Team t : teams)
 		{
 			sendMsg(t, msg);
@@ -32,6 +32,7 @@ public class Communication
 	
 	public static void sendMsg(Team team, String msg)
 	{
+		Logger.log("Sending \"" + msg + "\" to " + team.getName() + ".", Logger.COMMUNICATION);
 		team.write(msg);
 	}
 	
@@ -67,6 +68,7 @@ public class Communication
 			case "r":
 				return 2;
 			default:
+				Logger.log(team.getName() + ": no valid decision or timeout. Sent 'l', 'm' or 'r' after receiving '" + SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
 				team.setOnline(false);
 				return requestDecision(team, msg);
 		}
