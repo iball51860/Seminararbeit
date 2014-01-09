@@ -322,16 +322,16 @@ public class ServerWindow extends JFrame {
 	
 	public void refreshLog()
 	{
-		ArrayList<String> teams = new ArrayList<String>();
-		teams.add((String)teamBox1.getSelectedItem());
-		teams.add((String)teamBox2.getSelectedItem());
-		ArrayList<Integer> types = new ArrayList<Integer>();
+		String[] teams = new String[2];
+		teams[0] = (String) teamBox1.getSelectedItem();
+		if(teamBox2.isEnabled())
+		{
+			teams[1] = (String) teamBox2.getSelectedItem();
+		}
+		boolean[] types = new boolean[7];
 		for(int i = 0; i < type.length; i++)
 		{
-			if(type[i].isSelected())
-			{
-				types.add(i);
-			}
+			types[i] = type[i].isSelected();
 		}
 		String s = Logger.getLog(teams, types);
 		logString.setText(s);
