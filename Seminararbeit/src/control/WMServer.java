@@ -54,17 +54,19 @@ public class WMServer extends Thread
 			ioe.printStackTrace();
 		}
 		
-		/*try {
-			Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
+		try {
+			//Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
+			System.out.println("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-		}*/
+		}
 		while(isRunning)
 		{
 			try 
 			{
 				Socket s = serverSocket.accept();
 				//Logger.log("Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort(), Logger.SERVER);
+				System.out.println("New Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort() + ".");
 				registerTeam(s);
 			}
 			catch (IOException ioe)
@@ -76,10 +78,12 @@ public class WMServer extends Thread
 			}
 		}
 		//Logger.log("WMServer shut down.", Logger.SERVER);
+		System.out.println("WMServer shut down.");
 	}
 	
 	public void shutDown() {
 		//Logger.log("Shutting down Server at Port " + port + ".", Logger.SERVER);
+		System.out.println("Shutting down Server at Port " + port + ".");
 		this.isRunning = false;
 		try {
 			this.serverSocket.close();
@@ -102,9 +106,9 @@ public class WMServer extends Thread
 			return;
 		}
 		Communication.sendStrengths(newTeam);
-		//Logger.log("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
+		//Logger.log("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.", newTeam, Logger.SERVER);
+		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");
 		masterWindow.updateClientsAtServer(clientsAtServer.size());
-		//Logger.log("Team " + newTeam.getName() + " registered.", newTeam, Logger.SERVER);
 	}
 	
 	public void startGame(int shots)
