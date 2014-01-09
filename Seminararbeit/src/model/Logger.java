@@ -53,10 +53,25 @@ public class Logger {
 		logbook.add(new LogLine(message, team, type));
 	}
 	
-	public static Iterator<LogLine> logIterator()
+	public static String getLog()
 	{
 		Collections.sort(logbook);
-		return logbook.iterator();
+		return "getLog() not implemented yet.";
+	}
+	
+	public static String getLog(int[] types)
+	{
+		return "getLog(int[]) not implemented yet.";
+	}
+
+	public static String getLog(String[] instanceNames)
+	{
+		return "getLog(String[]) not implemented yet.";
+	}
+	
+	public static String getLog(String[] instanceNames, int[] types)
+	{
+		return "getLog(String[], int[]) not implemented yet.";
 	}
 	
 	public static void delete()
