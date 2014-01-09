@@ -3,6 +3,8 @@
  */
 package model;
 
+import control.Logger;
+
 /**
  * @author Jan
  *
