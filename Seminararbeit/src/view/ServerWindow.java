@@ -130,23 +130,28 @@ public class ServerWindow extends JFrame {
 		updateResult = new JButton("Update Result");
 		updateResult.setEnabled(false);
 		updateResult.addActionListener(new UpdateResultListener(this));
-		ScrollPane sp = new ScrollPane();
+		ScrollPane spResultList = new ScrollPane();
 		result = new JPanel(new BorderLayout());
-		result.add(sp, BorderLayout.CENTER);
+		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
-		sp.add(resultList);
+		spResultList.add(resultList);
 		
 		log = new JPanel(new BorderLayout());
 		logString = new JTextArea();
 		logString.setEditable(false);
+		ScrollPane spLog = new ScrollPane();
+		spLog.add(logString);
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
+		RefreshLogListener rLL = new RefreshLogListener(this);
 		teamBox1 = new JComboBox<String>();
 		teamBox1.addItem("no Team");
 		teamBox1.addItem("all Teams");
+		teamBox1.addActionListener(rLL);
 		teamBox2 = new JComboBox<String>();
 		teamBox2.addItem("no Team");
 		teamBox2.setEnabled(false);
+		teamBox2.addActionListener(rLL);
 		logSettings.add(infoLog);
 		logSettings.add(teamBox1);
 		logSettings.add(teamBox2);
@@ -164,8 +169,8 @@ public class ServerWindow extends JFrame {
 			logSettings.add(jCB);
 		}
 		updateLog = new JButton("Update Log");
-		
-		log.add(logString, BorderLayout.CENTER);
+		updateLog.addActionListener(rLL);
+		log.add(spLog, BorderLayout.CENTER);
 		log.add(logSettings, BorderLayout.EAST);
 		log.add(updateLog, BorderLayout.SOUTH);
 		
@@ -207,8 +212,8 @@ public class ServerWindow extends JFrame {
 				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
 				teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
 				teamView.add(teamButtons[t.getID()]);
-				teamBox1.addItem(t.getName() + t.getID());
-				teamBox2.addItem(t.getName() + t.getID());
+				teamBox1.addItem(t.getName());
+				teamBox2.addItem(t.getName());
 			}
 		}
 		updateResultList();
@@ -361,6 +366,14 @@ public class ServerWindow extends JFrame {
 	
 	public Tournament getTournament(){
 		return this.tournament;
+	}
+
+	public JComboBox<String> getTeamBox1() {
+		return teamBox1;
+	}
+
+	public JComboBox<String> getTeamBox2() {
+		return teamBox2;
 	}
 	
 }
