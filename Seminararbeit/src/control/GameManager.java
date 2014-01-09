@@ -71,6 +71,7 @@ public class GameManager extends Thread{
 				{
 					looser = a;				
 				}
+				System.out.println(winner + " wins against " + looser + "!");
 				t.getPlaying().remove(looser);
 				if(!looser.getName().equals("bottt"))
 				{
