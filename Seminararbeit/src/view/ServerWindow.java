@@ -21,17 +21,26 @@ public class ServerWindow extends JFrame {
 	private JPanel testClientPanel;
 	private JButton startButton;
 	private JButton resetServer;
-	private JButton updateResult;
-	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
 	private JProgressBar progress;
 	
+	//TabbedPane for the Team-Matrix, the Result-List and the Log
 	JTabbedPane tabPane;
 	private JPanel teamView;
 	private JPanel result;
 	private JTextArea resultList;
+	private JButton updateResult;
+	private JPanel log;
+	private JPanel logSettings;
+	private JTextArea logString;
+	private JLabel infoLog;
+	private JComboBox<String> teamBox1;
+	private JComboBox<String> teamBox2;
+	private JCheckBox[] type;
+	private JButton updateLog;
 	
+	//Label for Meta Data
 	private JLabel currentRound;
 	private JLabel noOfClients;
 	private JLabel noOfTestClients;
@@ -71,9 +80,6 @@ public class ServerWindow extends JFrame {
 		startButton.addActionListener(new StartTournamentListener(this));
 		startButton.setEnabled(false);
 		west.add(startButton);
-		showLogButton = new JButton("Show Log");
-		showLogButton.addActionListener(new ShowLogListener());
-		west.add(showLogButton);
 		
 		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
@@ -114,10 +120,11 @@ public class ServerWindow extends JFrame {
 		c.add(progress, BorderLayout.SOUTH);
 		//progress.setStringPainted(true);
 		
-		//create JTabedPane for "Team-Matrix" and "Result-List"
+		//create JTabedPane for "Team-Matrix", "Result-List" and "Log"
 		tabPane = new JTabbedPane(JTabbedPane.TOP);
 		c.add(tabPane, BorderLayout.CENTER);
 		teamView = new JPanel();
+		
 		resultList = new JTextArea();
 		resultList.setEditable(false);
 		updateResult = new JButton("Update Result");
@@ -128,8 +135,44 @@ public class ServerWindow extends JFrame {
 		result.add(sp, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
 		sp.add(resultList);
-		tabPane.addTab("Matrix", teamView);
-		tabPane.addTab("Result", result);
+		
+		log = new JPanel(new BorderLayout());
+		logString = new JTextArea();
+		logString.setEditable(false);
+		logSettings = new JPanel(new GridLayout(0, 1));
+		infoLog = new JLabel("Show:");
+		teamBox1 = new JComboBox<String>();
+		teamBox1.addItem("no Team");
+		teamBox1.addItem("all Teams");
+		teamBox2 = new JComboBox<String>();
+		teamBox2.addItem("no Team");
+		teamBox2.setEnabled(false);
+		logSettings.add(infoLog);
+		logSettings.add(teamBox1);
+		logSettings.add(teamBox2);
+		
+		type = new JCheckBox[7];
+		type[0] = new JCheckBox("default");
+		type[1] = new JCheckBox("Server");
+		type[2] = new JCheckBox("Communication");
+		type[3] = new JCheckBox("Game");
+		type[4] = new JCheckBox("Round");
+		type[5] = new JCheckBox("Match");
+		type[6] = new JCheckBox("Shot");
+		for(JCheckBox jCB : type)
+		{
+			logSettings.add(jCB);
+		}
+		updateLog = new JButton("Update Log");
+		
+		log.add(logString, BorderLayout.CENTER);
+		log.add(logSettings, BorderLayout.EAST);
+		log.add(updateLog, BorderLayout.SOUTH);
+		
+		tabPane.add("Matrix", teamView);
+		tabPane.add("Result", result);
+		tabPane.add("Log", log);
+		tabPane.addChangeListener(new TabbedPaneListener(this));
 		
 		setVisible(true);
 		setEnabled(false);
@@ -155,13 +198,18 @@ public class ServerWindow extends JFrame {
 		while(it.hasNext())
 		{
 			Team t = it.next();
-			teamButtons[t.getID()] = new JButton(t.getName());
-			teamButtons[t.getID()].setBackground(Color.GREEN);
-			teamButtons[t.getID()].setOpaque(true);
-			teamButtons[t.getID()].setBorderPainted(false);
-			teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
-			teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
-			teamView.add(teamButtons[t.getID()]);
+			if(!t.getName().equals("bottt"));
+			{
+				teamButtons[t.getID()] = new JButton(t.getName());
+				teamButtons[t.getID()].setBackground(Color.GREEN);
+				teamButtons[t.getID()].setOpaque(true);
+				teamButtons[t.getID()].setBorderPainted(false);
+				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+				teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
+				teamView.add(teamButtons[t.getID()]);
+				teamBox1.addItem(t.getName() + t.getID());
+				teamBox2.addItem(t.getName() + t.getID());
+			}
 		}
 		updateResultList();
 		teamView.updateUI();
@@ -255,6 +303,10 @@ public class ServerWindow extends JFrame {
 	
 	public void updateResultList()
 	{
+		if(teamSet == null)
+		{
+			return;
+		}
 		int count = 1;
 		Collections.sort(teamSet);
 		StringBuffer sb = new StringBuffer();
@@ -265,6 +317,24 @@ public class ServerWindow extends JFrame {
 					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
+	}
+	
+	
+	public void refreshLog()
+	{
+		ArrayList<String> teams = new ArrayList<String>();
+		teams.add((String)teamBox1.getSelectedItem());
+		teams.add((String)teamBox2.getSelectedItem());
+		ArrayList<Integer> types = new ArrayList<Integer>();
+		for(int i = 0; i < type.length; i++)
+		{
+			if(type[i].isSelected())
+			{
+				types.add(i);
+			}
+		}
+		String s = Logger.getLog(teams, types);
+		logString.setText(s);
 	}
 	
 	
