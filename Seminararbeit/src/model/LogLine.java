@@ -63,6 +63,10 @@ public class LogLine implements Comparable<LogLine> {
 		return (int) (this.creationDate - ll.creationDate);
 	}
 	
+	public String toString()
+	{
+		return this.message;
+	}
 	
 	/////////////////////////getters and setters///////////////////////////////
 

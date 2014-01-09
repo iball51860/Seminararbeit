@@ -56,10 +56,14 @@ public class Logger {
 	public static String getLog()
 	{
 		Collections.sort(logbook);
+		String log = "";
+		for(LogLine ll : logbook){
+			
+		}
 		return "getLog() not implemented yet.";
 	}
 	
-	public static String getLog(int[] types)
+	public static String getLog(boolean[] types)
 	{
 		return "getLog(int[]) not implemented yet.";
 	}
@@ -69,7 +73,7 @@ public class Logger {
 		return "getLog(String[]) not implemented yet.";
 	}
 	
-	public static String getLog(String[] instanceNames, int[] types)
+	public static String getLog(String[] instanceNames, boolean[] types)
 	{
 		return "getLog(String[], int[]) not implemented yet.";
 	}
