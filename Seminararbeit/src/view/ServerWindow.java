@@ -142,9 +142,11 @@ public class ServerWindow extends JFrame {
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
 		teamBox1 = new JComboBox<String>();
-		teamBox1.addItem("null");
+		teamBox1.addItem("no Team");
+		teamBox1.addItem("all Teams");
 		teamBox2 = new JComboBox<String>();
-		teamBox2.addItem("null");
+		teamBox2.addItem("no Team");
+		teamBox2.setEnabled(false);
 		logSettings.add(infoLog);
 		logSettings.add(teamBox1);
 		logSettings.add(teamBox2);
@@ -157,9 +159,9 @@ public class ServerWindow extends JFrame {
 		type[4] = new JCheckBox("Round");
 		type[5] = new JCheckBox("Match");
 		type[6] = new JCheckBox("Shot");
-		for(int i = 0; i < type.length; i++)
+		for(JCheckBox jCB : type)
 		{
-			logSettings.add(type[i]);
+			logSettings.add(jCB);
 		}
 		updateLog = new JButton("Update Log");
 		
@@ -320,7 +322,19 @@ public class ServerWindow extends JFrame {
 	
 	public void refreshLog()
 	{
-		
+		ArrayList<String> teams = new ArrayList<String>();
+		teams.add((String)teamBox1.getSelectedItem());
+		teams.add((String)teamBox2.getSelectedItem());
+		ArrayList<Integer> types = new ArrayList<Integer>();
+		for(int i = 0; i < type.length; i++)
+		{
+			if(type[i].isSelected())
+			{
+				types.add(i);
+			}
+		}
+		String s = Logger.getLog(teams, types);
+		logString.setText(s);
 	}
 	
 	
