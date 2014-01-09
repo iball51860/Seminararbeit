@@ -18,7 +18,6 @@ public class TabbedPaneListener implements ChangeListener
 	public void stateChanged(ChangeEvent e) 
 	{
 		serverWindow.updateResultList();
-		serverWindow.refreshLog();
 	}
 
 }

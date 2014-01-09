@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.*;
+import java.io.PrintStream;
 import java.util.*;
 
 import javax.swing.*;
@@ -143,15 +144,12 @@ public class ServerWindow extends JFrame {
 		spLog.add(logString);
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
-		RefreshLogListener rLL = new RefreshLogListener(this);
 		teamBox1 = new JComboBox<String>();
 		teamBox1.addItem("no Team");
 		teamBox1.addItem("all Teams");
-		teamBox1.addActionListener(rLL);
 		teamBox2 = new JComboBox<String>();
 		teamBox2.addItem("no Team");
 		teamBox2.setEnabled(false);
-		teamBox2.addActionListener(rLL);
 		logSettings.add(infoLog);
 		logSettings.add(teamBox1);
 		logSettings.add(teamBox2);
@@ -169,10 +167,9 @@ public class ServerWindow extends JFrame {
 			logSettings.add(jCB);
 		}
 		updateLog = new JButton("Update Log");
-		updateLog.addActionListener(rLL);
 		log.add(spLog, BorderLayout.CENTER);
-		log.add(logSettings, BorderLayout.EAST);
-		log.add(updateLog, BorderLayout.SOUTH);
+//		log.add(logSettings, BorderLayout.EAST);
+//		log.add(updateLog, BorderLayout.SOUTH);
 		
 		tabPane.add("Matrix", teamView);
 		tabPane.add("Result", result);
@@ -186,7 +183,25 @@ public class ServerWindow extends JFrame {
 		popup = new PopupDialogPort(this);
 		popup.setVisible(true);
 		
+		redirectConsoleOutput();
+		
 	}
+	
+	
+	public void redirectConsoleOutput() {
+		// Redirect console output to TextArea
+
+		final JTextArea area = logString;
+		PrintStream stream = new PrintStream(System.out) {
+
+			@Override
+			public void print(String s) {
+				area.append(s + "\n");
+			}
+		};
+		System.setOut(stream);
+	}
+	
 	
 	/**
 	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
@@ -322,24 +337,6 @@ public class ServerWindow extends JFrame {
 					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
 		resultList.setText(sb.toString());
-	}
-	
-	
-	public void refreshLog()
-	{
-		String[] teams = new String[2];
-		teams[0] = (String) teamBox1.getSelectedItem();
-		if(teamBox2.isEnabled())
-		{
-			teams[1] = (String) teamBox2.getSelectedItem();
-		}
-		boolean[] types = new boolean[7];
-		for(int i = 0; i < type.length; i++)
-		{
-			types[i] = type[i].isSelected();
-		}
-		String s = Logger.getLog(teams, types);
-		logString.setText(s);
 	}
 	
 	
