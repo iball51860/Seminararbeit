@@ -54,17 +54,17 @@ public class WMServer extends Thread
 			ioe.printStackTrace();
 		}
 		
+		/*try {
+			Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}*/
 		while(isRunning)
 		{
-			try {
-				Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
 			try 
 			{
 				Socket s = serverSocket.accept();
-				Logger.log("Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort(), Logger.SERVER);
+				//Logger.log("Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort(), Logger.SERVER);
 				registerTeam(s);
 			}
 			catch (IOException ioe)
@@ -75,11 +75,11 @@ public class WMServer extends Thread
 				npe.printStackTrace();
 			}
 		}
-		Logger.log("WMServer shut down.", Logger.SERVER);
+		//Logger.log("WMServer shut down.", Logger.SERVER);
 	}
 	
 	public void shutDown() {
-		Logger.log("Shutting down Server at Port " + port + ".", Logger.SERVER);
+		//Logger.log("Shutting down Server at Port " + port + ".", Logger.SERVER);
 		this.isRunning = false;
 		try {
 			this.serverSocket.close();
@@ -102,17 +102,17 @@ public class WMServer extends Thread
 			return;
 		}
 		Communication.sendStrengths(newTeam);
-		Logger.log("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
+		//Logger.log("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");		
 		masterWindow.updateClientsAtServer(clientsAtServer.size());
-		Logger.log("Team " + newTeam.getName() + " registered.", newTeam, Logger.SERVER);
+		//Logger.log("Team " + newTeam.getName() + " registered.", newTeam, Logger.SERVER);
 	}
 	
 	public void startGame(int shots)
 	{
-		Logger.log("Starting new game with " + shots + " shots.", Logger.GAME);
+		//Logger.log("Starting new game with " + shots + " shots.", Logger.GAME);
 		if(clientsAtServer.isEmpty())
 		{	
-			Logger.log("No teams registered, cannot start game.", Logger.GAME);
+		//	Logger.log("No teams registered, cannot start game.", Logger.GAME);
 			return;
 		}
 		Tournament t = new Tournament(clientsAtServer.clone(), shots, masterWindow);
@@ -121,7 +121,7 @@ public class WMServer extends Thread
 	
 	public Team createBot()
 	{
-		Logger.log("Creating Bot.", Logger.SERVER);
+		//Logger.log("Creating Bot.", Logger.SERVER);
 		int registeredClients = clientsAtServer.size();
 		TestClient tc = new TestClient(getPort(), "bottt");
 		tc.start();

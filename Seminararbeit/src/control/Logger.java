@@ -156,7 +156,7 @@ public class Logger {
 	public static String getLog(String[] instanceNames, boolean[] types)
 	{
 		for(String name : instanceNames){
-			if(name.equalsIgnoreCase("all Teams"))
+			if(name != null && name.equalsIgnoreCase("all Teams"))
 			{
 				return getLog(types);
 			}
