@@ -22,7 +22,6 @@ public class ServerWindow extends JFrame {
 	private JButton startButton;
 	private JButton resetServer;
 	private JButton updateResult;
-	private JButton showLogButton;
 	private JButton addTestClients;
 	private JButton plusTestClient;
 	private JProgressBar progress;
@@ -71,9 +70,6 @@ public class ServerWindow extends JFrame {
 		startButton.addActionListener(new StartTournamentListener(this));
 		startButton.setEnabled(false);
 		west.add(startButton);
-		showLogButton = new JButton("Show Log");
-		showLogButton.addActionListener(new ShowLogListener());
-		west.add(showLogButton);
 		
 		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
@@ -128,8 +124,10 @@ public class ServerWindow extends JFrame {
 		result.add(sp, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
 		sp.add(resultList);
-		tabPane.addTab("Matrix", teamView);
-		tabPane.addTab("Result", result);
+		tabPane.add("Matrix", teamView);
+		tabPane.add("Result", result);
+		tabPane.setTitleAt(1, "Test");
+		tabPane.addChangeListener(new TabbedPaneListener(this));
 		
 		setVisible(true);
 		setEnabled(false);
@@ -155,13 +153,16 @@ public class ServerWindow extends JFrame {
 		while(it.hasNext())
 		{
 			Team t = it.next();
-			teamButtons[t.getID()] = new JButton(t.getName());
-			teamButtons[t.getID()].setBackground(Color.GREEN);
-			teamButtons[t.getID()].setOpaque(true);
-			teamButtons[t.getID()].setBorderPainted(false);
-			teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
-			teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
-			teamView.add(teamButtons[t.getID()]);
+			if(!t.getName().equals("bottt"));
+			{
+				teamButtons[t.getID()] = new JButton(t.getName());
+				teamButtons[t.getID()].setBackground(Color.GREEN);
+				teamButtons[t.getID()].setOpaque(true);
+				teamButtons[t.getID()].setBorderPainted(false);
+				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
+				teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
+				teamView.add(teamButtons[t.getID()]);
+			}
 		}
 		updateResultList();
 		teamView.updateUI();
