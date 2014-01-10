@@ -25,7 +25,7 @@ public class GameManager extends Thread{
 			te.setIsInGame(true);
 		}
 		t.getMasterWindow().updateTeamView(t.getPlaying());
-		System.out.println("Starting Game.");
+		System.out.println("\nStarting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(t.getNoOfMatches() + " Matches to Play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
@@ -35,7 +35,7 @@ public class GameManager extends Thread{
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds down for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
-			System.out.println("Round No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
+			System.out.println("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
@@ -96,7 +96,8 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
-		} //TODO add handling for the winner and to end the game properly
+		} 
+		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
