@@ -107,7 +107,7 @@ public class WMServer extends Thread
 		}
 		Communication.sendStrengths(newTeam);
 		//Logger.log("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.", newTeam, Logger.SERVER);
-		System.out.println("Client " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");
+		System.out.println("Team " + newTeam.getName() + newTeam.getID() + " (IP: " + newTeam.getClientSocket().getInetAddress().toString().substring(1) + ") at Server. " + clientsAtServer.size() + " Teams registered.");
 		masterWindow.updateClientsAtServer(clientsAtServer.size());
 	}
 	
