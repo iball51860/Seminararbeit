@@ -131,7 +131,7 @@ public class ServerWindow extends JFrame {
 		updateResult = new JButton("Update Result");
 		updateResult.setEnabled(false);
 		updateResult.addActionListener(new UpdateResultListener(this));
-		ScrollPane spResultList = new ScrollPane();
+		JScrollPane spResultList = new JScrollPane();
 		result = new JPanel(new BorderLayout());
 		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
@@ -140,8 +140,9 @@ public class ServerWindow extends JFrame {
 		log = new JPanel(new BorderLayout());
 		logString = new JTextArea();
 		logString.setEditable(false);
-		ScrollPane spLog = new ScrollPane();
+		JScrollPane spLog = new JScrollPane();
 		spLog.add(logString);
+		spLog.setViewportView(logString);
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
 		teamBox1 = new JComboBox<String>();
@@ -184,6 +185,7 @@ public class ServerWindow extends JFrame {
 		popup.setVisible(true);
 		
 		redirectConsoleOutput();
+		
 		
 	}
 	
