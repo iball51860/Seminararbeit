@@ -55,9 +55,7 @@ public class PopupTestClientsListener implements ActionListener
 			for(int i = 0; i < dummy.length; i++)
 			{
 				dummy[i] = new TestClient(serverWindow.getWMServer().getPort());
-				System.out.println("X" + i);
 				dummy[i].start();
-				System.out.println("Dummy" + (i+1) + " started.");
 				serverWindow.updateNoOfTestClients(++count);
 				testClients.add(dummy[i]);
 			}
