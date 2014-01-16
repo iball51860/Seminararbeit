@@ -32,15 +32,15 @@ public class StartServerListener implements ActionListener {
 		{
 			port = Integer.valueOf(popup.getInput().getText());
 			
-		//	Socket socket = new Socket("localhost", port); //check if server is already running on port
-		//	socket.close();
+			Socket socket = new Socket("localhost", port); //check if server is already running on port
+			socket.close();
 		}
 		catch(NumberFormatException nfe)
 		{
 			popup.getInput().setText("4444");
 			return;
 		}
-		/*catch(ConnectException ce){
+		catch(ConnectException ce){
 			portIsFree = true;
 		}
 		catch(IOException ioe){
@@ -49,7 +49,8 @@ public class StartServerListener implements ActionListener {
 		if(!portIsFree)
 		{
 			popup.getInput().setText("4444");
-		}*/
+			return;
+		}
 		popup.dispose();
 		serverWindow.setEnabled(true);
 		serverWindow.setWMServer(new WMServer(port, serverWindow));
