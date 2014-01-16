@@ -32,6 +32,13 @@ public class StartServerListener implements ActionListener {
 		{
 			port = Integer.valueOf(popup.getInput().getText());
 			
+			if(port < 1024)
+			{
+				popup.getInfoLabel().setText("Port reserviert. Neuer Port:");
+				popup.getInput().setText("4444");
+				return;
+			}
+			
 			Socket socket = new Socket("localhost", port); //check if server is already running on port
 			socket.close();
 		}
@@ -48,7 +55,7 @@ public class StartServerListener implements ActionListener {
 		}
 		if(!portIsFree)
 		{
-			popup.getInput().setText("4444");
+			popup.getInfoLabel().setText("Port belegt. Neuer Port:");
 			return;
 		}
 		popup.dispose();
