@@ -55,8 +55,9 @@ public class WMServer extends Thread
 		}
 		
 		try {
-			//Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
-			System.out.println("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".");
+			Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
+			System.out.println(Logger.getLog());
+			//System.out.println("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -65,8 +66,9 @@ public class WMServer extends Thread
 			try 
 			{
 				Socket s = serverSocket.accept();
-				//Logger.log("Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort(), Logger.SERVER);
-				System.out.println("New Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort() + ".");
+				Logger.log("Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort(), Logger.SERVER);
+				System.out.println(Logger.getLog());
+				//System.out.println("New Client with IP " + s.getInetAddress().getHostAddress() + " on Port " + s.getLocalPort() + ".");
 				registerTeam(s);
 			}
 			catch (IOException ioe)
@@ -77,7 +79,8 @@ public class WMServer extends Thread
 				npe.printStackTrace();
 			}
 		}
-		//Logger.log("WMServer shut down.", Logger.SERVER);
+		Logger.log("WMServer shut down.", Logger.SERVER);
+		System.out.println(Logger.getLog());
 		System.out.println("WMServer shut down.");
 	}
 	

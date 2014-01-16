@@ -45,7 +45,7 @@ public class Communication
 	 * @param msg that calls for decision, must be Communication.SHOOT or Communication.KEEP
 	 * @return int with value of {0, 1, 2} meaning, in this order left, middle, right or -1 for wrong feedback
 	 */
-	public static int requestDecision(Team team, String msg)
+	public static int requestDecision(Team team, String msg) //TODO add response time handling
 	{
 		if(!team.isOnline())
 		{

@@ -25,17 +25,21 @@ public class GameManager extends Thread{
 			te.setIsInGame(true);
 		}
 		t.getMasterWindow().updateTeamView(t.getPlaying());
-		System.out.println("\nStarting Game.");
+		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
+		System.out.println(Logger.getLog());
+		/*System.out.println("\nStarting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(t.getNoOfMatches() + " Matches to Play");
 		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
-	
+	*/
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds down for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
-			System.out.println("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
+			Logger.log("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.", Logger.ROUND);
+			System.out.println(Logger.getLog());
+			//System.out.println("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);

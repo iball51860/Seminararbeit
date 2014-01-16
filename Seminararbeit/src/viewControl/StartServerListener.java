@@ -6,6 +6,9 @@ import control.WMServer;
 
 import view.*;
 
+import java.io.*;
+import java.net.*;
+
 public class StartServerListener implements ActionListener {
 	
 	
@@ -24,13 +27,35 @@ public class StartServerListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) 
 	{
 		int port = 4444;
+		boolean portIsFree = false;
 		try
 		{
 			port = Integer.valueOf(popup.getInput().getText());
+			
+			if(port < 1024)
+			{
+				popup.getInfoLabel().setText("Port reserviert. Neuer Port:");
+				popup.getInput().setText("4444");
+				return;
+			}
+			
+			Socket socket = new Socket("localhost", port); //check if server is already running on port
+			socket.close();
 		}
 		catch(NumberFormatException nfe)
 		{
 			popup.getInput().setText("4444");
+			return;
+		}
+		catch(ConnectException ce){
+			portIsFree = true;
+		}
+		catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+		if(!portIsFree)
+		{
+			popup.getInfoLabel().setText("Port belegt. Neuer Port:");
 			return;
 		}
 		popup.dispose();

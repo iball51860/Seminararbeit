@@ -46,5 +46,8 @@ public class PopupDialog extends JDialog
 		return input;
 	}
 	
+	public JLabel getInfoLabel(){
+		return this.info;
+	}
 
 }
