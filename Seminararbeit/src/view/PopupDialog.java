@@ -2,10 +2,9 @@ package view;
 
 import javax.swing.*;
 
-import viewControl.*;
-
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class PopupDialog extends JDialog
 {
 	
@@ -17,28 +16,35 @@ public class PopupDialog extends JDialog
 	public PopupDialog(ServerWindow serverWindow)
 	{
 		this();
-		int x = (int) (serverWindow.getLocation().getX() + (serverWindow.getWidth()/2) - (getWidth()/2));
-		int y = (int) (serverWindow.getLocation().getY() + 22);
-		this.setLocation(x, y);
+		final int x = (int) (serverWindow.getLocation().getX() + (serverWindow.getWidth()/2) - (getWidth()/2));
+		final int y = (int) (serverWindow.getLocation().getY() + 22);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				PopupDialog.this.setLocation(x, y);
+			}
+		});
 	}
-	
+
 	public PopupDialog()
 	{
-		setUndecorated(true);
-		setSize(200, 100);
-		
-		c = getContentPane();
-		c.setLayout(new GridLayout(3, 1));
-		
-		info = new JLabel();
-		info.setHorizontalAlignment(SwingConstants.CENTER);
-		input = new JTextField();
-		start = new JButton();
-		
-		c.add(info);
-		c.add(input);
-		c.add(start);
-		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				dispose();
+				setUndecorated(true);
+				pack();
+				setAlwaysOnTop(true);
+				setSize(200, 100);
+				c = getContentPane();
+				c.setLayout(new GridLayout(3, 1));
+				info = new JLabel();
+				info.setHorizontalAlignment(SwingConstants.CENTER);
+				input = new JTextField();
+				start = new JButton();
+				c.add(info);
+				c.add(input);
+				c.add(start);
+			}
+		});	
 	}
 	
 	

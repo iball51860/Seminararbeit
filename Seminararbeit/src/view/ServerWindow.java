@@ -2,6 +2,8 @@ package view;
 
 import java.awt.*;
 import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 import javax.swing.*;
@@ -44,6 +46,7 @@ public class ServerWindow extends JFrame {
 	//Label for Meta Data
 	private JLabel currentRound;
 	private JLabel noOfClients;
+	private JLabel serverInfo;
 	private JLabel noOfTestClients;
 	private JLabel noPlaying;
 	private JLabel noOfPlayedMatches;
@@ -59,8 +62,11 @@ public class ServerWindow extends JFrame {
 	
 	public ServerWindow()
 	{
-		//set up basic frame
 		super();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+						//set up basic frame
+
 		setTitle("WM Server");
 		setSize(800, 600);
 		Container c = getContentPane();
@@ -78,16 +84,16 @@ public class ServerWindow extends JFrame {
 		
 		//create Buttons for starting game, show Result list and show log
 		startButton = new JButton("Start Game");
-		startButton.addActionListener(new StartTournamentListener(this));
+		startButton.addActionListener(new StartTournamentListener(ServerWindow.this));
 		startButton.setEnabled(false);
 		west.add(startButton);
 		
 		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
 		addTestClients = new JButton("add Test Clients");
-		addTestClients.addActionListener(new AddTestClientsListener(this));
+		addTestClients.addActionListener(new AddTestClientsListener(ServerWindow.this));
 		plusTestClient = new JButton("+");
-		plusTestClient.addActionListener(new PopupTestClientsListener(this));
+		plusTestClient.addActionListener(new PopupTestClientsListener(ServerWindow.this));
 		west.add(testClientPanel);
 		testClientPanel.add(addTestClients, BorderLayout.CENTER);
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
@@ -97,6 +103,12 @@ public class ServerWindow extends JFrame {
 		west.add(currentRound);
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
+		try {
+			serverInfo = new JLabel("Address (IP : Port): " + InetAddress.getLocalHost().getHostAddress() + " : ");
+		} catch (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		west.add(serverInfo);
 		noOfTestClients = new JLabel("TestClients at Server: 0");
 		west.add(noOfTestClients);
 		noPlaying = new JLabel("Teams playing: 0");
@@ -112,7 +124,7 @@ public class ServerWindow extends JFrame {
 		
 		//create reset-Server-Button
 		resetServer = new JButton("Reset Server");
-		resetServer.addActionListener(new ResetServerListener(this));
+		resetServer.addActionListener(new ResetServerListener(ServerWindow.this));
 		west.add(resetServer);
 		
 		
@@ -130,12 +142,12 @@ public class ServerWindow extends JFrame {
 		resultList.setEditable(false);
 		updateResult = new JButton("Update Result");
 		updateResult.setEnabled(false);
-		updateResult.addActionListener(new UpdateResultListener(this));
+		updateResult.addActionListener(new UpdateResultListener(ServerWindow.this));
 		JScrollPane spResultList = new JScrollPane();
+		spResultList.add(resultList);
 		result = new JPanel(new BorderLayout());
 		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
-		spResultList.add(resultList);
 		
 		log = new JPanel(new BorderLayout());
 		logString = new JTextArea();
@@ -175,18 +187,18 @@ public class ServerWindow extends JFrame {
 		tabPane.add("Matrix", teamView);
 		tabPane.add("Result", result);
 		tabPane.add("Log", log);
-		tabPane.addChangeListener(new TabbedPaneListener(this));
-		
-		setVisible(true);
-		setEnabled(false);
+		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
 		
 		//create popup dialog to request Port
-		popup = new PopupDialogPort(this);
+		popup = new PopupDialogPort(ServerWindow.this);
 		popup.setVisible(true);
 		
 		redirectConsoleOutput();
 		
-		
+		setVisible(true);
+		setEnabled(false);
+			}
+		});
 	}
 	
 	
@@ -209,32 +221,40 @@ public class ServerWindow extends JFrame {
 	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
 	 * @param teamSet
 	 */
-	public void updateTeamView(ArrayTeamSet<Team> teamSet)
+	public void updateTeamView(final ArrayTeamSet<Team> teamSet)
 	{
 		teamView.removeAll();
 		this.teamSet = teamSet.clone();
-		int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
-		teamView.setLayout(new GridLayout(size, size, 1, 1));
-		teamButtons = new JButton[Team.getCount() + 1];
-		Iterator<Team> it = teamSet.iterator();
-		while(it.hasNext())
-		{
-			Team t = it.next();
-			if(!t.getName().equals("bottt"));
-			{
-				teamButtons[t.getID()] = new JButton(t.getName());
-				teamButtons[t.getID()].setBackground(Color.GREEN);
-				teamButtons[t.getID()].setOpaque(true);
-				teamButtons[t.getID()].setBorderPainted(false);
-				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
-				teamButtons[t.getID()].setToolTipText(t.getName() + t.getID());
-				teamView.add(teamButtons[t.getID()]);
-				teamBox1.addItem(t.getName());
-				teamBox2.addItem(t.getName());
+		final int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				teamView.setLayout(new GridLayout(size, size, 1, 1));
+				teamButtons = new JButton[Team.getCount() + 1];
+				Iterator<Team> it = teamSet.iterator();
+				while (it.hasNext()) {
+					Team t = it.next();
+					if (!t.getName().equals("bottt"))
+						;
+					{
+						teamButtons[t.getID()] = new JButton(t.getName());
+						teamButtons[t.getID()].setBackground(Color.GREEN);
+						teamButtons[t.getID()].setOpaque(true);
+						teamButtons[t.getID()].setBorderPainted(false);
+						teamButtons[t.getID()]
+								.addActionListener(new ShowTeamListener(
+										ServerWindow.this, t));
+						teamButtons[t.getID()].setToolTipText(t.getName()
+								+ t.getID());
+						teamView.add(teamButtons[t.getID()]);
+						teamBox1.addItem(t.getName());
+						teamBox2.addItem(t.getName());
+					}
+				}
+				updateResultList();
+				teamView.updateUI();
 			}
-		}
-		updateResultList();
-		teamView.updateUI();
+		});
 	}
 	
 	/**
@@ -242,33 +262,36 @@ public class ServerWindow extends JFrame {
 	 * else set Color to red
 	 * @param t
 	 */
-	public void updateTeamView(Team t)
+	public void updateTeamView(final Team t)
 	{
 		if(!t.getName().equals("bottt"))
 		{
-			if(!t.isInGame())
-				{
-					teamButtons[t.getID()].setBackground(Color.RED);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!t.isInGame()) {
+						teamButtons[t.getID()].setBackground(Color.RED);
+					} else {
+						teamButtons[t.getID()].setBackground(Color.GREEN);
+					}
+					teamView.updateUI();
 				}
-				else
-				{
-					teamButtons[t.getID()].setBackground(Color.GREEN);
-				}
-			teamView.updateUI();
+			});
 		}
 	}
 	
-	public void updateTeamInMatchView(Team a, Team b)
+	public void updateTeamInMatchView(final Team a, final Team b)
 	{
-		if(!a.getName().equals("bottt"))
-		{
-			teamButtons[a.getID()].setBackground(Color.BLUE);
-		}
-		if(!b.getName().equals("bottt"))
-		{
-			teamButtons[b.getID()].setBackground(Color.BLUE);
-		}
-		teamView.updateUI();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (!a.getName().equals("bottt")) {
+					teamButtons[a.getID()].setBackground(Color.BLUE);
+				}
+				if (!b.getName().equals("bottt")) {
+					teamButtons[b.getID()].setBackground(Color.BLUE);
+				}
+				teamView.updateUI();
+			}
+		});
 	}
 	
 	public void updateClientsAtServer(int clientsAtServer)
@@ -276,7 +299,11 @@ public class ServerWindow extends JFrame {
 		this.noOfClients.setText("Clients at server: " + clientsAtServer);
 		if(clientsAtServer >=2)
 		{
-			this.startButton.setEnabled(true);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					ServerWindow.this.startButton.setEnabled(true);
+				}
+			});
 		}
 	}
 	
@@ -307,19 +334,34 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public void updateMetaData(Tournament t)
+	public void updateMetaData(final Tournament t)
 	{
 		this.tournament = t;
-		this.currentRound.setText("Round: " + Analyser.getCurrentRoundName(t));
-		this.noPlaying.setText("Teams playing: " + t.getPlaying().size());
-		this.noOfPlayedMatches.setText("Matches played: " + t.getFinishedMatches() + " / " + t.getNoOfMatches());
-		this.noOfGoals.setText("Goals: " + t.getGoals());
-		int rate = (int)((double)t.getGoals() / (double)t.getFinishedShots() * 100);
-		this.successRate.setText("Success Rate: " + rate + " %");
-		this.shotsPerMatch.setText("Shots per Match: " + t.getNoOfShotsPerMatch());
-		progress.setMaximum(t.getNoOfShots());
-		progress.setValue(t.getFinishedShots());
-		updateResult.setEnabled(true);
+		/*JLabel currentRound = this.currentRound;
+		JLabel noPlaying = this.noPlaying;
+		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
+		JLabel*/
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ServerWindow.this.currentRound.setText("Round: "
+						+ Analyser.getCurrentRoundName(t));
+				ServerWindow.this.noPlaying.setText("Teams playing: "
+						+ t.getPlaying().size());
+				ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
+						+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
+				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+				int rate = (int) ((double) t.getGoals()
+						/ (double) t.getFinishedShots() * 100);
+				ServerWindow.this.successRate.setText("Success Rate: " + rate
+						+ " %");
+				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
+						+ t.getNoOfShotsPerMatch());
+				progress.setMaximum(t.getNoOfShots());
+				progress.setValue(t.getFinishedShots());
+				updateResult.setEnabled(true);
+			}
+		});
 	}
 	
 	
@@ -327,24 +369,34 @@ public class ServerWindow extends JFrame {
 	{
 		if(teamSet == null)
 		{
+			System.out.println("nullnullnull");
 			return;
 		}
 		int count = 1;
 		Collections.sort(teamSet);
-		StringBuffer sb = new StringBuffer();
+		final StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
 			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
 			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
 					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
 		}
-		resultList.setText(sb.toString());
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				resultList.setText(sb.toString());
+			}
+		});
 	}
 	
 	
-	public void updateNoOfTestClients(int testClients)
+	public void updateNoOfTestClients(final int testClients)
 	{
-		this.noOfTestClients.setText("TestClients at Server: " + testClients);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ServerWindow.this.noOfTestClients
+						.setText("TestClients at Server: " + testClients);
+			}
+		});
 	}
 	
 	

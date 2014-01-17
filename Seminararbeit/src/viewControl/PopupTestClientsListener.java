@@ -3,6 +3,8 @@ package viewControl;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import testClient.*;
 import view.*;
 
@@ -47,7 +49,11 @@ public class PopupTestClientsListener implements ActionListener
 			}
 			catch(NumberFormatException nfe)
 			{
-				popup.getInput().setText("100");
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						popup.getInput().setText("100");
+					}
+				});
 			}
 			
 			TestClient[] dummy = new TestClient[noOfTestClients];
@@ -60,8 +66,12 @@ public class PopupTestClientsListener implements ActionListener
 				testClients.add(dummy[i]);
 			}
 			
-			popup.dispose();
-			serverWindow.setEnabled(true);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					popup.dispose();
+					serverWindow.setEnabled(true);
+				}
+			});
 		}
 	}
 	

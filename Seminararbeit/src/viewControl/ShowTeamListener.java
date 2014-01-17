@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.*;
 
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 import model.*;
 import view.*;
@@ -25,10 +26,13 @@ public class ShowTeamListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		serverWindow.setEnabled(false);
-		
-		TeamPopupDialog p = new TeamPopupDialog(serverWindow, t);
-		p.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				serverWindow.setEnabled(false);
+				TeamPopupDialog p = new TeamPopupDialog(serverWindow, t);
+				p.setVisible(true);
+			}
+		});
 		
 	}
 	

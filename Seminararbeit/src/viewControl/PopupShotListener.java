@@ -2,6 +2,8 @@ package viewControl;
 
 import java.awt.event.*;
 
+import javax.swing.SwingUtilities;
+
 import control.Analyser;
 
 import view.*;
@@ -26,24 +28,34 @@ public class PopupShotListener implements ActionListener
 		try
 		{
 			Integer shots = Integer.valueOf(popup.getInput().getText());
-			int minShots = 2 * Analyser.calculateNoOfMatches(serverWindow.getWMServer().getClientsAtServer().size());
+			final int minShots = 2 * Analyser.calculateNoOfMatches(serverWindow.getWMServer().getClientsAtServer().size());
 			if(shots < minShots)
 			{
-				popup.getInput().setText("" + minShots);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						popup.getInput().setText("" + minShots);
+					}
+				});
 				return;
 			}
 			serverWindow.getWMServer().startGame(shots);
 		}
 		catch(NumberFormatException nfe)
 		{
-			popup.getInput().setText("100000");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					popup.getInput().setText("100000");
+				}
+			});
 		}
 		
-		
-		popup.dispose();
-		serverWindow.setEnabled(true);
-		
-		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				popup.dispose();
+				serverWindow.setEnabled(true);
+				serverWindow.getStartButton().setEnabled(false);
+			}
+		});	
 	}
 	
 }
