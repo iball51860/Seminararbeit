@@ -55,6 +55,16 @@ public class GameManager extends Thread{
 			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
+				while(threadList.size() > 9)
+				{
+					for(SubManager thread : threadList)
+					{
+						if(!thread.isAlive())
+						{
+							threadList.remove(thread);
+						}
+					}
+				}
 				Team a = copy.get(0);
 				Team b = copy.get(1);
 				copy.remove(0);
