@@ -2,6 +2,7 @@ package control;
 
 import model.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager extends Thread{	
 	
@@ -50,6 +51,8 @@ public class GameManager extends Thread{
 			}
 			
 			int sizeAtStart = copy.size();
+			CopyOnWriteArrayList<SubManager> threadList = new CopyOnWriteArrayList<SubManager>();
+			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
 				Team a = copy.get(0);
@@ -63,28 +66,46 @@ public class GameManager extends Thread{
 				{
 					goalsToPlayInMatch += finalExtraShots;
 				}
-				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
-				winner.incrementWonMatches(1);
-				t.incrementFinishedMatches(1);
-				Team looser;
-				if(winner.equals(a))
+				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
+				newSubManager.start();
+				threadList.add(newSubManager);
+//				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
+//				winner.incrementWonMatches(1);
+//				t.incrementFinishedMatches(1);
+//				Team looser;
+//				if(winner.equals(a))
+//				{
+//					looser = b;
+//				}
+//				else
+//				{
+//					looser = a;				
+//				}
+//				System.out.println(winner + " wins against " + looser + "!");
+//				t.getPlaying().remove(looser);
+//				if(!looser.getName().equals("bottt"))
+//				{
+//					t.getLost().add(looser);
+//					looser.setIsInGame(false);
+//				}
+//				t.getMasterWindow().updateTeamView(looser);	
+//				t.getMasterWindow().updateTeamView(winner);
+//				t.getMasterWindow().updateMetaData(t);
+			}
+			boolean threadsAreRunning = true;
+			while(threadsAreRunning)
+			{
+				for(SubManager thread : threadList)
 				{
-					looser = b;
+					if(!thread.isAlive())
+					{
+						threadList.remove(thread);
+					}
 				}
-				else
+				if(threadList.isEmpty())
 				{
-					looser = a;				
+					threadsAreRunning = false;
 				}
-				System.out.println(winner + " wins against " + looser + "!");
-				t.getPlaying().remove(looser);
-				if(!looser.getName().equals("bottt"))
-				{
-					t.getLost().add(looser);
-					looser.setIsInGame(false);
-				}
-				t.getMasterWindow().updateTeamView(looser);	
-				t.getMasterWindow().updateTeamView(winner);
-				t.getMasterWindow().updateMetaData(t);
 			}
 			
 			if(i == t.getNoOfRounds()) //Relegation in erster Runde
