@@ -2,6 +2,8 @@ package viewControl;
 
 import java.awt.event.*;
 
+import javax.swing.SwingUtilities;
+
 import testClient.*;
 import view.*;
 
@@ -29,8 +31,12 @@ public class ResetServerListener implements ActionListener
 			tc.setRunForrestRun(false);
 		}
 		PopupTestClientsListener.setCount(0);
-		serverWindow.dispose();
-		serverWindow = new ServerWindow();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				serverWindow.dispose();
+				serverWindow = new ServerWindow();
+			}
+		});
 	}
 
 }

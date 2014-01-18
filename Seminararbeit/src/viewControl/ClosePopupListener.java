@@ -2,6 +2,8 @@ package viewControl;
 
 import java.awt.event.*;
 
+import javax.swing.SwingUtilities;
+
 import view.*;
 
 public class ClosePopupListener implements ActionListener, KeyListener
@@ -20,18 +22,25 @@ public class ClosePopupListener implements ActionListener, KeyListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		serverWindow.setEnabled(true);
-		popup.dispose();
+		close();
 	}
 
 
 
 	public void keyTyped(KeyEvent e) 
 	{
-		serverWindow.setEnabled(true);
-		popup.dispose();
+		close();
 	}
 
+	public void close()
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				serverWindow.setEnabled(true);
+				popup.dispose();
+			}
+		});
+	}
 
 	public void keyPressed(KeyEvent e) {}
 

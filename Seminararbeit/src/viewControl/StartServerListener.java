@@ -9,6 +9,8 @@ import view.*;
 import java.io.*;
 import java.net.*;
 
+import javax.swing.SwingUtilities;
+
 public class StartServerListener implements ActionListener {
 	
 	
@@ -34,8 +36,14 @@ public class StartServerListener implements ActionListener {
 			
 			if(port < 1024)
 			{
-				popup.getInfoLabel().setText("Port reserviert. Neuer Port:");
-				popup.getInput().setText("4444");
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						popup.getInfoLabel().setText(
+								"Port reserviert. Neuer Port:");
+						popup.getInput().setText("4444");
+						
+					}
+				});
 				return;
 			}
 			
@@ -44,7 +52,11 @@ public class StartServerListener implements ActionListener {
 		}
 		catch(NumberFormatException nfe)
 		{
-			popup.getInput().setText("4444");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					popup.getInput().setText("4444");
+				}
+			});
 			return;
 		}
 		catch(ConnectException ce){
@@ -55,11 +67,19 @@ public class StartServerListener implements ActionListener {
 		}
 		if(!portIsFree)
 		{
-			popup.getInfoLabel().setText("Port belegt. Neuer Port:");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					popup.getInfoLabel().setText("Port belegt. Neuer Port:");
+				}
+			});
 			return;
 		}
-		popup.dispose();
-		serverWindow.setEnabled(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				popup.dispose();
+				serverWindow.setEnabled(true);
+			}
+		});
 		serverWindow.setWMServer(new WMServer(port, serverWindow));
 		serverWindow.getWMServer().start();
 	}

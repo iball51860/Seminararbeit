@@ -2,6 +2,8 @@ package viewControl;
 
 import java.awt.event.*;
 
+import javax.swing.SwingUtilities;
+
 import view.*;
 
 
@@ -20,10 +22,13 @@ public class StartTournamentListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		serverWindow.setEnabled(false);
-		
-		PopupDialogShots p = new PopupDialogShots(serverWindow);
-		p.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				serverWindow.setEnabled(false);
+				PopupDialogShots p = new PopupDialogShots(serverWindow);
+				p.setVisible(true);
+			}
+		});
 		
 	}
 }
