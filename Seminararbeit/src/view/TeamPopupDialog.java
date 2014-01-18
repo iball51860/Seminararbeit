@@ -25,7 +25,6 @@ public class TeamPopupDialog extends JDialog
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				setUndecorated(true);
 				setSize(200, 180);
 				setLocation(serverWindow.getLocationOnScreen().x + 300,
 						serverWindow.getLocationOnScreen().y + 150); //TODO set Location in relation to invoking Button
@@ -53,6 +52,10 @@ public class TeamPopupDialog extends JDialog
 				c.add(victories);
 				c.add(success);
 				c.add(close);
+				
+				dispose();
+				setUndecorated(true);
+				setVisible(true);
 			}
 		});
 		

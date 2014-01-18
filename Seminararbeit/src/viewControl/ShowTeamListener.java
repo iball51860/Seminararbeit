@@ -30,7 +30,6 @@ public class ShowTeamListener implements ActionListener
 			public void run() {
 				serverWindow.setEnabled(false);
 				TeamPopupDialog p = new TeamPopupDialog(serverWindow, t);
-				p.setVisible(true);
 			}
 		});
 		

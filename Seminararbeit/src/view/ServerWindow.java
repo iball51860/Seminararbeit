@@ -220,23 +220,23 @@ public class ServerWindow extends JFrame {
 	
 	/**
 	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
-	 * @param teamSet
+	 * @param tSet
 	 */
-	public void updateTeamView(final ArrayTeamSet<Team> teamSet)
+	public void updateTeamView(final ArrayTeamSet<Team> tSet)
 	{
 		teamView.removeAll();
-		this.teamSet = teamSet.clone();
-		final int size = (int) Math.ceil(Math.sqrt(teamSet.size()));
+		this.teamSet = tSet.clone();
+		final ArrayTeamSet<Team> clone = this.teamSet;
+		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				teamView.setLayout(new GridLayout(size, size, 1, 1));
 				teamButtons = new JButton[Team.getCount() + 1];
-				Iterator<Team> it = teamSet.iterator();
+				Iterator<Team> it = clone.iterator();
 				while (it.hasNext()) {
 					Team t = it.next();
 					if (!t.getName().equals("bottt"))
-						;
 					{
 						teamButtons[t.getID()] = new JButton(t.getName());
 						teamButtons[t.getID()].setBackground(Color.GREEN);
