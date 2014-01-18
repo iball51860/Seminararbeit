@@ -145,6 +145,7 @@ public class ServerWindow extends JFrame {
 		updateResult.addActionListener(new UpdateResultListener(ServerWindow.this));
 		JScrollPane spResultList = new JScrollPane();
 		spResultList.add(resultList);
+		spResultList.setViewportView(resultList);
 		result = new JPanel(new BorderLayout());
 		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
@@ -251,8 +252,8 @@ public class ServerWindow extends JFrame {
 						teamBox2.addItem(t.getName());
 					}
 				}
-				updateResultList();
-				teamView.updateUI();
+				//updateResultList();
+				//teamView.updateUI();
 			}
 		});
 	}
@@ -369,7 +370,6 @@ public class ServerWindow extends JFrame {
 	{
 		if(teamSet == null)
 		{
-			System.out.println("nullnullnull");
 			return;
 		}
 		int count = 1;
