@@ -27,6 +27,7 @@ public class GameManager extends Thread{
 			te.setIsInGame(true);
 		}
 		t.getMasterWindow().updateTeamView(t.getPlaying());
+		t.getMasterWindow().updateMetaData(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		System.out.println(Logger.getLog());
 		/*System.out.println("\nStarting Game.");
@@ -165,7 +166,7 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			t.getMasterWindow().updateMetaData(t);
+			t.getMasterWindow().updateShots(t);
 		}
 		
 		if(aGoals < bGoals) //Team b wins

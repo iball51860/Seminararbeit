@@ -228,7 +228,6 @@ public class ServerWindow extends JFrame {
 		this.teamSet = tSet.clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
-		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				teamView.setLayout(new GridLayout(size, size, 1, 1));
@@ -361,6 +360,17 @@ public class ServerWindow extends JFrame {
 				progress.setMaximum(t.getNoOfShots());
 				progress.setValue(t.getFinishedShots());
 				updateResult.setEnabled(true);
+			}
+		});
+	}
+	
+	
+	public void updateShots(final Tournament t)
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+				progress.setValue(t.getFinishedShots());
 			}
 		});
 	}
