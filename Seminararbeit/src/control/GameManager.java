@@ -26,8 +26,7 @@ public class GameManager extends Thread{
 		{
 			te.setIsInGame(true);
 		}
-		t.getMasterWindow().updateTeamView(t.getPlaying());
-		t.getMasterWindow().updateMetaData(t);
+		t.getMasterWindow().updateTeamView(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		System.out.println(Logger.getLog());
 		/*System.out.println("\nStarting Game.");

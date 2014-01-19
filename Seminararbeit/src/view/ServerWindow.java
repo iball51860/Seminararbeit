@@ -222,10 +222,12 @@ public class ServerWindow extends JFrame {
 	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
 	 * @param tSet
 	 */
-	public void updateTeamView(final ArrayTeamSet<Team> tSet)
+	public void updateTeamView(final Tournament t)
 	{
 		teamView.removeAll();
-		this.teamSet = tSet.clone();
+		this.tournament = t;
+		progress.setMaximum(t.getNoOfShots());
+		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
 		SwingUtilities.invokeLater(new Runnable() {
@@ -334,14 +336,13 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public void updateMetaData(final Tournament t)
+	public synchronized void updateMetaData(final Tournament t)
 	{
 		this.tournament = t;
 		/*JLabel currentRound = this.currentRound;
 		JLabel noPlaying = this.noPlaying;
 		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
 		JLabel*/
-		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				ServerWindow.this.currentRound.setText("Round: "
@@ -357,15 +358,14 @@ public class ServerWindow extends JFrame {
 						+ " %");
 				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
 						+ t.getNoOfShotsPerMatch());
-				progress.setMaximum(t.getNoOfShots());
-				progress.setValue(t.getFinishedShots());
+//				progress.setValue(t.getFinishedShots());
 				updateResult.setEnabled(true);
 			}
 		});
 	}
 	
 	
-	public void updateShots(final Tournament t)
+	public synchronized void updateShots(final Tournament t)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
