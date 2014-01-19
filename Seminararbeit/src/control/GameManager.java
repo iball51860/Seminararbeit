@@ -2,6 +2,7 @@ package control;
 
 import model.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager extends Thread{	
 	
@@ -20,11 +21,12 @@ public class GameManager extends Thread{
 	
 	public static void playGame(Tournament t)
 	{
+		long start = System.currentTimeMillis();
 		for(Team te : t.getPlaying())
 		{
 			te.setIsInGame(true);
 		}
-		t.getMasterWindow().updateTeamView(t.getPlaying());
+		t.getMasterWindow().updateTeamView(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		System.out.println(Logger.getLog());
 		/*System.out.println("\nStarting Game.");
@@ -50,8 +52,21 @@ public class GameManager extends Thread{
 			}
 			
 			int sizeAtStart = copy.size();
+			CopyOnWriteArrayList<SubManager> threadList = new CopyOnWriteArrayList<SubManager>();
+			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
+				//number of threads can be limited
+				while(threadList.size() >= 10)
+				{
+					for(SubManager thread : threadList)
+					{
+						if(!thread.isAlive())
+						{
+							threadList.remove(thread);
+						}
+					}
+				}
 				Team a = copy.get(0);
 				Team b = copy.get(1);
 				copy.remove(0);
@@ -63,28 +78,24 @@ public class GameManager extends Thread{
 				{
 					goalsToPlayInMatch += finalExtraShots;
 				}
-				Team winner = playMatch(a, b, goalsToPlayInMatch, t);
-				winner.incrementWonMatches(1);
-				t.incrementFinishedMatches(1);
-				Team looser;
-				if(winner.equals(a))
+				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
+				newSubManager.start();
+				threadList.add(newSubManager);
+			}
+			boolean threadsAreRunning = true;
+			while(threadsAreRunning)
+			{
+				for(SubManager thread : threadList)
 				{
-					looser = b;
+					if(!thread.isAlive())
+					{
+						threadList.remove(thread);
+					}
 				}
-				else
+				if(threadList.isEmpty())
 				{
-					looser = a;				
+					threadsAreRunning = false;
 				}
-				System.out.println(winner + " wins against " + looser + "!");
-				t.getPlaying().remove(looser);
-				if(!looser.getName().equals("bottt"))
-				{
-					t.getLost().add(looser);
-					looser.setIsInGame(false);
-				}
-				t.getMasterWindow().updateTeamView(looser);	
-				t.getMasterWindow().updateTeamView(winner);
-				t.getMasterWindow().updateMetaData(t);
 			}
 			
 			if(i == t.getNoOfRounds()) //Relegation in erster Runde
@@ -100,8 +111,13 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
-		} 
+		}
 		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
+		long stop = System.currentTimeMillis();
+		int duration = (int) ((stop - start) / 1000);
+		int min = duration/60;
+		int sec = duration%60;
+		System.out.println("\nGame Over after " + min + " min and " + sec + " sec");
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
@@ -128,7 +144,7 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			t.getMasterWindow().updateMetaData(t);
+			t.getMasterWindow().updateShots(t);
 		}
 		
 		if(aGoals < bGoals) //Team b wins

@@ -222,15 +222,32 @@ public class ServerWindow extends JFrame {
 	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
 	 * @param tSet
 	 */
-	public void updateTeamView(final ArrayTeamSet<Team> tSet)
+	public void updateTeamView(final Tournament t)
 	{
 		teamView.removeAll();
-		this.teamSet = tSet.clone();
+		this.tournament = t;
+		progress.setMaximum(t.getNoOfShots());
+		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
-		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				
+				//Orders from updateMetaData() for the first setup
+				ServerWindow.this.currentRound.setText("Round: "
+						+ Analyser.getCurrentRoundName(t));
+				ServerWindow.this.noPlaying.setText("Teams playing: "
+						+ t.getPlaying().size());
+				ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
+						+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
+				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+				int rate = (int) ((double) t.getGoals()
+						/ (double) t.getFinishedShots() * 100);
+				ServerWindow.this.successRate.setText("Success Rate: " + rate
+						+ " %");
+				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
+						+ t.getNoOfShotsPerMatch());
+				
 				teamView.setLayout(new GridLayout(size, size, 1, 1));
 				teamButtons = new JButton[Team.getCount() + 1];
 				Iterator<Team> it = clone.iterator();
@@ -335,14 +352,13 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public void updateMetaData(final Tournament t)
+	public synchronized void updateMetaData(final Tournament t)
 	{
 		this.tournament = t;
 		/*JLabel currentRound = this.currentRound;
 		JLabel noPlaying = this.noPlaying;
 		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
 		JLabel*/
-		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				ServerWindow.this.currentRound.setText("Round: "
@@ -356,11 +372,19 @@ public class ServerWindow extends JFrame {
 						/ (double) t.getFinishedShots() * 100);
 				ServerWindow.this.successRate.setText("Success Rate: " + rate
 						+ " %");
-				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
-						+ t.getNoOfShotsPerMatch());
-				progress.setMaximum(t.getNoOfShots());
+//				progress.setValue(t.getFinishedShots());
+//				updateResult.setEnabled(true);
+			}
+		});
+	}
+	
+	
+	public synchronized void updateShots(final Tournament t)
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
 				progress.setValue(t.getFinishedShots());
-				updateResult.setEnabled(true);
 			}
 		});
 	}
