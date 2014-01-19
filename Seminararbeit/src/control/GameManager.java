@@ -21,6 +21,7 @@ public class GameManager extends Thread{
 	
 	public static void playGame(Tournament t)
 	{
+		long start = System.currentTimeMillis();
 		for(Team te : t.getPlaying())
 		{
 			te.setIsInGame(true);
@@ -55,7 +56,7 @@ public class GameManager extends Thread{
 			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
-				while(threadList.size() > 9)
+				while(threadList.size() > 0)
 				{
 					for(SubManager thread : threadList)
 					{
@@ -131,8 +132,13 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
-		} 
+		}
 		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
+		long stop = System.currentTimeMillis();
+		int duration = (int) ((stop - start) / 1000);
+		int min = duration/60;
+		int sec = duration%60;
+		System.out.println("\nGame Over after " + min + " min and " + sec + " sec");
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
