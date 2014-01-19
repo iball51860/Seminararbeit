@@ -232,6 +232,22 @@ public class ServerWindow extends JFrame {
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				
+				//Orders from updateMetaData() for the first setup
+				ServerWindow.this.currentRound.setText("Round: "
+						+ Analyser.getCurrentRoundName(t));
+				ServerWindow.this.noPlaying.setText("Teams playing: "
+						+ t.getPlaying().size());
+				ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
+						+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
+				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+				int rate = (int) ((double) t.getGoals()
+						/ (double) t.getFinishedShots() * 100);
+				ServerWindow.this.successRate.setText("Success Rate: " + rate
+						+ " %");
+				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
+						+ t.getNoOfShotsPerMatch());
+				
 				teamView.setLayout(new GridLayout(size, size, 1, 1));
 				teamButtons = new JButton[Team.getCount() + 1];
 				Iterator<Team> it = clone.iterator();
@@ -356,10 +372,8 @@ public class ServerWindow extends JFrame {
 						/ (double) t.getFinishedShots() * 100);
 				ServerWindow.this.successRate.setText("Success Rate: " + rate
 						+ " %");
-				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
-						+ t.getNoOfShotsPerMatch());
 //				progress.setValue(t.getFinishedShots());
-				updateResult.setEnabled(true);
+//				updateResult.setEnabled(true);
 			}
 		});
 	}

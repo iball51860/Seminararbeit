@@ -56,7 +56,8 @@ public class GameManager extends Thread{
 			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
-				while(threadList.size() > 0)
+				//number of threads can be limited
+				while(threadList.size() > 9)
 				{
 					for(SubManager thread : threadList)
 					{
