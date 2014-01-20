@@ -48,7 +48,8 @@ public class Team implements Comparable<Team>
 		this.writer = new PrintWriter(clientSocket.getOutputStream(), true);
 		}
 		catch(IOException ioe){ioe.printStackTrace();}
-		setID(++count);
+		++count;
+		setID(count);
 		setIsInGame(false);
 		strength = Analyser.generateStrength(40, 80, 180);
 	}

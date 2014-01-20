@@ -36,12 +36,11 @@ public class GameManager extends Thread{
 	*/
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
-		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds down for better consistency with no of Teams playing
+		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
 			Logger.log("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.", Logger.ROUND);
-			System.out.println(Logger.getLog());
-			//System.out.println("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.");
+			System.out.println(Logger.getLog()); //TODO remove and do a "real" log
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
@@ -114,9 +113,9 @@ public class GameManager extends Thread{
 		}
 		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
 		long stop = System.currentTimeMillis();
-		int duration = (int) ((stop - start) / 1000);
-		int min = duration/60;
-		int sec = duration%60;
+		long duration = (stop - start) / 1000;
+		int min = (int) duration/60;
+		int sec = (int) duration%60;
 		System.out.println("\nGame Over after " + min + " min and " + sec + " sec");
 	}
 	
@@ -144,7 +143,7 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			t.getMasterWindow().updateShots(t);
+			//t.getMasterWindow().updateShots(t);
 		}
 		
 		if(aGoals < bGoals) //Team b wins

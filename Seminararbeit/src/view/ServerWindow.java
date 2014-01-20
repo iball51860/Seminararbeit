@@ -227,6 +227,19 @@ public class ServerWindow extends JFrame {
 		teamView.removeAll();
 		this.tournament = t;
 		progress.setMaximum(t.getNoOfShots());
+		Thread progressThread = new Thread(){
+			public void run(){
+				while(t.isRunning()){
+					updateShots(t);
+					try {
+						sleep(100);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		};
+		progressThread.start();
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
@@ -352,7 +365,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public synchronized void updateMetaData(final Tournament t)
+	public void updateMetaData(final Tournament t)
 	{
 		this.tournament = t;
 		/*JLabel currentRound = this.currentRound;
@@ -379,7 +392,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public synchronized void updateShots(final Tournament t)
+	public void updateShots(final Tournament t)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
