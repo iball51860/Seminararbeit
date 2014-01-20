@@ -18,11 +18,14 @@ public class Communication
 	public static final String MATCHRESULT	= "MRS";
 	public static final String GAMEOVER		= "GOV";
 	
+	public static final int MILLISTOTIMEOUT = 5000;
+	public static final int ALLOWEDAVGREACTION = 2000;
+	
 	
 	
 	public static void broadcast(Collection<Team> teams, String msg)
 	{
-		//Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n", Logger.COMMUNICATION);
+		Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n", Logger.COMMUNICATION);
 		for(Team t : teams)
 		{
 			sendMsg(t, msg);
@@ -54,9 +57,14 @@ public class Communication
 		team.setLastInput(null);
 		sendMsg(team, msg);
 		long start = System.currentTimeMillis();
-		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null)
+		while((System.currentTimeMillis() - start < MILLISTOTIMEOUT) && team.getLastInput() == null)
 		{
 			team.setLastInput(team.read().substring(0, 1));
+		}
+		team.registerReactionTime((int) (System.currentTimeMillis() - start));
+		if(team.getAvgReactionTime() > ALLOWEDAVGREACTION)
+		{
+			team.setOnline(false);
 		}
 		String s = team.getLastInput().toLowerCase();
 		switch (s)
@@ -68,7 +76,7 @@ public class Communication
 			case "r":
 				return 2;
 			default:
-				//Logger.log(team.getName() + ": no valid decision or timeout. Sent 'l', 'm' or 'r' after receiving '" + SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
+				Logger.log(team.getName() + ": no valid decision or timeout. Sent 'l', 'm' or 'r' after receiving '" + SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
 				team.setOnline(false);
 				return requestDecision(team, msg);
 		}
@@ -85,6 +93,13 @@ public class Communication
 		while((System.currentTimeMillis() - start < 5000) && team.getLastInput() == null) //TODO switch to return if received name
 		{
 			s = team.read();
+			if(s.length() < 5)
+			{
+				for(int i = 5-s.length(); i>0; i--)
+				{
+					s += "x";
+				}
+			}
 			if(s.length() > 5)
 			{
 				s = s.substring(0, 5);
