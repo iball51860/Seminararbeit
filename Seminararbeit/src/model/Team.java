@@ -36,6 +36,8 @@ public class Team implements Comparable<Team>
 	private PrintWriter writer;
 	private WMServer server;
 	private boolean isOnline = true;
+	private int avgReactionTime;
+	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
 	{
@@ -422,6 +424,27 @@ public class Team implements Comparable<Team>
 	public void setOnline(boolean isOnline) {
 		Logger.log(name + " set offline. Replaced by bot.", this, Logger.SERVER);
 		this.isOnline = isOnline;
+	}
+
+	/**
+	 * @return the avgReactionTime
+	 */
+	public int getAvgReactionTime() {
+		if(avgReactionTime > 3000 && registeredReactions <= 10)
+		{
+			return 1;
+		}
+		return avgReactionTime;
+	}
+	
+	/**
+	 * @param reactionTime the avgReactionTime to set
+	 */
+	public void registerReactionTime(int reactionTime) {
+		long previous = avgReactionTime * registeredReactions;
+		previous += reactionTime;
+		registeredReactions++;
+		this.avgReactionTime = (int) (previous/registeredReactions);
 	}
 	
 
