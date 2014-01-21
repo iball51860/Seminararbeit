@@ -1,6 +1,7 @@
 package viewControl;
 
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
@@ -56,6 +57,13 @@ public class PopupTestClientsListener implements ActionListener
 				});
 			}
 			
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					popup.dispose();
+				}
+			});
+			
+			
 			TestClient[] dummy = new TestClient[noOfTestClients];
 			
 			for(int i = 0; i < dummy.length; i++)
@@ -68,7 +76,6 @@ public class PopupTestClientsListener implements ActionListener
 			
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					popup.dispose();
 					serverWindow.setEnabled(true);
 				}
 			});

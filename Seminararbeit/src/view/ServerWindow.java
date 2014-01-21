@@ -2,6 +2,7 @@ package view;
 
 import java.awt.*;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -230,49 +231,54 @@ public class ServerWindow extends JFrame {
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				
-				//Orders from updateMetaData() for the first setup
-				ServerWindow.this.currentRound.setText("Round: "
-						+ Analyser.getCurrentRoundName(t));
-				ServerWindow.this.noPlaying.setText("Teams playing: "
-						+ t.getPlaying().size());
-				ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
-						+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
-				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-				int rate = (int) ((double) t.getGoals()
-						/ (double) t.getFinishedShots() * 100);
-				ServerWindow.this.successRate.setText("Success Rate: " + rate
-						+ " %");
-				ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
-						+ t.getNoOfShotsPerMatch());
-				
-				teamView.setLayout(new GridLayout(size, size, 1, 1));
-				teamButtons = new JButton[Team.getCount() + 1];
-				Iterator<Team> it = clone.iterator();
-				while (it.hasNext()) {
-					Team t = it.next();
-					if (!t.getName().equals("bottt"))
-					{
-						teamButtons[t.getID()] = new JButton(t.getName());
-						teamButtons[t.getID()].setBackground(Color.GREEN);
-						teamButtons[t.getID()].setOpaque(true);
-						teamButtons[t.getID()].setBorderPainted(false);
-						teamButtons[t.getID()]
-								.addActionListener(new ShowTeamListener(
-										ServerWindow.this, t));
-						teamButtons[t.getID()].setToolTipText(t.getName()
-								+ t.getID());
-						teamView.add(teamButtons[t.getID()]);
-						teamBox1.addItem(t.getName());
-						teamBox2.addItem(t.getName());
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					
+					//Orders from updateMetaData() for the first setup
+					ServerWindow.this.currentRound.setText("Round: "
+							+ Analyser.getCurrentRoundName(t));
+					ServerWindow.this.noPlaying.setText("Teams playing: "
+							+ t.getPlaying().size());
+					ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
+							+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
+					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+					int rate = (int) ((double) t.getGoals()
+							/ (double) t.getFinishedShots() * 100);
+					ServerWindow.this.successRate.setText("Success Rate: " + rate
+							+ " %");
+					ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
+							+ t.getNoOfShotsPerMatch());
+					
+					teamView.setLayout(new GridLayout(size, size, 1, 1));
+					teamButtons = new JButton[Team.getCount() + 1];
+					Iterator<Team> it = clone.iterator();
+					while (it.hasNext()) {
+						Team t = it.next();
+						if (!t.getName().equals("bottt"))
+						{
+							teamButtons[t.getID()] = new JButton(t.getName());
+							teamButtons[t.getID()].setBackground(Color.GREEN);
+							teamButtons[t.getID()].setOpaque(true);
+							teamButtons[t.getID()].setBorderPainted(false);
+							teamButtons[t.getID()]
+									.addActionListener(new ShowTeamListener(
+											ServerWindow.this, t));
+							teamButtons[t.getID()].setToolTipText(t.getName()
+									+ t.getID());
+							teamView.add(teamButtons[t.getID()]);
+							teamBox1.addItem(t.getName());
+							teamBox2.addItem(t.getName());
+						}
 					}
+					//updateResultList();
+					//teamView.updateUI();
 				}
-				//updateResultList();
-				//teamView.updateUI();
-			}
-		});
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -284,32 +290,43 @@ public class ServerWindow extends JFrame {
 	{
 		if(!t.getName().equals("bottt"))
 		{
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (!t.isInGame()) {
-						teamButtons[t.getID()].setBackground(Color.RED);
-					} else {
-						teamButtons[t.getID()].setBackground(Color.GREEN);
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						if (!t.isInGame()) {
+							teamButtons[t.getID()].setBackground(Color.RED);
+						} else {
+							teamButtons[t.getID()].setBackground(Color.GREEN);
+						}
+						teamButtons[t.getID()].repaint();
 					}
-					teamView.updateUI();
-				}
-			});
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void updateTeamInMatchView(final Team a, final Team b)
 	{
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (!a.getName().equals("bottt")) {
-					teamButtons[a.getID()].setBackground(Color.BLUE);
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					if (!a.getName().equals("bottt")) {
+						teamButtons[a.getID()].setBackground(Color.BLUE);
+						teamButtons[a.getID()].repaint();
+					}
+					if (!b.getName().equals("bottt")) {
+						teamButtons[b.getID()].setBackground(Color.BLUE);
+						teamButtons[b.getID()].repaint();
+					}
 				}
-				if (!b.getName().equals("bottt")) {
-					teamButtons[b.getID()].setBackground(Color.BLUE);
-				}
-				teamView.updateUI();
-			}
-		});
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateClientsAtServer(int clientsAtServer)
@@ -359,34 +376,44 @@ public class ServerWindow extends JFrame {
 		JLabel noPlaying = this.noPlaying;
 		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
 		JLabel*/
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				ServerWindow.this.currentRound.setText("Round: "
-						+ Analyser.getCurrentRoundName(t));
-				ServerWindow.this.noPlaying.setText("Teams playing: "
-						+ t.getPlaying().size());
-				ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
-						+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
-				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-				int rate = (int) ((double) t.getGoals()
-						/ (double) t.getFinishedShots() * 100);
-				ServerWindow.this.successRate.setText("Success Rate: " + rate
-						+ " %");
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					ServerWindow.this.currentRound.setText("Round: "
+							+ Analyser.getCurrentRoundName(t));
+					ServerWindow.this.noPlaying.setText("Teams playing: "
+							+ t.getPlaying().size());
+					ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
+							+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
+					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+					int rate = (int) ((double) t.getGoals()
+							/ (double) t.getFinishedShots() * 100);
+					ServerWindow.this.successRate.setText("Success Rate: " + rate
+							+ " %");
 //				progress.setValue(t.getFinishedShots());
 //				updateResult.setEnabled(true);
-			}
-		});
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
 	public void updateShots(final Tournament t)
 	{
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-				progress.setValue(t.getFinishedShots());
-			}
-		});
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+					progress.setValue(t.getFinishedShots());
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
