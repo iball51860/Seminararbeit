@@ -36,7 +36,7 @@ public class Team implements Comparable<Team>
 	private PrintWriter writer;
 	private WMServer server;
 	private boolean isOnline = true;
-	private long avgReactionTime;
+	private long avgReactionTime = 0;
 	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
@@ -431,10 +431,10 @@ public class Team implements Comparable<Team>
 	 * @return the avgReactionTime
 	 */
 	public long getAvgReactionTime() {
-		if(avgReactionTime > 3000 && registeredReactions <= 10)
+		/*if(avgReactionTime > 3000 && registeredReactions <= 10)
 		{
 			return 0;
-		}
+		}*/
 		return avgReactionTime;
 	}
 	
@@ -444,8 +444,8 @@ public class Team implements Comparable<Team>
 	public void registerReactionTime(long reactionTime) {
 		long previous = avgReactionTime * registeredReactions;
 		previous += reactionTime;
-		registeredReactions++;
-		this.avgReactionTime = (previous/registeredReactions);
+		++registeredReactions;
+		this.avgReactionTime = previous / registeredReactions;
 	}
 	
 

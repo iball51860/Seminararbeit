@@ -112,11 +112,8 @@ public class GameManager extends Thread{
 			}
 		}
 		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
-		long stop = System.currentTimeMillis();
-		long duration = (stop - start) / 1000;
-		int min = (int) duration/60;
-		int sec = (int) duration%60;
-		System.out.println("\nGame Over after " + min + " min and " + sec + " sec");
+		t.setDuration(System.currentTimeMillis() - start);
+		t.getMasterWindow().showFinish();
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
