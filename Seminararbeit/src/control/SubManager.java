@@ -34,7 +34,8 @@ public class SubManager extends Thread
 		{
 			looser = a;				
 		}
-		System.out.println(winner + " wins against " + looser + "!");
+		Logger.log(winner.getName() + " wins against " + looser.getName() + "!", winner, Logger.MATCH);
+		Logger.log(winner.getName() + " wins against " + looser.getName() + "!", looser, Logger.MATCH);
 		t.getPlaying().remove(looser);
 		if(!looser.getName().equals("bottt"))
 		{

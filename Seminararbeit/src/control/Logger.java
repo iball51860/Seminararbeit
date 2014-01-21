@@ -35,20 +35,20 @@ public class Logger {
 		logbook.add(new LogLine(message, type));
 	}
 	
-	public static void log(String message, Object o)
-	{
-		logbook.add(new LogLine(message, o));
-	}
+//	public static void log(String message, Object o)
+//	{
+//		logbook.add(new LogLine(message, o));
+//	}
 	
 	public static void log(String message, Object o, int type)
 	{
 		logbook.add(new LogLine(message, o, type));
 	}
 	
-	public static void log(String message, Team team)
-	{
-		logbook.add(new LogLine(message, team));
-	}
+//	public static void log(String message, Team team)
+//	{
+//		logbook.add(new LogLine(message, team));
+//	}
 	
 	public static void log(String message, Team team, int type)
 	{
@@ -131,32 +131,33 @@ public class Logger {
 		return log;
 	}
 
-	public static String getLog(String[] instanceNames)
-	{
-		for(String name : instanceNames){
-			if(name.equalsIgnoreCase("all Teams"))
-			{
-				return getLog();
-			}
-		}
-		
-		String log = "";
-		for(LogLine ll : logbook){
-			for(String name : instanceNames)
-			{
-				if(ll.getInstanceName().equalsIgnoreCase(name));
-				{
-					log += ll + "\n";
-				}
-			}
-		}
-		return log;
-	}
+//	public static String getLog(String[] instanceNames)
+//	{
+//		for(String name : instanceNames){
+//			if(name.equalsIgnoreCase("all Teams"))
+//			{
+//				return getLog();
+//			}
+//		}
+//		
+//		String log = "";
+//		for(LogLine ll : logbook){
+//			for(String name : instanceNames)
+//			{
+//				if(ll.getInstanceName().equalsIgnoreCase(name));
+//				{
+//					log += ll + "\n";
+//					System.out.println(ll.getInstanceName());
+//				}
+//			}
+//		}
+//		return log;
+//	}
 	
 	public static String getLog(String[] instanceNames, boolean[] types)
 	{
 		for(String name : instanceNames){
-			if(name != null && name.equalsIgnoreCase("all Teams"))
+			if(name.equalsIgnoreCase("all Teams"))
 			{
 				return getLog(types);
 			}
@@ -171,7 +172,13 @@ public class Logger {
 			case SERVER:
 				if(types[SERVER])
 				{
-					log += ll + "\n";
+					for(String name : instanceNames)
+					{
+						if(ll.getInstanceName().equalsIgnoreCase(name))
+						{
+							log += ll + "\n";
+						}
+					}
 				}
 				break;
 			case COMMUNICATION:
@@ -179,7 +186,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}
@@ -191,7 +198,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}
@@ -203,7 +210,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}
@@ -215,7 +222,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}
@@ -227,7 +234,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}
@@ -239,7 +246,7 @@ public class Logger {
 				{
 					for(String name : instanceNames)
 					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
+						if(ll.getInstanceName().equalsIgnoreCase(name))
 						{
 							log += ll + "\n";
 						}

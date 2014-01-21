@@ -19,7 +19,7 @@ public class TestClient extends Thread{
 	
 	public TestClient(int port)
 	{
-		this(port, "dummy");
+		this(port, "dumy" + count); //TODO wieder ändern
 	}
 	
 	public TestClient(int port, String name)

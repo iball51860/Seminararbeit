@@ -27,8 +27,8 @@ public class GameManager extends Thread{
 			te.setIsInGame(true);
 		}
 		t.getMasterWindow().updateTeamView(t);
-		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
-		System.out.println(Logger.getLog());
+		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " " +
+				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		/*System.out.println("\nStarting Game.");
 		System.out.println(t.getNoOfRounds() + " Rounds to play");
 		System.out.println(t.getNoOfMatches() + " Matches to Play");
@@ -40,7 +40,6 @@ public class GameManager extends Thread{
 		{
 			t.setCurrentRound(i);
 			Logger.log("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.", Logger.ROUND);
-			System.out.println(Logger.getLog()); //TODO remove and do a "real" log
 			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
@@ -124,6 +123,8 @@ public class GameManager extends Thread{
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
+		Logger.log(a.getName() + " plays versus " + b.getName(), a, Logger.MATCH);
+		Logger.log(b.getName() + " plays versus " + a.getName(), b, Logger.MATCH);
 		t.getMasterWindow().updateTeamInMatchView(a, b);
 		int aGoals = 0;
 		int bGoals = 0;
@@ -146,7 +147,8 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)
+			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)	
+				//TODO Exception behandeln wenn weniger als 1000 Schüsse gespielt werden
 					{
 						t.getMasterWindow().updateShots(t);
 					}
@@ -206,7 +208,12 @@ public class GameManager extends Thread{
 		boolean goal = false;
 		if(Math.random() < nettoStrength)
 		{
+//			Logger.log(shooting.getName() + " scores against " + keeping.getName(), shooting, Logger.SHOT);
 			goal = true;
+		}
+		else
+		{
+//			Logger.log(keeping.getName() + " keeps a goal from " + shooting.getName(), shooting, Logger.SHOT);
 		}
 		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
 		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);

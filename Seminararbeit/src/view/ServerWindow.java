@@ -34,6 +34,7 @@ public class ServerWindow extends JFrame {
 	private JPanel teamView;
 	private JPanel result;
 	private JTextArea resultList;
+	private JScrollPane spResultList;
 	private JButton updateResult;
 	private JPanel log;
 	private JPanel logSettings;
@@ -41,7 +42,7 @@ public class ServerWindow extends JFrame {
 	private JLabel infoLog;
 	private JComboBox<String> teamBox1;
 	private JComboBox<String> teamBox2;
-	private JCheckBox[] type;
+	public JCheckBox[] type;
 	private JButton updateLog;
 	
 	//Label for Meta Data
@@ -73,10 +74,6 @@ public class ServerWindow extends JFrame {
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		//create topbar with buttons for control
-		//north = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		//c.add(north, BorderLayout.NORTH);
 		
 		//create right panel with information about the tournament
 		west = new JPanel(new GridLayout(0, 1));
@@ -144,8 +141,7 @@ public class ServerWindow extends JFrame {
 		updateResult = new JButton("Update Result");
 		updateResult.setEnabled(false);
 		updateResult.addActionListener(new UpdateResultListener(ServerWindow.this));
-		JScrollPane spResultList = new JScrollPane();
-		spResultList.add(resultList);
+		spResultList = new JScrollPane();
 		spResultList.setViewportView(resultList);
 		result = new JPanel(new BorderLayout());
 		result.add(spResultList, BorderLayout.CENTER);
@@ -155,16 +151,19 @@ public class ServerWindow extends JFrame {
 		logString = new JTextArea();
 		logString.setEditable(false);
 		JScrollPane spLog = new JScrollPane();
-		spLog.add(logString);
 		spLog.setViewportView(logString);
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
+		UpdateLogListener updateLogListener = new UpdateLogListener(ServerWindow.this);
 		teamBox1 = new JComboBox<String>();
 		teamBox1.addItem("no Team");
 		teamBox1.addItem("all Teams");
+		teamBox1.addActionListener(updateLogListener);
+		teamBox1.addActionListener(new TeamBoxListener(ServerWindow.this));
 		teamBox2 = new JComboBox<String>();
 		teamBox2.addItem("no Team");
 		teamBox2.setEnabled(false);
+		teamBox2.addActionListener(updateLogListener);
 		logSettings.add(infoLog);
 		logSettings.add(teamBox1);
 		logSettings.add(teamBox2);
@@ -177,14 +176,18 @@ public class ServerWindow extends JFrame {
 		type[4] = new JCheckBox("Round");
 		type[5] = new JCheckBox("Match");
 		type[6] = new JCheckBox("Shot");
+		
 		for(JCheckBox jCB : type)
 		{
+			jCB.setSelected(true);
+			jCB.addActionListener(updateLogListener);
 			logSettings.add(jCB);
 		}
 		updateLog = new JButton("Update Log");
+		updateLog.addActionListener(updateLogListener);
 		log.add(spLog, BorderLayout.CENTER);
-//		log.add(logSettings, BorderLayout.EAST);
-//		log.add(updateLog, BorderLayout.SOUTH);
+		log.add(logSettings, BorderLayout.EAST);
+		log.add(updateLog, BorderLayout.SOUTH);
 		
 		tabPane.add("Matrix", teamView);
 		tabPane.add("Result", result);
@@ -195,7 +198,7 @@ public class ServerWindow extends JFrame {
 		popup = new PopupDialogPort(ServerWindow.this);
 		popup.setVisible(true);
 		
-		redirectConsoleOutput();
+//		redirectConsoleOutput();
 		
 		setVisible(true);
 		setEnabled(false);
@@ -204,19 +207,19 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public void redirectConsoleOutput() {
-		// Redirect console output to TextArea
-
-		final JTextArea area = logString;
-		PrintStream stream = new PrintStream(System.out) {
-
-			@Override
-			public void print(String s) {
-				area.append(s + "\n");
-			}
-		};
-		System.setOut(stream);
-	}
+//	public void redirectConsoleOutput() {
+//		// Redirect console output to TextArea
+//
+//		final JTextArea area = logString;
+//		PrintStream stream = new PrintStream(System.out) {
+//
+//			@Override
+//			public void print(String s) {
+//				area.append(s + "\n");
+//			}
+//		};
+//		System.setOut(stream);
+//	}
 	
 	
 	/**
@@ -271,8 +274,8 @@ public class ServerWindow extends JFrame {
 							teamBox2.addItem(t.getName());
 						}
 					}
-					//updateResultList();
-					//teamView.updateUI();
+					updateResultList();
+					updateResult.setEnabled(true);
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
@@ -390,8 +393,6 @@ public class ServerWindow extends JFrame {
 							/ (double) t.getFinishedShots() * 100);
 					ServerWindow.this.successRate.setText("Success Rate: " + rate
 							+ " %");
-//				progress.setValue(t.getFinishedShots());
-//				updateResult.setEnabled(true);
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
@@ -436,6 +437,7 @@ public class ServerWindow extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				resultList.setText(sb.toString());
+//				spResultList.getVerticalScrollBar().setValue(0);
 			}
 		});
 	}
@@ -480,6 +482,14 @@ public class ServerWindow extends JFrame {
 	public JComboBox<String> getTeamBox2() {
 		return teamBox2;
 	}
+	
+	public JTextArea getLogString(){
+		return logString;
+	}
+	
+//	public JCheckBox[] getType(){		//TODO Methode zum laufen kriegen | Ich hab keine Ahnung warum die nicht will
+//		return type;
+//	}
 
 
 	/**

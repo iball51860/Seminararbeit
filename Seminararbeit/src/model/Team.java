@@ -75,6 +75,7 @@ public class Team implements Comparable<Team>
 			{
 				read = "x";
 			}
+//			Logger.log("Reading \"" + read + "\" from " + name + ".", this, Logger.COMMUNICATION);
 			return read;
 		}
 		catch(IOException ioe){
@@ -84,6 +85,7 @@ public class Team implements Comparable<Team>
 	
 	public void write(String msg)
 	{
+//		Logger.log("Sending \"" + msg + "\" to " + name + ".", this, Logger.COMMUNICATION);
 		writer.println(msg);
 	}
 	
@@ -107,7 +109,7 @@ public class Team implements Comparable<Team>
 	//TODO Javadoc
 	@Override
 	public String toString(){
-		return name + id;
+		return name + " | ID " + id;
 	}
 	
 	public boolean equals(Object o){
