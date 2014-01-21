@@ -41,6 +41,7 @@ public class SubManager extends Thread
 			t.getLost().add(looser);
 			looser.setIsInGame(false);
 		}
+		t.getMasterWindow().updateShots(t);
 		t.getMasterWindow().updateTeamView(looser);	
 		t.getMasterWindow().updateTeamView(winner);
 		t.getMasterWindow().updateMetaData(t);

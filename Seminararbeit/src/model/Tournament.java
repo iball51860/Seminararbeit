@@ -20,6 +20,7 @@ public class Tournament {
 	private int goals;
 	
 	private boolean isRunning;
+	private long duration = 0;
 
 	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow masterWindow){
 		this.playing = contestants;
@@ -227,5 +228,19 @@ public class Tournament {
 	 */
 	public void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
+	}
+
+	/**
+	 * @return the duration
+	 */
+	public long getDuration() {
+		return duration;
+	}
+
+	/**
+	 * @param duration the duration to set
+	 */
+	public void setDuration(long duration) {
+		this.duration = duration;
 	}
 }

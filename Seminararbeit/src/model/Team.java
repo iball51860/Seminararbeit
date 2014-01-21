@@ -36,7 +36,7 @@ public class Team implements Comparable<Team>
 	private PrintWriter writer;
 	private WMServer server;
 	private boolean isOnline = true;
-	private int avgReactionTime;
+	private long avgReactionTime = 0;
 	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
@@ -48,7 +48,8 @@ public class Team implements Comparable<Team>
 		this.writer = new PrintWriter(clientSocket.getOutputStream(), true);
 		}
 		catch(IOException ioe){ioe.printStackTrace();}
-		setID(++count);
+		++count;
+		setID(count);
 		setIsInGame(false);
 		strength = Analyser.generateStrength(40, 80, 180);
 	}
@@ -429,22 +430,22 @@ public class Team implements Comparable<Team>
 	/**
 	 * @return the avgReactionTime
 	 */
-	public int getAvgReactionTime() {
-		if(avgReactionTime > 3000 && registeredReactions <= 10)
+	public long getAvgReactionTime() {
+		/*if(avgReactionTime > 3000 && registeredReactions <= 10)
 		{
-			return 1;
-		}
+			return 0;
+		}*/
 		return avgReactionTime;
 	}
 	
 	/**
-	 * @param reactionTime the avgReactionTime to set
+	 * @param l the avgReactionTime to set
 	 */
-	public void registerReactionTime(int reactionTime) {
+	public void registerReactionTime(long reactionTime) {
 		long previous = avgReactionTime * registeredReactions;
 		previous += reactionTime;
-		registeredReactions++;
-		this.avgReactionTime = (int) (previous/registeredReactions);
+		++registeredReactions;
+		this.avgReactionTime = previous / registeredReactions;
 	}
 	
 

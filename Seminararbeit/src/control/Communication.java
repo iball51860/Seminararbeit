@@ -18,8 +18,8 @@ public class Communication
 	public static final String MATCHRESULT	= "MRS";
 	public static final String GAMEOVER		= "GOV";
 	
-	public static final int MILLISTOTIMEOUT = 5000;
-	public static final int ALLOWEDAVGREACTION = 2000;
+	public static final long MILLISTOTIMEOUT = 5000;
+	public static final long ALLOWEDAVGREACTION = 2000;
 	
 	
 	
@@ -61,7 +61,7 @@ public class Communication
 		{
 			team.setLastInput(team.read().substring(0, 1));
 		}
-		team.registerReactionTime((int) (System.currentTimeMillis() - start));
+		team.registerReactionTime(System.currentTimeMillis() - start);
 		if(team.getAvgReactionTime() > ALLOWEDAVGREACTION)
 		{
 			team.setOnline(false);
@@ -107,6 +107,7 @@ public class Communication
 			team.setLastInput(s);
 			team.setName(s);
 		}
+		team.registerReactionTime(System.currentTimeMillis() - start);
 		if(team.getLastInput() == null)
 		{
 			team.getServer().getClientsAtServer().remove(team);

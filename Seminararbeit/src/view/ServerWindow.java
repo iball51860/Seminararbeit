@@ -56,8 +56,8 @@ public class ServerWindow extends JFrame {
 	
 	private PopupDialogPort popup;
 	
-	ArrayTeamSet<Team> teamSet;
-	JButton[] teamButtons;
+	private ArrayTeamSet<Team> teamSet;
+	private JButton[] teamButtons;
 	
 	
 	public ServerWindow()
@@ -352,7 +352,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public synchronized void updateMetaData(final Tournament t)
+	public void updateMetaData(final Tournament t)
 	{
 		this.tournament = t;
 		/*JLabel currentRound = this.currentRound;
@@ -379,7 +379,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	
-	public synchronized void updateShots(final Tournament t)
+	public void updateShots(final Tournament t)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -403,7 +403,8 @@ public class ServerWindow extends JFrame {
 		{
 			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
 			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
-					"Success Rate: " + rate + " % | " + (t.getGoals()-t.getGoalsAgainst()) + " Goal Difference\n");
+					"Success Rate: " + rate + " % | " + " Goal Difference:" + (t.getGoals()-t.getGoalsAgainst()) + " | Avg. Reaction:" + 
+					t.getAvgReactionTime() + " ms\n");
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -423,7 +424,9 @@ public class ServerWindow extends JFrame {
 		});
 	}
 	
-	
+	public void showFinish(){
+		new FinishedWindow(this.tournament);
+	}
 	
 	//////////////////////// Getter and Setter ////////////////////////
 	
@@ -449,6 +452,15 @@ public class ServerWindow extends JFrame {
 
 	public JComboBox<String> getTeamBox2() {
 		return teamBox2;
+	}
+
+
+	/**
+	 * @return the teamSet of the ServerWindow in natural Order
+	 */
+	public ArrayTeamSet<Team> getTeamSet() {
+		Collections.sort(teamSet);
+		return teamSet;
 	}
 	
 }
