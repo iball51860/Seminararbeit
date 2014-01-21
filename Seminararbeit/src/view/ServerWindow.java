@@ -227,19 +227,6 @@ public class ServerWindow extends JFrame {
 		teamView.removeAll();
 		this.tournament = t;
 		progress.setMaximum(t.getNoOfShots());
-		Thread progressThread = new Thread(){
-			public void run(){
-				while(t.isRunning()){
-					updateShots(t);
-					try {
-						sleep(30);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-				}
-			}
-		};
-		progressThread.start();
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));

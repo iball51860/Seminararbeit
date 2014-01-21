@@ -140,7 +140,10 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			//t.getMasterWindow().updateShots(t);
+			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)
+					{
+						t.getMasterWindow().updateShots(t);
+					}
 		}
 		
 		if(aGoals < bGoals) //Team b wins
