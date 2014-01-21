@@ -80,6 +80,12 @@ public class GameManager extends Thread{
 				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
 				newSubManager.start();
 				threadList.add(newSubManager);
+				/*try {
+					sleep(120);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
 			}
 			boolean threadsAreRunning = true;
 			while(threadsAreRunning)
