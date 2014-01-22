@@ -116,7 +116,7 @@ public class GameManager extends Thread{
 				}
 			}
 		}
-		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
+		Logger.log(t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!", t.getPlaying().get(0), Logger.GAME);
 		t.setDuration(System.currentTimeMillis() - start);
 		t.getMasterWindow().showFinish();
 	}

@@ -23,7 +23,6 @@ public class LogLine implements Comparable<LogLine> {
 	{
 		this.creationDate = System.currentTimeMillis();
 		this.message = message;
-		this.instanceName = "other";
 	}
 	
 	public LogLine(String message, int type)
@@ -39,11 +38,11 @@ public class LogLine implements Comparable<LogLine> {
 		}
 	}
 	
-//	public LogLine(String message, Object o)
-//	{
-//		this(message);
-//		this.instanceName = o.toString();
-//	}
+	public LogLine(String message, Object o)
+	{
+		this(message);
+		this.instanceName = o.toString();
+	}
 	
 	public LogLine(String message, Object o, int type)
 	{
@@ -51,12 +50,12 @@ public class LogLine implements Comparable<LogLine> {
 		this.instanceName = o.toString();
 	}
 	
-//	public LogLine(String message, Team team)
-//	{
-//		this(message);
-//		this.instanceName = team.getName();
-//		this.instanceID = team.getID();
-//	}
+	public LogLine(String message, Team team)
+	{
+		this(message);
+		this.instanceName = team.getName();
+		this.instanceID = team.getID();
+	}
 	
 	public LogLine(String message, Team team, int type)
 	{

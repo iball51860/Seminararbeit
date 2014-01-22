@@ -1,7 +1,9 @@
-package view;
+package viewControl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import view.ServerWindow;
 
 public class TeamBoxListener implements ActionListener
 {

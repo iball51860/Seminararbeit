@@ -97,7 +97,7 @@ public class Communication
 			{
 				for(int i = 5-s.length(); i>0; i--)
 				{
-					s += "x";
+					s = s + "x";
 				}
 			}
 			if(s.length() > 5)

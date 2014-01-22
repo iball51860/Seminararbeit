@@ -38,7 +38,7 @@ public class ServerWindow extends JFrame {
 	private JButton updateResult;
 	private JPanel log;
 	private JPanel logSettings;
-	private JTextArea logString;
+	private JTextArea logConsole;
 	private JLabel infoLog;
 	private JComboBox<String> teamBox1;
 	private JComboBox<String> teamBox2;
@@ -117,7 +117,7 @@ public class ServerWindow extends JFrame {
 		west.add(noOfGoals);
 		successRate = new JLabel("Success Rate: 0 %");
 		west.add(successRate);
-		shotsPerMatch = new JLabel("Shots per Match: wois i no et");
+		shotsPerMatch = new JLabel("Shots per Match: ");
 		west.add(shotsPerMatch);
 		
 		//create reset-Server-Button
@@ -148,20 +148,20 @@ public class ServerWindow extends JFrame {
 		result.add(updateResult, BorderLayout.SOUTH);
 		
 		log = new JPanel(new BorderLayout());
-		logString = new JTextArea();
-		logString.setEditable(false);
+		logConsole = new JTextArea();
+		logConsole.setEditable(false);
 		JScrollPane spLog = new JScrollPane();
-		spLog.setViewportView(logString);
+		spLog.setViewportView(logConsole);
 		logSettings = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
 		UpdateLogListener updateLogListener = new UpdateLogListener(ServerWindow.this);
 		teamBox1 = new JComboBox<String>();
-		teamBox1.addItem("no Team");
-		teamBox1.addItem("all Teams");
+		teamBox1.addItem("No Teams");
+		teamBox1.addItem("All Teams");
 		teamBox1.addActionListener(updateLogListener);
 		teamBox1.addActionListener(new TeamBoxListener(ServerWindow.this));
 		teamBox2 = new JComboBox<String>();
-		teamBox2.addItem("no Team");
+		teamBox2.addItem("No Team");
 		teamBox2.setEnabled(false);
 		teamBox2.addActionListener(updateLogListener);
 		logSettings.add(infoLog);
@@ -169,7 +169,7 @@ public class ServerWindow extends JFrame {
 		logSettings.add(teamBox2);
 		
 		type = new JCheckBox[7];
-		type[0] = new JCheckBox("default");
+		type[0] = new JCheckBox("Default");
 		type[1] = new JCheckBox("Server");
 		type[2] = new JCheckBox("Communication");
 		type[3] = new JCheckBox("Game");
@@ -228,7 +228,6 @@ public class ServerWindow extends JFrame {
 	 */
 	public void updateTeamView(final Tournament t)
 	{
-		teamView.removeAll();
 		this.tournament = t;
 		progress.setMaximum(t.getNoOfShots());
 		this.teamSet = t.getPlaying().clone();
@@ -238,6 +237,7 @@ public class ServerWindow extends JFrame {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
 					
+					teamView.removeAll();
 					//Orders from updateMetaData() for the first setup
 					ServerWindow.this.currentRound.setText("Round: "
 							+ Analyser.getCurrentRoundName(t));
@@ -270,8 +270,8 @@ public class ServerWindow extends JFrame {
 							teamButtons[t.getID()].setToolTipText(t.getName()
 									+ t.getID());
 							teamView.add(teamButtons[t.getID()]);
-							teamBox1.addItem(t.getName());
-							teamBox2.addItem(t.getName());
+							teamBox1.addItem(t.getName() + t.getID());
+							teamBox2.addItem(t.getName() + t.getID());
 						}
 					}
 					updateResultList();
@@ -305,7 +305,6 @@ public class ServerWindow extends JFrame {
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -327,7 +326,6 @@ public class ServerWindow extends JFrame {
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -453,6 +451,24 @@ public class ServerWindow extends JFrame {
 		});
 	}
 	
+	public void appendLogLine(final LogLine ll)
+	{
+		boolean validInstance = (ll.getInstanceName() == null || getTeamBox1().getSelectedItem().toString().equalsIgnoreCase("All Teams") ||
+					getTeamBox1().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()) || 
+					getTeamBox2().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()));
+		
+		//check whether Log is selected, type applies, and message is about a blocked instance a la (LogIsShowing && typeIsSelected && (name==null || allTeams || nameIsInBox1 || nameIsInBox2) )
+		if(tabPane.getComponentAt(2).isShowing() && type[ll.getType()].isSelected() && validInstance)
+		{
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run()
+				{
+					logConsole.append("\n" + ll.getMessage());
+				}
+			});
+		}
+	}
+	
 	public void showFinish(){
 		new FinishedWindow(this.tournament);
 	}
@@ -484,7 +500,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JTextArea getLogString(){
-		return logString;
+		return logConsole;
 	}
 	
 //	public JCheckBox[] getType(){		//TODO Methode zum laufen kriegen | Ich hab keine Ahnung warum die nicht will

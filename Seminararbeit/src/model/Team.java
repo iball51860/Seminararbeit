@@ -109,7 +109,7 @@ public class Team implements Comparable<Team>
 	//TODO Javadoc
 	@Override
 	public String toString(){
-		return name + " | ID " + id;
+		return name + id;
 	}
 	
 	public boolean equals(Object o){
