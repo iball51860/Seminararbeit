@@ -195,7 +195,7 @@ public class Logger {
 			boolean validInstance = false;
 			for(String name : instanceNames)
 			{
-				validInstance = (ll.getInstanceName() == null || (ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name));
+				validInstance = (ll.getInstanceName() == null || (ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name) || validInstance);
 			}
 			
 			int type = ll.getType();
