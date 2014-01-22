@@ -75,8 +75,8 @@ public class GameManager extends Thread{
 				newSubManager.start();
 				threadList.add(newSubManager);
 			}
-			boolean threadsAreRunning = true;
-			while(threadsAreRunning)
+			
+			while(!threadList.isEmpty())
 			{
 				for(SubManager thread : threadList)
 				{
@@ -84,10 +84,6 @@ public class GameManager extends Thread{
 					{
 						threadList.remove(thread);
 					}
-				}
-				if(threadList.isEmpty())
-				{
-					threadsAreRunning = false;
 				}
 			}
 			

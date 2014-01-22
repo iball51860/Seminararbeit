@@ -374,8 +374,8 @@ public class ServerWindow extends JFrame {
 		JLabel noPlaying = this.noPlaying;
 		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
 		JLabel*/
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+		//try {
+			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					ServerWindow.this.currentRound.setText("Round: "
 							+ Analyser.getCurrentRoundName(t));
@@ -390,10 +390,10 @@ public class ServerWindow extends JFrame {
 							+ " %");
 				}
 			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (InvocationTargetException | InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	

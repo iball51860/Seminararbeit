@@ -104,6 +104,7 @@ public class TestClient extends Thread{
 					break;
 				default:
 					System.out.println(message);
+					runForrestRun = false;
 			}
 		}
 	}
