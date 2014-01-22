@@ -48,7 +48,7 @@ public class GameManager extends Thread{
 				Team bot = t.getServer().createBot();
 				copy.add(bot);
 			}
-			
+			ArrayTeamSet<Team> losersOfTheRound = copy.clone();
 			int sizeAtStart = copy.size();
 			CopyOnWriteArrayList<SubManager> threadList = new CopyOnWriteArrayList<SubManager>();
 			
@@ -115,6 +115,8 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
+			losersOfTheRound.retainAll(t.getLost());
+			Communication.broadcast(losersOfTheRound, Communication.GAMEOVER);
 		}
 		Logger.log(t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!", t.getPlaying().get(0), Logger.GAME);
 		t.setDuration(System.currentTimeMillis() - start);
@@ -123,8 +125,8 @@ public class GameManager extends Thread{
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
-		Logger.log(a.getName() + " plays versus " + b.getName(), a, Logger.MATCH);
-		Logger.log(b.getName() + " plays versus " + a.getName(), b, Logger.MATCH);
+		Logger.log(a.getName() + " vs. " + b.getName(), a, Logger.MATCH);
+		Logger.log(b.getName() + " vs. " + a.getName(), b, Logger.MATCH);
 		t.getMasterWindow().updateTeamInMatchView(a, b);
 		int aGoals = 0;
 		int bGoals = 0;

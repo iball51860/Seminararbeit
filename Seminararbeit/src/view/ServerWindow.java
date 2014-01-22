@@ -70,7 +70,7 @@ public class ServerWindow extends JFrame {
 						//set up basic frame
 
 		setTitle("WM Server");
-		setSize(800, 600);
+		setSize(1000, 600);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -198,12 +198,11 @@ public class ServerWindow extends JFrame {
 		popup = new PopupDialogPort(ServerWindow.this);
 		popup.setVisible(true);
 		
-//		redirectConsoleOutput();
-		
 		setVisible(true);
 		setEnabled(false);
 			}
 		});
+		Logger.setTarget(this);
 	}
 	
 	
@@ -428,8 +427,8 @@ public class ServerWindow extends JFrame {
 		for(Team t : teamSet)
 		{
 			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
-			sb.append(count++ + ". | " + t.getName() + " | " + t.getWonMatches() + " victories | " + t.getGoals() + " goals | " +
-					"Success Rate: " + rate + " % | " + " Goal Difference:" + (t.getGoals()-t.getGoalsAgainst()) + " | Avg. Reaction:" + 
+			sb.append(count++ + ". " + t.getName() + "\t| " + t.getWonMatches() + " Victories\t| " + t.getGoals() + " Goals\t| " +
+					"Success Rate: " + rate + " %\t| " + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\t| Avg. Reaction: " + 
 					t.getAvgReactionTime() + " ms\n");
 		}
 		SwingUtilities.invokeLater(new Runnable() {

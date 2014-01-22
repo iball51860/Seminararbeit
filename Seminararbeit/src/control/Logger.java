@@ -157,28 +157,28 @@ public class Logger {
 		return log;
 	}
 
-//	public static String getLog(String[] instanceNames)
-//	{
-//		for(String name : instanceNames){
-//			if(name.equalsIgnoreCase("all Teams"))
-//			{
-//				return getLog();
-//			}
-//		}
-//		
-//		String log = "";
-//		for(LogLine ll : logbook){
-//			for(String name : instanceNames)
-//			{
-//				if(ll.getInstanceName().equalsIgnoreCase(name));
-//				{
-//					log += ll + "\n";
-//					System.out.println(ll.getInstanceName());
-//				}
-//			}
-//		}
-//		return log;
-//	}
+	public static String getLog(String[] instanceNames)
+	{
+		for(String name : instanceNames){
+			if(name.equalsIgnoreCase("all Teams"))
+			{
+				return getLog();
+			}
+		}
+		
+		String log = "";
+		for(LogLine ll : logbook){
+			for(String name : instanceNames)
+			{
+				if(ll.getInstanceName().equalsIgnoreCase(name));
+				{
+					log += ll + "\n";
+					System.out.println(ll.getInstanceName());
+				}
+			}
+		}
+		return log;
+	}
 	
 	public static String getLog(String[] instanceNames, boolean[] types)
 	{
@@ -255,6 +255,12 @@ public class Logger {
 	
 	public static void setTarget(ServerWindow target) {
 		Logger.target = target;
-		Logger.targetEnabled = true;
+		if (target != null) {
+			Logger.targetEnabled = true;
+		}
+		else
+		{
+			Logger.targetEnabled = false;
+		}
 	}
 }
