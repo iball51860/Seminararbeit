@@ -34,7 +34,7 @@ public class GameManager extends Thread{
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
-			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase(), Logger.ROUND);
+			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase() + " - " + t.getPlaying().size() + " teams playing.", Logger.ROUND);
 			
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
@@ -50,7 +50,7 @@ public class GameManager extends Thread{
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
 				//number of threads can be limited
-				while(threadList.size() >= 10)
+				while(threadList.size() >= 150)
 				{
 					for(SubManager thread : threadList)
 					{
@@ -76,6 +76,19 @@ public class GameManager extends Thread{
 				threadList.add(newSubManager);
 			}
 			
+//			for(SubManager thread : threadList)
+//			{
+//				if(!thread.isAlive())
+//				{
+//					try {
+//						thread.join();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+			
 			while(!threadList.isEmpty())
 			{
 				for(SubManager thread : threadList)
@@ -86,6 +99,8 @@ public class GameManager extends Thread{
 					}
 				}
 			}
+			
+			t.getPlaying().removeAll(t.getLost());
 			
 			if(i == t.getNoOfRounds()) //Relegation in erster Runde
 			{

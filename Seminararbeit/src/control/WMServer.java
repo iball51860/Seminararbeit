@@ -92,7 +92,7 @@ public class WMServer extends Thread
 		}
 	}
 	
-	public void registerTeam(Socket s)
+	public synchronized void registerTeam(Socket s)
 	{
 		Team newTeam = new Team(s, this);
 		clientsAtServer.add(newTeam);

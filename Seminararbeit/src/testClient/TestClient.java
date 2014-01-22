@@ -68,6 +68,12 @@ public class TestClient extends Thread{
 			{
 				if((message = fromServer.readLine()) != null)
 				{
+					try {
+						sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					frontSubString = message.substring(0, 3);
 					//backSubString = message.substring(3);
 				}
