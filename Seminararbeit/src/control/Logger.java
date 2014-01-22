@@ -66,10 +66,10 @@ public class Logger {
 		}
 	}
 	
-//	public static void log(String message, Team team)
-//	{
-//		logbook.add(new LogLine(message, team));
-//	}
+	public static void log(String message, Team team)
+	{
+		logbook.add(new LogLine(message, team));
+	}
 	
 	public static void log(String message, Team team, int type)
 	{
@@ -170,7 +170,7 @@ public class Logger {
 		for(LogLine ll : logbook){
 			for(String name : instanceNames)
 			{
-				if(ll.getInstanceName().equalsIgnoreCase(name));
+				if((ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name));
 				{
 					log += ll + "\n";
 					System.out.println(ll.getInstanceName());
@@ -195,7 +195,7 @@ public class Logger {
 			boolean validInstance = false;
 			for(String name : instanceNames)
 			{
-				validInstance = (ll.getInstanceName() == null || ll.getInstanceName().equalsIgnoreCase(name));
+				validInstance = (ll.getInstanceName() == null || (ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name));
 			}
 			
 			int type = ll.getType();

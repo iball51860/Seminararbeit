@@ -43,7 +43,6 @@ public class ServerWindow extends JFrame {
 	private JComboBox<String> teamBox1;
 	private JComboBox<String> teamBox2;
 	public JCheckBox[] type;
-	private JButton updateLog;
 	
 	//Label for Meta Data
 	private JLabel currentRound;
@@ -183,11 +182,8 @@ public class ServerWindow extends JFrame {
 			jCB.addActionListener(updateLogListener);
 			logSettings.add(jCB);
 		}
-		updateLog = new JButton("Update Log");
-		updateLog.addActionListener(updateLogListener);
 		log.add(spLog, BorderLayout.CENTER);
 		log.add(logSettings, BorderLayout.EAST);
-		log.add(updateLog, BorderLayout.SOUTH);
 		
 		tabPane.add("Matrix", teamView);
 		tabPane.add("Result", result);
@@ -427,8 +423,8 @@ public class ServerWindow extends JFrame {
 		for(Team t : teamSet)
 		{
 			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
-			sb.append(count++ + ". " + t.getName() + "\t| " + t.getWonMatches() + " Victories\t| " + t.getGoals() + " Goals\t| " +
-					"Success Rate: " + rate + " %\t| " + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\t| Avg. Reaction: " + 
+			sb.append(count++ + ". " + t.getName() + "\t" + t.getWonMatches() + " Victories\t" + t.getGoals() + " Goals\t" +
+					"Success Rate: " + rate + " %\t" + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\tAvg. Reaction: " + 
 					t.getAvgReactionTime() + " ms\n");
 		}
 		SwingUtilities.invokeLater(new Runnable() {
