@@ -29,18 +29,13 @@ public class GameManager extends Thread{
 		t.getMasterWindow().updateTeamView(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " " +
 				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
-		/*System.out.println("\nStarting Game.");
-		System.out.println(t.getNoOfRounds() + " Rounds to play");
-		System.out.println(t.getNoOfMatches() + " Matches to Play");
-		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
-	*/
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
-			Logger.log("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.", Logger.ROUND);
-			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
+			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase(), Logger.ROUND);
+			
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
 			if(copy.size()%2 != 0)
@@ -79,12 +74,6 @@ public class GameManager extends Thread{
 				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
 				newSubManager.start();
 				threadList.add(newSubManager);
-				/*try {
-					sleep(120);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 			}
 			boolean threadsAreRunning = true;
 			while(threadsAreRunning)

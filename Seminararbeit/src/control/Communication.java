@@ -25,7 +25,7 @@ public class Communication
 	
 	public static void broadcast(Collection<Team> teams, String msg)
 	{
-		Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.\n", Logger.COMMUNICATION);
+		Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.", Logger.COMMUNICATION);
 		for(Team t : teams)
 		{
 			sendMsg(t, msg);
@@ -76,11 +76,11 @@ public class Communication
 				return 2;
 			default:
 				Logger.log(team.getName() + ": no valid decision or timeout. Sent 'l', 'm' or 'r' after receiving '" +
-						"" + SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
+						SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
+				Logger.log(team.getName() + ": Timeout", team, Logger.SERVER);
 				team.setOnline(false);
 				return requestDecision(team, msg);
-		}
-		//return "DummyDecision";		
+		}		
 	}
 	
 	
@@ -111,6 +111,8 @@ public class Communication
 		if(team.getLastInput() == null)
 		{
 			team.getServer().getClientsAtServer().remove(team);
+			team.setOnline(false);
+			Logger.log(team.getName() + ": Timeout.", team, Logger.SERVER);
 			try {
 				team.getClientSocket().close();
 			} catch (IOException ioe) {

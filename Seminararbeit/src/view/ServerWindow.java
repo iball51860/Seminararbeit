@@ -182,6 +182,8 @@ public class ServerWindow extends JFrame {
 			jCB.addActionListener(updateLogListener);
 			logSettings.add(jCB);
 		}
+		logSettings.remove(type[0]);
+		logSettings.remove(type[6]);
 		log.add(spLog, BorderLayout.CENTER);
 		log.add(logSettings, BorderLayout.EAST);
 		

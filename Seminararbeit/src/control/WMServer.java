@@ -54,7 +54,7 @@ public class WMServer extends Thread
 		}
 		
 		try {
-			Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress() + ".", Logger.SERVER);
+			Logger.log("WMServer running on Port " + port + " at " + InetAddress.getLocalHost().getHostAddress(), Logger.SERVER);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
