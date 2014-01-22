@@ -113,6 +113,10 @@ public class Team implements Comparable<Team>
 	}
 	
 	public boolean equals(Object o){
+		if(o == null && this != null)
+		{
+			return false;
+		}
 		Team otherTeam = (Team) o;
 		try { //check, if other Team is a testclient (own InetAddress)
 			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("192.168.2.194"))
