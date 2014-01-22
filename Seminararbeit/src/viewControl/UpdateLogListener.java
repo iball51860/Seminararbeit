@@ -1,31 +1,29 @@
 package viewControl;
 
-import javax.swing.event.*;
+import java.awt.event.*;
 
 import control.Logger;
 
 import view.ServerWindow;
 
-public class TabbedPaneListener implements ChangeListener
+public class UpdateLogListener implements ActionListener 
 {
+	
 	ServerWindow serverWindow;
-	private String[] names;
-	private boolean[] types;
+	String[] names;
+	boolean[] types;
 	
 	
-	public TabbedPaneListener(ServerWindow serverWindow)
+	public UpdateLogListener(ServerWindow serverWindow)
 	{
 		this.serverWindow = serverWindow;
-		
 		names = new String[2];
 		types = new boolean[7];
 	}
 	
-
-	public void stateChanged(ChangeEvent e) 
+	
+	public void actionPerformed(ActionEvent e)
 	{
-		serverWindow.updateResultList();
-		
 		names[0] = (String) serverWindow.getTeamBox1().getSelectedItem();
 		names[1] = (String) serverWindow.getTeamBox2().getSelectedItem();
 		for(int i = 0; i < types.length; i++)

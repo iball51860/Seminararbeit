@@ -28,9 +28,13 @@ public class LogLine implements Comparable<LogLine> {
 	public LogLine(String message, int type)
 	{
 		this(message);
-		if(type <= 0 && type <= Logger.SHOT)
+		if(type >= 0 && type <= Logger.SHOT)
 		{
 			this.type = type;
+		}
+		else
+		{
+			System.out.println("Fehler");
 		}
 	}
 	

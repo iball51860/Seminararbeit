@@ -27,21 +27,15 @@ public class GameManager extends Thread{
 			te.setIsInGame(true);
 		}
 		t.getMasterWindow().updateTeamView(t);
-		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
-		System.out.println(Logger.getLog());
-		/*System.out.println("\nStarting Game.");
-		System.out.println(t.getNoOfRounds() + " Rounds to play");
-		System.out.println(t.getNoOfMatches() + " Matches to Play");
-		System.out.println(Analyser.calculateNoOfShotsPerMatch(t.getPlaying().size(), t.getNoOfShots()) + " Shots per Match\n");
-	*/
+		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " " +
+				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
-			Logger.log("\nRound No. " + i + ". " + t.getPlaying().size() + " Teams in Game.", Logger.ROUND);
-			System.out.println(Logger.getLog()); //TODO remove and do a "real" log
-			Communication.broadcast(t.getPlaying(), Communication.NEWROUND);
+			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase(), Logger.ROUND);
+			
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
 			Collections.shuffle(copy);
 			if(copy.size()%2 != 0)
@@ -49,7 +43,7 @@ public class GameManager extends Thread{
 				Team bot = t.getServer().createBot();
 				copy.add(bot);
 			}
-			
+			ArrayTeamSet<Team> losersOfTheRound = copy.clone();
 			int sizeAtStart = copy.size();
 			CopyOnWriteArrayList<SubManager> threadList = new CopyOnWriteArrayList<SubManager>();
 			
@@ -80,12 +74,6 @@ public class GameManager extends Thread{
 				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
 				newSubManager.start();
 				threadList.add(newSubManager);
-				/*try {
-					sleep(120);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
 			}
 			boolean threadsAreRunning = true;
 			while(threadsAreRunning)
@@ -116,14 +104,18 @@ public class GameManager extends Thread{
 					t.getMasterWindow().updateTeamView(rescued);
 				}
 			}
+			losersOfTheRound.retainAll(t.getLost());
+			Communication.broadcast(losersOfTheRound, Communication.GAMEOVER);
 		}
-		System.out.println("\n" + t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!");//TODO add handling for the winner and to end the game properly
+		Logger.log(t.getPlaying().get(0) + " wins! Congratulations, " + t.getPlaying().get(0) + "!", t.getPlaying().get(0), Logger.GAME);
 		t.setDuration(System.currentTimeMillis() - start);
 		t.getMasterWindow().showFinish();
 	}
 	
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
+		Logger.log(a.getName() + " vs. " + b.getName(), a, Logger.MATCH);
+		Logger.log(b.getName() + " vs. " + a.getName(), b, Logger.MATCH);
 		t.getMasterWindow().updateTeamInMatchView(a, b);
 		int aGoals = 0;
 		int bGoals = 0;
@@ -146,7 +138,8 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)
+			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)	
+				//TODO Exception behandeln wenn weniger als 1000 Schüsse gespielt werden
 					{
 						t.getMasterWindow().updateShots(t);
 					}
@@ -206,7 +199,12 @@ public class GameManager extends Thread{
 		boolean goal = false;
 		if(Math.random() < nettoStrength)
 		{
+//			Logger.log(shooting.getName() + " scores against " + keeping.getName(), shooting, Logger.SHOT);
 			goal = true;
+		}
+		else
+		{
+//			Logger.log(keeping.getName() + " keeps a goal from " + shooting.getName(), shooting, Logger.SHOT);
 		}
 		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
 		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);

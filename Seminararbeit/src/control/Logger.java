@@ -6,6 +6,8 @@ package control;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import view.ServerWindow;
+
 import model.LogLine;
 import model.Team;
 
@@ -25,24 +27,43 @@ public class Logger {
 
 	private static ArrayList<LogLine> logbook = new ArrayList<LogLine>();
 	
+	private static ServerWindow target;
+	private static boolean targetEnabled = false;
+	
+	
 	public static void log(String message)
 	{
-		logbook.add(new LogLine(message));
+		LogLine ll = new LogLine(message);
+		logbook.add(ll);
+		if(targetEnabled)
+		{
+			target.appendLogLine(ll);
+		}
 	}
 	
 	public static void log(String message, int type)
 	{
-		logbook.add(new LogLine(message, type));
+		LogLine ll = new LogLine(message, type);
+		logbook.add(ll);
+		if(targetEnabled)
+		{
+			target.appendLogLine(ll);
+		}
 	}
 	
-	public static void log(String message, Object o)
-	{
-		logbook.add(new LogLine(message, o));
-	}
+//	public static void log(String message, Object o)
+//	{
+//		logbook.add(new LogLine(message, o));
+//	}
 	
 	public static void log(String message, Object o, int type)
 	{
-		logbook.add(new LogLine(message, o, type));
+		LogLine ll = new LogLine(message, o, type);
+		logbook.add(ll);
+		if(targetEnabled)
+		{
+			target.appendLogLine(ll);
+		}
 	}
 	
 	public static void log(String message, Team team)
@@ -52,7 +73,12 @@ public class Logger {
 	
 	public static void log(String message, Team team, int type)
 	{
-		logbook.add(new LogLine(message, team, type));
+		LogLine ll = new LogLine(message, team, type);
+		logbook.add(ll);
+		if(targetEnabled)
+		{
+			target.appendLogLine(ll);
+		}
 	}
 	
 	public static String getLog()
@@ -144,9 +170,10 @@ public class Logger {
 		for(LogLine ll : logbook){
 			for(String name : instanceNames)
 			{
-				if(ll.getInstanceName().equalsIgnoreCase(name));
+				if((ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name));
 				{
 					log += ll + "\n";
+					System.out.println(ll.getInstanceName());
 				}
 			}
 		}
@@ -156,7 +183,7 @@ public class Logger {
 	public static String getLog(String[] instanceNames, boolean[] types)
 	{
 		for(String name : instanceNames){
-			if(name != null && name.equalsIgnoreCase("all Teams"))
+			if(name.equalsIgnoreCase("all Teams"))
 			{
 				return getLog(types);
 			}
@@ -165,85 +192,55 @@ public class Logger {
 		String log = "";
 		for(LogLine ll : logbook)
 		{
+			boolean validInstance = false;
+			for(String name : instanceNames)
+			{
+				validInstance = (ll.getInstanceName() == null || (ll.getInstanceName() + ll.getInstanceID()).equalsIgnoreCase(name) || validInstance);
+			}
+			
 			int type = ll.getType();
 			switch(type)
 			{
 			case SERVER:
-				if(types[SERVER])
+				if(types[SERVER] && validInstance)
+				{
+						log += ll + "\n";
+				}
+				break;
+			case COMMUNICATION:
+				if(types[COMMUNICATION] && validInstance)
 				{
 					log += ll + "\n";
 				}
 				break;
-			case COMMUNICATION:
-				if(types[COMMUNICATION])
-				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
-				}
-				break;
 			case GAME:
-				if(types[GAME])
+				if(types[GAME] && validInstance)
 				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
+					log += ll + "\n";
 				}
 				break;
 			case ROUND:
-				if(types[ROUND])
+				if(types[ROUND] && validInstance)
 				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
+					log += ll + "\n";
 				}
 				break;
 			case MATCH:
-				if(types[MATCH])
+				if(types[MATCH] && validInstance)
 				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
+					log += ll + "\n";
 				}
 				break;
 			case SHOT:
-				if(types[SHOT])
+				if(types[SHOT] && validInstance)
 				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
+					log += ll + "\n";
 				}
 				break;
 			default:
-				if(types[DEFAULT])
+				if(types[DEFAULT] && validInstance)
 				{
-					for(String name : instanceNames)
-					{
-						if(ll.getInstanceName().equalsIgnoreCase(name));
-						{
-							log += ll + "\n";
-						}
-					}
+					log += ll + "\n";
 				}
 			}
 		}
@@ -254,5 +251,16 @@ public class Logger {
 	public static void clear()
 	{
 		logbook = new ArrayList<LogLine>();
+	}
+	
+	public static void setTarget(ServerWindow target) {
+		Logger.target = target;
+		if (target != null) {
+			Logger.targetEnabled = true;
+		}
+		else
+		{
+			Logger.targetEnabled = false;
+		}
 	}
 }

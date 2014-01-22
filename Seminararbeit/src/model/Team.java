@@ -17,7 +17,7 @@ public class Team implements Comparable<Team>
 	
 	private static int count = 0;
 	private int id;
-	private String name;
+	private String name = "noName";
 	
 	private int[] strength = new int[3];
 	//TODO delete unnecessary variables
@@ -75,6 +75,7 @@ public class Team implements Comparable<Team>
 			{
 				read = "x";
 			}
+//			Logger.log("Reading \"" + read + "\" from " + name + ".", this, Logger.COMMUNICATION);
 			return read;
 		}
 		catch(IOException ioe){
@@ -84,6 +85,7 @@ public class Team implements Comparable<Team>
 	
 	public void write(String msg)
 	{
+//		Logger.log("Sending \"" + msg + "\" to " + name + ".", this, Logger.COMMUNICATION);
 		writer.println(msg);
 	}
 	
