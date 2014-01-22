@@ -399,16 +399,19 @@ public class ServerWindow extends JFrame {
 	
 	public void updateShots(final Tournament t)
 	{
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-					progress.setValue(t.getFinishedShots());
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(t.getFinishedShots() >= progress.getValue() + (t.getNoOfShots() / 1000))
+		{
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+						progress.setValue(t.getFinishedShots());
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

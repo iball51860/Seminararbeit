@@ -183,7 +183,7 @@ public class Analyser {
 			case 3:
 				return "Quarterfinal";
 			default:
-				return "Last " + Math.pow(2, currentRound);
+				return "Last " + (int) Math.pow(2, currentRound);
 		}
 	}
 }

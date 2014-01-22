@@ -134,11 +134,7 @@ public class GameManager extends Thread{
 				bGoals++;
 				t.incrementGoals(1);
 			}
-			if((t.getFinishedShots() % (t.getNoOfShots()/1000)) == 0)	
-				//TODO Exception behandeln wenn weniger als 1000 Schüsse gespielt werden
-					{
-						t.getMasterWindow().updateShots(t);
-					}
+			t.getMasterWindow().updateShots(t);	
 		}
 		
 		if(aGoals < bGoals) //Team b wins
