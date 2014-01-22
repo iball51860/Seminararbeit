@@ -295,8 +295,10 @@ public class ServerWindow extends JFrame {
 					public void run() {
 						if (!t.isInGame()) {
 							teamButtons[t.getID()].setBackground(Color.RED);
+							teamButtons[t.getID()].setForeground(Color.BLACK);
 						} else {
 							teamButtons[t.getID()].setBackground(Color.GREEN);
+							teamButtons[t.getID()].setForeground(Color.BLACK);
 						}
 						teamButtons[t.getID()].repaint();
 					}
@@ -314,10 +316,12 @@ public class ServerWindow extends JFrame {
 				public void run() {
 					if (!a.getName().equals("bottt")) {
 						teamButtons[a.getID()].setBackground(Color.BLUE);
+						teamButtons[a.getID()].setForeground(Color.WHITE);
 						teamButtons[a.getID()].repaint();
 					}
 					if (!b.getName().equals("bottt")) {
 						teamButtons[b.getID()].setBackground(Color.BLUE);
+						teamButtons[b.getID()].setForeground(Color.WHITE);
 						teamButtons[b.getID()].repaint();
 					}
 				}

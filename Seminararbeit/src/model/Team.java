@@ -89,23 +89,6 @@ public class Team implements Comparable<Team>
 		writer.println(msg);
 	}
 	
-	/*public void switchToBot() {
-		System.out.println("SwitchToBot");
-		int port = clientSocket.getPort();
-				
-		try {
-			clientSocket.close();
-			clientSocket = new Socket("localhost", port);
-			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			writer = new PrintWriter(clientSocket.getOutputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		new TestClient(port);
-	}*/
-	
 	//TODO Javadoc
 	@Override
 	public String toString(){
