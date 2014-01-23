@@ -63,13 +63,13 @@ public class TestClient extends Thread{
 		{
 			String message = "default";
 			String frontSubString = "default";
-			String backSubString = "default";
+//			String backSubString = "default";
 			try
 			{
 				if((message = fromServer.readLine()) != null)
 				{
 //					try {
-//						sleep(10);
+//						sleep(40);
 //					} catch (InterruptedException e) {
 //						// TODO Auto-generated catch block
 //						e.printStackTrace();

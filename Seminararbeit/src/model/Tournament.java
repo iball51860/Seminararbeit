@@ -243,4 +243,15 @@ public class Tournament {
 	public synchronized void setDuration(long duration) {
 		this.duration = duration;
 	}
+	
+	public synchronized long getAverageClientLatency() {
+		long avgReaction  = 0;
+		
+		for(Team team : getMasterWindow().getTeamSet())
+		{
+			avgReaction += team.getAvgReactionTime();
+		}
+		avgReaction = avgReaction / getMasterWindow().getTeamSet().size();
+		return avgReaction;
+	}
 }
