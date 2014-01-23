@@ -56,12 +56,14 @@ public class Communication
 		team.setLastInput(null);
 		sendMsg(team, msg);
 		long start = System.currentTimeMillis();
-		while((System.currentTimeMillis() - start < MILLISTOTIMEOUT) && team.getLastInput() == null)
+		boolean maxTimeout = false;
+		boolean avgTimeout = false;
+		while((maxTimeout = (System.currentTimeMillis() - start < MILLISTOTIMEOUT)) && team.getLastInput() == null)
 		{
 			team.setLastInput(team.read().substring(0, 1));
 		}
 		team.registerReactionTime(System.currentTimeMillis() - start);
-		if(team.getAvgReactionTime() > ALLOWEDAVGREACTION)
+		if((avgTimeout = (team.getAvgReactionTime() > ALLOWEDAVGREACTION)))
 		{
 			team.setOnline(false);
 		}
@@ -75,9 +77,17 @@ public class Communication
 			case "r":
 				return 2;
 			default:
-				Logger.log(team.getName() + ": no valid decision or timeout. Sent 'l', 'm' or 'r' after receiving '" +
-						SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
-				Logger.log(team.getName() + ": Timeout", team, Logger.SERVER);
+				if(maxTimeout || avgTimeout)
+				{
+					Logger.log(team.getName() + ": Maximum timeout: " + maxTimeout + "\tAverage timeout: " + 
+							avgTimeout, team, Logger.SERVER);
+				}
+				else
+				{
+					Logger.log(team.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+							SHOOT + "' or '" + KEEP + "'.", team, Logger.COMMUNICATION);
+				}
+				//Logger.log(team.getName() + ": Timeout", team, Logger.SERVER);
 				team.setOnline(false);
 				return requestDecision(team, msg);
 		}		

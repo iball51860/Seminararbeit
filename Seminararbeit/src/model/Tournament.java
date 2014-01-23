@@ -39,208 +39,219 @@ public class Tournament {
 	/**
 	 * @return the playing
 	 */
-	public ArrayTeamSet<Team> getPlaying() {
+	public synchronized ArrayTeamSet<Team> getPlaying() {
 		return playing;
 	}
 
 	/**
 	 * @param playing the playing to set
 	 */
-	public void setPlaying(ArrayTeamSet<Team> playing) {
+	public synchronized void setPlaying(ArrayTeamSet<Team> playing) {
 		this.playing = playing;
 	}
 
 	/**
 	 * @return the lost
 	 */
-	public ArrayTeamSet<Team> getLost() {
+	public synchronized ArrayTeamSet<Team> getLost() {
 		return lost;
 	}
 
 	/**
 	 * @param lost the lost to set
 	 */
-	public void setLost(ArrayTeamSet<Team> lost) {
+	public synchronized void setLost(ArrayTeamSet<Team> lost) {
 		this.lost = lost;
 	}
 
 	/**
 	 * @return the noOfShots
 	 */
-	public int getNoOfShots() {
+	public synchronized int getNoOfShots() {
 		return noOfShots;
 	}
 
 	/**
 	 * @param noOfShots the noOfShots to set
 	 */
-	public void setNoOfShots(int noOfShots) {
+	public synchronized void setNoOfShots(int noOfShots) {
 		this.noOfShots = noOfShots;
 	}
 
 	/**
 	 * @return the noOfShotsPerMatch
 	 */
-	public int getNoOfShotsPerMatch() {
+	public synchronized int getNoOfShotsPerMatch() {
 		return noOfShotsPerMatch;
 	}
 
 	/**
 	 * @param noOfShotsPerMatch the noOfShotsPerMatch to set
 	 */
-	public void setNoOfShotsPerMatch(int noOfShotsPerMatch) {
+	public synchronized void setNoOfShotsPerMatch(int noOfShotsPerMatch) {
 		this.noOfShotsPerMatch = noOfShotsPerMatch;
 	}
 
 	/**
 	 * @return the noOfRounds
 	 */
-	public int getNoOfRounds() {
+	public synchronized int getNoOfRounds() {
 		return noOfRounds;
 	}
 
 	/**
 	 * @param noOfRounds the noOfRounds to set
 	 */
-	public void setNoOfRounds(int noOfRounds) {
+	public synchronized void setNoOfRounds(int noOfRounds) {
 		this.noOfRounds = noOfRounds;
 	}
 
 	/**
 	 * @return the masterWindow
 	 */
-	public ServerWindow getMasterWindow() {
+	public synchronized ServerWindow getMasterWindow() {
 		return masterWindow;
 	}
 
 	/**
 	 * @param masterWindow the masterWindow to set
 	 */
-	public void setMasterWindow(ServerWindow masterWindow) {
+	public synchronized void setMasterWindow(ServerWindow masterWindow) {
 		this.masterWindow = masterWindow;
 	}
 
 	/**
 	 * @return the server
 	 */
-	public WMServer getServer() {
+	public synchronized WMServer getServer() {
 		return server;
 	}
 
 	/**
 	 * @param server the server to set
 	 */
-	public void setServer(WMServer server) {
+	public synchronized void setServer(WMServer server) {
 		this.server = server;
 	}
 
 	/**
 	 * @return the currentRound
 	 */
-	public int getCurrentRound() {
+	public synchronized int getCurrentRound() {
 		return currentRound;
 	}
 
 	/**
 	 * @param currentRound the currentRound to set
 	 */
-	public void setCurrentRound(int currentRound) {
+	public synchronized void setCurrentRound(int currentRound) {
 		this.currentRound = currentRound;
 	}
 
 	/**
 	 * @return the noOfMatches
 	 */
-	public int getNoOfMatches() {
+	public synchronized int getNoOfMatches() {
 		return noOfMatches;
 	}
 
 	/**
 	 * @param noOfMatches the noOfMatches to set
 	 */
-	public void setNoOfMatches(int noOfMatches) {
+	public synchronized void setNoOfMatches(int noOfMatches) {
 		this.noOfMatches = noOfMatches;
 	}
 
 	/**
 	 * @return the finishedMatches
 	 */
-	public int getFinishedMatches() {
+	public synchronized int getFinishedMatches() {
 		return finishedMatches;
 	}
 
 	/**
 	 * @param finishedMatches the finishedMatches to set
 	 */
-	public void setFinishedMatches(int finishedMatches) {
+	public synchronized void setFinishedMatches(int finishedMatches) {
 		this.finishedMatches = finishedMatches;
 	}
 	
-	public void incrementFinishedMatches(int increment) {
+	public synchronized void incrementFinishedMatches(int increment) {
 		this.finishedMatches += increment;
 	}
 	
 	/**
 	 * @return the finishedShots
 	 */
-	public int getFinishedShots() {
+	public synchronized int getFinishedShots() {
 		return finishedShots;
 	}
 
 	/**
 	 * @param finishedShots the finishedShots to set
 	 */
-	public void setFinishedShots(int finishedShots) {
+	public synchronized void setFinishedShots(int finishedShots) {
 		this.finishedShots = finishedShots;
 	}
 	
-	public void incrementFinishedShots(int increment) {
+	public synchronized void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
 	}
 	
 	/**
 	 * @return the goals
 	 */
-	public int getGoals() {
+	public synchronized int getGoals() {
 		return goals;
 	}
 
 	/**
 	 * @param goals the goals to set
 	 */
-	public void setGoals(int goals) {
+	public synchronized void setGoals(int goals) {
 		this.goals = goals;
 	}
 	
-	public void incrementGoals(int increment) {
+	public synchronized void incrementGoals(int increment) {
 		this.goals += increment;
 	}
 
 	/**
 	 * @return the isRunning
 	 */
-	public boolean isRunning() {
+	public synchronized boolean isRunning() {
 		return isRunning;
 	}
 
 	/**
 	 * @param isRunning the isRunning to set
 	 */
-	public void setRunning(boolean isRunning) {
+	public synchronized void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
 	}
 
 	/**
 	 * @return the duration
 	 */
-	public long getDuration() {
+	public synchronized long getDuration() {
 		return duration;
 	}
 
 	/**
 	 * @param duration the duration to set
 	 */
-	public void setDuration(long duration) {
+	public synchronized void setDuration(long duration) {
 		this.duration = duration;
+	}
+	
+	public synchronized long getAverageClientLatency() {
+		long avgReaction  = 0;
+		
+		for(Team team : getMasterWindow().getTeamSet())
+		{
+			avgReaction += team.getAvgReactionTime();
+		}
+		avgReaction = avgReaction / getMasterWindow().getTeamSet().size();
+		return avgReaction;
 	}
 }

@@ -89,23 +89,6 @@ public class Team implements Comparable<Team>
 		writer.println(msg);
 	}
 	
-	/*public void switchToBot() {
-		System.out.println("SwitchToBot");
-		int port = clientSocket.getPort();
-				
-		try {
-			clientSocket.close();
-			clientSocket = new Socket("localhost", port);
-			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			writer = new PrintWriter(clientSocket.getOutputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		new TestClient(port);
-	}*/
-	
 	//TODO Javadoc
 	@Override
 	public String toString(){
@@ -113,10 +96,14 @@ public class Team implements Comparable<Team>
 	}
 	
 	public boolean equals(Object o){
+		if(o == null && this != null)
+		{
+			return false;
+		}
 		Team otherTeam = (Team) o;
-		try { //check, if other Team is a testclient (own InetAddress)
-			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("172.20.10.3"))
-			{
+//		try { //check, if other Team is a testclient (own InetAddress)
+//			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("192.168.2.194"))
+//			{
 				if(this.getID() == otherTeam.getID())
 				{
 					return true;
@@ -125,17 +112,17 @@ public class Team implements Comparable<Team>
 				{
 					return false;
 				}
-			}
+//			}
 			//check, if the teams have the same IP
-			if(this.getClientSocket().getInetAddress().getHostAddress().equals(otherTeam.getClientSocket().getInetAddress().getHostAddress()))
-			{
-				return true;
-			}
-		} catch (UnknownHostException uhe) {
-			uhe.printStackTrace();
-		}
-		
-		return false;
+//			if(this.getClientSocket().getInetAddress().getHostAddress().equals(otherTeam.getClientSocket().getInetAddress().getHostAddress()))
+//			{
+//				return true;
+//			}
+//		} catch (UnknownHostException uhe) {
+//			uhe.printStackTrace();
+//		}
+//		
+//		return false;
 	}
 	
 	public int compareTo(Team otherTeam) 

@@ -17,7 +17,6 @@ public class ArrayTeamSet<E> extends ArrayList<E> {
 			}
 	}
 	
-	
 	public void removeDuplicates(){
 		for(E e : this){
 			this.remove(e);

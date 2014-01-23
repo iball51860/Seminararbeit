@@ -56,6 +56,7 @@ public class FinishedWindow extends JFrame {
 				info.add(new JLabel("Matches played: " + t.getNoOfMatches() + "  "));
 				info.add(new JLabel("Duration: " + t.getDuration()/60000 + " min " + (int)(t.getDuration()/1000) % 60 + " s  "));
 				info.add(new JLabel("Goals: " + t.getGoals() + "  "));
+				info.add(new JLabel("Average Latency: " + t.getAverageClientLatency() + "ms"));
 				
 				contentPane.add(info, BorderLayout.SOUTH);
 				

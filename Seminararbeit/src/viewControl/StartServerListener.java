@@ -74,10 +74,12 @@ public class StartServerListener implements ActionListener {
 			});
 			return;
 		}
+		final int port2 = port;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				popup.dispose();
 				serverWindow.setEnabled(true);
+				serverWindow.getServerPort().setText("Port: " + port2);
 			}
 		});
 		serverWindow.setWMServer(new WMServer(port, serverWindow));

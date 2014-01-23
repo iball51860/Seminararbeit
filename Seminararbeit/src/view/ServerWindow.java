@@ -47,7 +47,8 @@ public class ServerWindow extends JFrame {
 	//Label for Meta Data
 	private JLabel currentRound;
 	private JLabel noOfClients;
-	private JLabel serverInfo;
+	private JLabel serverIP;
+	private JLabel serverPort;
 	private JLabel noOfTestClients;
 	private JLabel noPlaying;
 	private JLabel noOfPlayedMatches;
@@ -101,11 +102,13 @@ public class ServerWindow extends JFrame {
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
 		try {
-			serverInfo = new JLabel("Address (IP : Port): " + InetAddress.getLocalHost().getHostAddress() + " : ");
+			serverIP = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
 		} catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
-		west.add(serverInfo);
+		west.add(serverIP);
+		serverPort = new JLabel("Port: 0");
+		west.add(serverPort);
 		noOfTestClients = new JLabel("TestClients at Server: 0");
 		west.add(noOfTestClients);
 		noPlaying = new JLabel("Teams playing: 0");
@@ -295,8 +298,10 @@ public class ServerWindow extends JFrame {
 					public void run() {
 						if (!t.isInGame()) {
 							teamButtons[t.getID()].setBackground(Color.RED);
+							teamButtons[t.getID()].setForeground(Color.BLACK);
 						} else {
 							teamButtons[t.getID()].setBackground(Color.GREEN);
+							teamButtons[t.getID()].setForeground(Color.BLACK);
 						}
 						teamButtons[t.getID()].repaint();
 					}
@@ -314,10 +319,12 @@ public class ServerWindow extends JFrame {
 				public void run() {
 					if (!a.getName().equals("bottt")) {
 						teamButtons[a.getID()].setBackground(Color.BLUE);
+						teamButtons[a.getID()].setForeground(Color.WHITE);
 						teamButtons[a.getID()].repaint();
 					}
 					if (!b.getName().equals("bottt")) {
 						teamButtons[b.getID()].setBackground(Color.BLUE);
+						teamButtons[b.getID()].setForeground(Color.WHITE);
 						teamButtons[b.getID()].repaint();
 					}
 				}
@@ -374,8 +381,8 @@ public class ServerWindow extends JFrame {
 		JLabel noPlaying = this.noPlaying;
 		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
 		JLabel*/
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+		//try {
+			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					ServerWindow.this.currentRound.setText("Round: "
 							+ Analyser.getCurrentRoundName(t));
@@ -390,25 +397,28 @@ public class ServerWindow extends JFrame {
 							+ " %");
 				}
 			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (InvocationTargetException | InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	
 	public void updateShots(final Tournament t)
 	{
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-					progress.setValue(t.getFinishedShots());
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(t.getFinishedShots() >= progress.getValue() + (t.getNoOfShots() / 1000))
+		{
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
+						progress.setValue(t.getFinishedShots());
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -511,6 +521,11 @@ public class ServerWindow extends JFrame {
 	public ArrayTeamSet<Team> getTeamSet() {
 		Collections.sort(teamSet);
 		return teamSet;
+	}
+
+
+	public JLabel getServerPort() {
+		return serverPort;
 	}
 	
 }

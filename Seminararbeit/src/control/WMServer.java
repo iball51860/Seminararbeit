@@ -92,7 +92,7 @@ public class WMServer extends Thread
 		}
 	}
 	
-	public void registerTeam(Socket s)
+	public synchronized void registerTeam(Socket s)
 	{
 		Team newTeam = new Team(s, this);
 		clientsAtServer.add(newTeam);
@@ -129,13 +129,17 @@ public class WMServer extends Thread
 		while(clientsAtServer.size() == registeredClients){
 			try{sleep(5);}catch(InterruptedException ie){ie.printStackTrace();}
 		}
-		for(Team team : clientsAtServer)
+		while(true)
 		{
-			if(team.getName().equals("bottt"))
+			for(Team team : clientsAtServer)
 			{
-				return team;
+				if(team.getName().equals("bottt"))
+				{
+					team.setOnline(false);
+					Communication.sendMsg(team, Communication.GAMEOVER);
+					return team;
+				}
 			}
 		}
-		return null;
 	}
 }

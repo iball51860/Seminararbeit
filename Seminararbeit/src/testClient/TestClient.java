@@ -63,11 +63,17 @@ public class TestClient extends Thread{
 		{
 			String message = "default";
 			String frontSubString = "default";
-			String backSubString = "default";
+//			String backSubString = "default";
 			try
 			{
 				if((message = fromServer.readLine()) != null)
 				{
+//					try {
+//						sleep(40);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 					frontSubString = message.substring(0, 3);
 					//backSubString = message.substring(3);
 				}
@@ -104,6 +110,7 @@ public class TestClient extends Thread{
 					break;
 				default:
 					System.out.println(message);
+					runForrestRun = false;
 			}
 		}
 	}

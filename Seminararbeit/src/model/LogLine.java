@@ -13,7 +13,7 @@ public class LogLine implements Comparable<LogLine> {
 	
 	
 	private String message;
-	private int type;
+	private int type = Logger.DEFAULT;
 	private long creationDate;
 	
 	private String instanceName;
