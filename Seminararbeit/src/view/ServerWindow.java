@@ -47,7 +47,8 @@ public class ServerWindow extends JFrame {
 	//Label for Meta Data
 	private JLabel currentRound;
 	private JLabel noOfClients;
-	private JLabel serverInfo;
+	private JLabel serverIP;
+	private JLabel serverPort;
 	private JLabel noOfTestClients;
 	private JLabel noPlaying;
 	private JLabel noOfPlayedMatches;
@@ -101,11 +102,13 @@ public class ServerWindow extends JFrame {
 		noOfClients = new JLabel("Clients at Server: 0");
 		west.add(noOfClients);
 		try {
-			serverInfo = new JLabel("Address (IP : Port): " + InetAddress.getLocalHost().getHostAddress() + " : ");
+			serverIP = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
 		} catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
-		west.add(serverInfo);
+		west.add(serverIP);
+		serverPort = new JLabel("Port: 0");
+		west.add(serverPort);
 		noOfTestClients = new JLabel("TestClients at Server: 0");
 		west.add(noOfTestClients);
 		noPlaying = new JLabel("Teams playing: 0");
@@ -518,6 +521,11 @@ public class ServerWindow extends JFrame {
 	public ArrayTeamSet<Team> getTeamSet() {
 		Collections.sort(teamSet);
 		return teamSet;
+	}
+
+
+	public JLabel getServerPort() {
+		return serverPort;
 	}
 	
 }
