@@ -29,13 +29,17 @@ public class ServerWindow extends JFrame {
 	private JButton plusTestClient;
 	private JProgressBar progress;
 	
-	//TabbedPane for the Team-Matrix, the Result-List and the Log
+	//TabbedPane Team-Matrix
 	JTabbedPane tabPane;
 	private JPanel teamView;
+	
+	//TabbedPane Result-List
 	private JPanel result;
 	private JTextArea resultList;
 	private JScrollPane spResultList;
 	private JButton updateResult;
+	
+	//TabbedPane Log
 	private JPanel log;
 	private JPanel logSettings;
 	private JTextArea logConsole;
@@ -43,6 +47,7 @@ public class ServerWindow extends JFrame {
 	private JComboBox<String> teamBox1;
 	private JComboBox<String> teamBox2;
 	public JCheckBox[] type;
+	private JButton saveLog;
 	
 	//Label for Meta Data
 	private JLabel currentRound;
@@ -133,11 +138,12 @@ public class ServerWindow extends JFrame {
 		c.add(progress, BorderLayout.SOUTH);
 		//progress.setStringPainted(true);
 		
-		//create JTabedPane for "Team-Matrix", "Result-List" and "Log"
+		//create JTabedPane for "Team-Matrix"
 		tabPane = new JTabbedPane(JTabbedPane.TOP);
 		c.add(tabPane, BorderLayout.CENTER);
 		teamView = new JPanel();
 		
+		//create JTabedPane for "Result-List"
 		resultList = new JTextArea();
 		resultList.setEditable(false);
 		updateResult = new JButton("Update Result");
@@ -149,6 +155,7 @@ public class ServerWindow extends JFrame {
 		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
 		
+		//create JTabedPane for "Log"
 		log = new JPanel(new BorderLayout());
 		logConsole = new JTextArea();
 		logConsole.setEditable(false);
@@ -169,7 +176,6 @@ public class ServerWindow extends JFrame {
 		logSettings.add(infoLog);
 		logSettings.add(teamBox1);
 		logSettings.add(teamBox2);
-		
 		type = new JCheckBox[7];
 		type[0] = new JCheckBox("Default");
 		type[1] = new JCheckBox("Server");
@@ -178,7 +184,6 @@ public class ServerWindow extends JFrame {
 		type[4] = new JCheckBox("Round");
 		type[5] = new JCheckBox("Match");
 		type[6] = new JCheckBox("Shot");
-		
 		for(JCheckBox jCB : type)
 		{
 			jCB.setSelected(true);
@@ -187,8 +192,12 @@ public class ServerWindow extends JFrame {
 		}
 		logSettings.remove(type[0]);
 		logSettings.remove(type[6]);
+		saveLog = new JButton("save Log");
+		saveLog.addActionListener(new SaveLogListener(ServerWindow.this));
+		saveLog.setVisible(false);
 		log.add(spLog, BorderLayout.CENTER);
 		log.add(logSettings, BorderLayout.EAST);
+		log.add(saveLog, BorderLayout.SOUTH);
 		
 		tabPane.add("Matrix", teamView);
 		tabPane.add("Result", result);
@@ -477,6 +486,16 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public void showFinish(){
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					saveLog.setVisible(true);
+				}
+			});
+		}
+		catch (InvocationTargetException e) {e.printStackTrace();}
+		catch (InterruptedException e) {e.printStackTrace();}
+		
 		new FinishedWindow(this.tournament);
 	}
 	
@@ -507,6 +526,14 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JTextArea getLogString(){
+		return logConsole;
+	}
+	
+	public JButton getSaveLog() {
+		return saveLog;
+	}
+	
+	public JTextArea getLogConsole() {
 		return logConsole;
 	}
 	
