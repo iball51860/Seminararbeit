@@ -78,9 +78,16 @@ public class Team implements Comparable<Team>
 //			Logger.log("Reading \"" + read + "\" from " + name + ".", this, Logger.COMMUNICATION);
 			return read;
 		}
-		catch(IOException ioe){
+		catch(SocketException se)
+		{
+			se.printStackTrace();
+			return "x";
+		}
+		catch(IOException ioe)
+		{
 			ioe.printStackTrace();
-			return "x";}
+			return "x";
+		}
 	}
 	
 	public void write(String msg)
