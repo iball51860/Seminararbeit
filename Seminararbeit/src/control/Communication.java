@@ -1,6 +1,7 @@
 package control;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 
 import model.*;
