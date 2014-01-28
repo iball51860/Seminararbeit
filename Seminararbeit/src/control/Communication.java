@@ -20,7 +20,7 @@ public class Communication
 	public static final String GAMEOVER		= "GOV";
 	
 	public static final long MILLISTOTIMEOUT = 5000;
-	public static final long ALLOWEDAVGREACTION = 2000;
+	public static final long ALLOWEDAVGREACTION = 400;
 	
 	
 	

@@ -22,11 +22,12 @@ public class SaveLogListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		File logs = new File("Logs");
+		String directory = System.getProperty("user.home") + System.getProperty("file.seperator") + "WMServer Logs";
+		File logs = new File(directory);
 		logs.mkdir();
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy.MM.dd'_at_'HH.mm.ss.SSSS'.txt'");
 		SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd.MMMM yyyy' at 'HH.mm");
-		File file = new File("Logs", dateFormat1.format(new Date()));
+		File file = new File(directory, "WMServerLog_" + dateFormat1.format(new Date()));
 		
 		String teams = "Teams: " + sW.getTeamBox1().getSelectedItem() + " and " +
 				"" + sW.getTeamBox2().getSelectedItem();

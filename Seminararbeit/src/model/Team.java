@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import control.Analyser;
 import control.Logger;
@@ -36,7 +37,7 @@ public class Team implements Comparable<Team>
 	private PrintWriter writer;
 	private WMServer server;
 	private boolean isOnline = true;
-	private long avgReactionTime = 0;
+	private ArrayBlockingQueue<Long> LastReactionTimes = new ArrayBlockingQueue<Long>(40);
 	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
@@ -427,21 +428,29 @@ public class Team implements Comparable<Team>
 	 * @return the avgReactionTime
 	 */
 	public long getAvgReactionTime() {
-		/*if(avgReactionTime > 3000 && registeredReactions <= 10)
+		if(LastReactionTimes.size() <= 10)
 		{
-			return 0;
-		}*/
-		return avgReactionTime;
+			return 1;
+		}
+		else
+		{
+			long reaction = 0;
+			for (Long l : LastReactionTimes) {
+				reaction += l;
+			}
+			return reaction / LastReactionTimes.size();
+		}
 	}
 	
 	/**
 	 * @param l the avgReactionTime to set
 	 */
 	public void registerReactionTime(long reactionTime) {
-		long previous = avgReactionTime * registeredReactions;
-		previous += reactionTime;
-		++registeredReactions;
-		this.avgReactionTime = previous / registeredReactions;
+		if(LastReactionTimes.remainingCapacity() == 0)
+		{
+			LastReactionTimes.poll();
+		}
+		LastReactionTimes.offer(reactionTime);
 	}
 	
 

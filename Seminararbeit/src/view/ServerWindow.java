@@ -93,7 +93,7 @@ public class ServerWindow extends JFrame {
 		
 		//create panels and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
-		addTestClients = new JButton("add Test Clients");
+		addTestClients = new JButton("Add Test Clients");
 		addTestClients.addActionListener(new AddTestClientsListener(ServerWindow.this));
 		plusTestClient = new JButton("+");
 		plusTestClient.addActionListener(new PopupTestClientsListener(ServerWindow.this));
@@ -192,7 +192,7 @@ public class ServerWindow extends JFrame {
 		}
 		logSettings.remove(type[0]);
 		logSettings.remove(type[6]);
-		saveLog = new JButton("save Log");
+		saveLog = new JButton("Save Log");
 		saveLog.addActionListener(new SaveLogListener(ServerWindow.this));
 		saveLog.setVisible(false);
 		log.add(spLog, BorderLayout.CENTER);
