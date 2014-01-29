@@ -444,14 +444,15 @@ public class ServerWindow extends JFrame {
 		for(Team t : teamSet)
 		{
 			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
+			long avg;
 			sb.append(count++ + ". " + t.getName() + "\t" + t.getWonMatches() + " Victories\t" + t.getGoals() + " Goals\t" +
 					"Success Rate: " + rate + " %\t" + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\tAvg. Reaction: " + 
-					t.getAvgReactionTime() + " ms\n");
+					(avg = t.getAvgReactionTime()) + " ms\tStandard Deviation: " + t.getStandardDeviation(avg) + "ms\n");
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				resultList.setText(sb.toString());
-//				spResultList.getVerticalScrollBar().setValue(0);
+				resultList.setCaretPosition(0);
 			}
 		});
 	}

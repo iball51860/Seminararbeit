@@ -442,6 +442,20 @@ public class Team implements Comparable<Team>
 		}
 	}
 	
+	public long getStandardDeviation(long avg)
+	{
+		long deviation = 0;
+		for(Long l : LastReactionTimes){
+			deviation += Math.pow((l-avg), 2);
+		}
+		deviation = deviation / LastReactionTimes.size();
+		return (long) Math.sqrt(deviation);
+	}
+	
+	public long getStandardDeviation(){
+		return getStandardDeviation(getAvgReactionTime());
+	}
+	
 	/**
 	 * @param l the avgReactionTime to set
 	 */
