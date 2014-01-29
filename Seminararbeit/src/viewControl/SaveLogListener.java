@@ -43,6 +43,8 @@ public class SaveLogListener implements ActionListener
 			writer.write(settings + "\n");
 			writer.write("____________________________________________________________________________________\n\n");
 			writer.write(sW.getLogConsole().getText());
+			writer.write("\n\n>> RESULTS: --------------------------------------------------------------------\n\n");
+			writer.write(sW.getResultList().getText());
 			writer.flush();
 		} 
 		catch (IOException e1) 

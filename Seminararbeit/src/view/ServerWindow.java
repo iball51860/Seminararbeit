@@ -555,5 +555,10 @@ public class ServerWindow extends JFrame {
 	public JLabel getServerPort() {
 		return serverPort;
 	}
+
+
+	public JTextArea getResultList() {
+		return this.resultList;
+	}
 	
 }
