@@ -37,7 +37,7 @@ public class Team implements Comparable<Team>
 	private PrintWriter writer;
 	private WMServer server;
 	private boolean isOnline = true;
-	private ArrayBlockingQueue<Long> LastReactionTimes = new ArrayBlockingQueue<Long>(40);
+	private ArrayBlockingQueue<Long> LastReactionTimes = new ArrayBlockingQueue<Long>(50);
 	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
