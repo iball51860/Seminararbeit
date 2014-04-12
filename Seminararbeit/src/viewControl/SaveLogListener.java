@@ -22,7 +22,7 @@ public class SaveLogListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		String directory = System.getProperty("user.home") + System.getProperty("file.seperator") + "WMServer Logs";
+		String directory = System.getProperty("user.home") + "/Desktop/WMServer_Logs";
 		File logs = new File(directory);
 		logs.mkdir();
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy.MM.dd'_at_'HH.mm.ss.SSSS'.txt'");
