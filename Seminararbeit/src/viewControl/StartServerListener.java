@@ -80,6 +80,7 @@ public class StartServerListener implements ActionListener {
 				popup.dispose();
 				serverWindow.setEnabled(true);
 				serverWindow.getServerPort().setText("Port: " + port2);
+				serverWindow.getShowPort().setText("Port: " + port2);
 			}
 		});
 		serverWindow.setWMServer(new WMServer(port, serverWindow));

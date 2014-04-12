@@ -28,9 +28,17 @@ public class ServerWindow extends JFrame {
 	private JButton addTestClients;
 	private JButton plusTestClient;
 	private JProgressBar progress;
+	 
+	
+	//TabbedPane
+	private JTabbedPane tabPane;
+	
+	//TabbelPane Start
+	private JPanel startPanel;
+	private JLabel showIp;
+	private JLabel showPort;
 	
 	//TabbedPane Team-Matrix
-	JTabbedPane tabPane;
 	private JPanel teamView;
 	
 	//TabbedPane Result-List
@@ -112,7 +120,7 @@ public class ServerWindow extends JFrame {
 			uhe.printStackTrace();
 		}
 		west.add(serverIP);
-		serverPort = new JLabel("Port: 0");
+		serverPort = new JLabel("Port: XXXX");
 		west.add(serverPort);
 		noOfTestClients = new JLabel("TestClients at Server: 0");
 		west.add(noOfTestClients);
@@ -138,12 +146,28 @@ public class ServerWindow extends JFrame {
 		c.add(progress, BorderLayout.SOUTH);
 		//progress.setStringPainted(true);
 		
-		//create JTabedPane for "Team-Matrix"
+		
+		//create JTabbedPane 
 		tabPane = new JTabbedPane(JTabbedPane.TOP);
 		c.add(tabPane, BorderLayout.CENTER);
+		
+		//create Panel for "Start"
+		startPanel = new JPanel(new GridLayout(2, 1));
+		try {
+			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
+			showIp.setFont(new Font("Arial", Font.BOLD, 60));
+		} catch (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		showPort = new JLabel("Port: XXXX");
+		showPort.setFont(new Font("Arial", Font.BOLD, 60));
+		startPanel.add(showIp);
+		startPanel.add(showPort);
+		
+		//create Panel for "Team-Matrix"
 		teamView = new JPanel();
 		
-		//create JTabedPane for "Result-List"
+		//create Panel for "Result-List"
 		resultList = new JTextArea();
 		resultList.setEditable(false);
 		updateResult = new JButton("Update Result");
@@ -155,7 +179,7 @@ public class ServerWindow extends JFrame {
 		result.add(spResultList, BorderLayout.CENTER);
 		result.add(updateResult, BorderLayout.SOUTH);
 		
-		//create JTabedPane for "Log"
+		//create Pane for "Log"
 		log = new JPanel(new BorderLayout());
 		logConsole = new JTextArea();
 		logConsole.setEditable(false);
@@ -199,10 +223,13 @@ public class ServerWindow extends JFrame {
 		log.add(logSettings, BorderLayout.EAST);
 		log.add(saveLog, BorderLayout.SOUTH);
 		
-		tabPane.add("Matrix", teamView);
+		
+//		tabPane.add("Matrix", teamView);
+		tabPane.add("Start", startPanel);
 		tabPane.add("Result", result);
 		tabPane.add("Log", log);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
+		
 		
 		//create popup dialog to request Port
 		popup = new PopupDialogPort(ServerWindow.this);
@@ -551,7 +578,19 @@ public class ServerWindow extends JFrame {
 
 
 	public JTextArea getResultList() {
-		return this.resultList;
+		return resultList;
+	}
+	
+	public JLabel getShowPort() {
+		return showPort;
+	}
+	
+	public JTabbedPane getTabPane() {
+		return tabPane;
+	}
+	
+	public JPanel getTeamView() {
+		return teamView;
 	}
 	
 }

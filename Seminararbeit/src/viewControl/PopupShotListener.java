@@ -53,6 +53,8 @@ public class PopupShotListener implements ActionListener
 			public void run() {
 				popup.dispose();
 				serverWindow.setEnabled(true);
+				serverWindow.getTabPane().setComponentAt(0, serverWindow.getTeamView());
+				serverWindow.getTabPane().setTitleAt(0, "Matrix");
 				serverWindow.getStartButton().setEnabled(false);
 			}
 		});	
