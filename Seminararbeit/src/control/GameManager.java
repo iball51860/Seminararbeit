@@ -6,6 +6,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameManager extends Thread{	
 	
+	private static int roundCount;
+	
 	private Tournament tournament;
 	
 	public GameManager(Tournament t)
@@ -31,9 +33,9 @@ public class GameManager extends Thread{
 				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
-		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
+		for(roundCount=t.getNoOfRounds(); roundCount>=1 && t.isRunning(); roundCount--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
-			t.setCurrentRound(i);
+			t.setCurrentRound(roundCount);
 			t.getMasterWindow().updateMetaData(t);
 			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase() + " - " + t.getPlaying().size() + " teams playing.", Logger.ROUND);
 			
@@ -68,7 +70,7 @@ public class GameManager extends Thread{
 				a.resetRoundVariables();
 				b.resetRoundVariables();
 				int goalsToPlayInMatch = t.getNoOfShotsPerMatch();
-				if(i==1) //add excess shots in final
+				if(roundCount==1) //add excess shots in final
 				{
 					goalsToPlayInMatch += finalExtraShots;
 				}
@@ -103,7 +105,7 @@ public class GameManager extends Thread{
 			
 			t.getPlaying().removeAll(t.getLost());
 			
-			if(i == t.getNoOfRounds()) //Relegation in erster Runde
+			if(roundCount == t.getNoOfRounds()) //Relegation in erster Runde
 			{
 				int dif = (int) (Math.pow(2, t.getNoOfRounds()-1) - t.getPlaying().size());
 				Collections.sort(t.getLost());
@@ -226,5 +228,10 @@ public class GameManager extends Thread{
 		}
 		shooting.incrementFinishedShots(1);
 		return goal;
+	}
+	
+	public static void interruptGame()
+	{
+		roundCount = 1;
 	}
 }
