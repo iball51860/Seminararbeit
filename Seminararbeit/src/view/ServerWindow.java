@@ -194,7 +194,7 @@ public class ServerWindow extends JFrame {
 		logSettings.remove(type[6]);
 		saveLog = new JButton("Save Log");
 		saveLog.addActionListener(new SaveLogListener(ServerWindow.this));
-		saveLog.setVisible(false);
+		saveLog.setVisible(true);
 		log.add(spLog, BorderLayout.CENTER);
 		log.add(logSettings, BorderLayout.EAST);
 		log.add(saveLog, BorderLayout.SOUTH);
@@ -490,16 +490,6 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public void showFinish(){
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					saveLog.setVisible(true);
-				}
-			});
-		}
-		catch (InvocationTargetException e) {e.printStackTrace();}
-		catch (InterruptedException e) {e.printStackTrace();}
-		
 		new FinishedWindow(this.tournament);
 	}
 	
