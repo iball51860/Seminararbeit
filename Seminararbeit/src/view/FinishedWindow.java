@@ -42,7 +42,7 @@ public class FinishedWindow extends JFrame {
 					winners[i].add(name, BorderLayout.CENTER);
 					JLabel info = new JLabel("Goals: " + team.getGoals() + "    GoalsAgainst: " + team.getGoalsAgainst() + 
 							"    Difference:" +	(team.getGoals() - team.getGoalsAgainst()) + "    Success Rate: " +
-							team.getGoals()/team.getFinishedShots() + "%    ");
+							100 * team.getGoals() / team.getFinishedShots() + "%");
 					winners[i].add(info, BorderLayout.SOUTH);
 					ranks.add(winners[i]);
 				}

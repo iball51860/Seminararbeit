@@ -34,6 +34,7 @@ public class GameManager extends Thread{
 		for(int i=t.getNoOfRounds(); i>=1 && t.isRunning(); i--) //counts rounds DOWN for better consistency with no of Teams playing
 		{
 			t.setCurrentRound(i);
+			t.getMasterWindow().updateMetaData(t);
 			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase() + " - " + t.getPlaying().size() + " teams playing.", Logger.ROUND);
 			
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
