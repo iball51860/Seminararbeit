@@ -238,7 +238,9 @@ public class ServerWindow extends JFrame {
 	public void updateTeamView(final Tournament t)
 	{
 		this.tournament = t;
-		progress.setMaximum(t.getNoOfShots());
+		int noOfShotsLog = (int) (Math.log(t.getNoOfShots()) / Math.log(2) * 1000);
+		int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
+		progress.setMaximum(noOfShotsLog - noOfShotsPerMatchLog);
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
@@ -415,13 +417,14 @@ public class ServerWindow extends JFrame {
 	
 	public void updateShots(final Tournament t)
 	{
-		if(t.getFinishedShots() >= progress.getValue() + (t.getNoOfShots() / 1000))
 		{
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
 						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-						progress.setValue(t.getFinishedShots());
+						int noOfFinishedShotsLog = (int) (Math.log(t.getFinishedShots()) / Math.log(2) * 1000);
+						int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
+						progress.setValue(noOfFinishedShotsLog - noOfShotsPerMatchLog);
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {

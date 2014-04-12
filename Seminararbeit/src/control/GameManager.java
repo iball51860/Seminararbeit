@@ -50,7 +50,7 @@ public class GameManager extends Thread{
 			
 			for(int j=0; j<sizeAtStart && t.isRunning(); j+=2)
 			{
-				//number of threads can be limited
+				//number of threads (Submanager) is limited to 150 (maximum 300 Teams can play at the same time))
 				while(threadList.size() >= 150)
 				{
 					for(SubManager thread : threadList)
