@@ -585,4 +585,12 @@ public class ServerWindow extends JFrame {
 		return showPort;
 	}
 	
+	public JTabbedPane getTabPane() {
+		return tabPane;
+	}
+	
+	public JPanel getTeamView() {
+		return teamView;
+	}
+	
 }
