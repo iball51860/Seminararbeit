@@ -127,6 +127,12 @@ public class TestClient extends Thread{
 	
 	private String generateDecision()
 	{
+//		try {
+//			sleep(0);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		double random = Math.random();
 		if(random < 1.0/3.0) 
 		{
