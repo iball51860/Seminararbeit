@@ -1,7 +1,6 @@
 package viewControl;
 
 import java.awt.event.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;

@@ -38,7 +38,7 @@ public class Team implements Comparable<Team>
 	private WMServer server;
 	private boolean isOnline = true;
 	private ArrayBlockingQueue<Long> LastReactionTimes = new ArrayBlockingQueue<Long>(50);
-	private int registeredReactions = 0;
+//	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
 	{

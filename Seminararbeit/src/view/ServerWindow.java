@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.*;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,6 +13,7 @@ import model.*;
 import control.*;
 import viewControl.*;
 
+@SuppressWarnings("serial")
 public class ServerWindow extends JFrame {
 	
 	
@@ -36,10 +36,16 @@ public class ServerWindow extends JFrame {
 	//TabbedPane
 	private JTabbedPane tabPane;
 	
-	//TabbelPane Start
+	//TabbedPane Start
 	private JPanel startPanel;
 	private JLabel showIp;
 	private JLabel showPort;
+	
+	//TabbedPane Final
+	private JPanel finalPanel;
+	private JLabel[] labelTeam;
+	private JProgressBar[] progressTeam;
+	
 	
 	//TabbedPane Team-Matrix
 	private JPanel teamView;
@@ -185,6 +191,18 @@ public class ServerWindow extends JFrame {
 		startPanel.add(showIp);
 		startPanel.add(showPort);
 		
+		//create Panel for the final
+		finalPanel = new JPanel(new GridLayout(0, 1));
+		progressTeam = new JProgressBar[4];
+		labelTeam = new JLabel[4];
+		for(int i = 0; i < 4; i++)
+		{
+			labelTeam[i] = new JLabel("Team " + i);
+			progressTeam[i] = new JProgressBar(-50, 50);
+			finalPanel.add(labelTeam[i]);
+			finalPanel.add(progressTeam[i]);
+		}
+		
 		//create Panel for "Team-Matrix"
 		teamView = new JPanel();
 		
@@ -244,8 +262,7 @@ public class ServerWindow extends JFrame {
 		log.add(logSettings, BorderLayout.EAST);
 		log.add(saveLog, BorderLayout.SOUTH);
 		
-		
-//		tabPane.add("Matrix", teamView);
+		//build JTabbedPane
 		tabPane.add("Start", startPanel);
 		tabPane.add("Result", result);
 		tabPane.add("Log", log);
@@ -287,7 +304,6 @@ public class ServerWindow extends JFrame {
 	{
 		this.tournament = t;
 		progress.setMaximum(Analyser.calculateTotalWeightedShots(t));
-		System.out.println(Analyser.calculateTotalWeightedShots(t));
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
@@ -408,6 +424,7 @@ public class ServerWindow extends JFrame {
 	/**
 	 * removes all teams who have lost from the teamView-Panel
 	 * 
+	 * @deprecated
 	 */
 	public void removeLoosingTeams()
 	{
@@ -531,6 +548,14 @@ public class ServerWindow extends JFrame {
 				}
 			});
 		}
+	}
+	
+	public void showFinal()
+	{
+		tabPane.add(finalPanel, 0);
+		tabPane.setTitleAt(0, "Final");
+		tabPane.setSelectedIndex(0);
+		(new FinalPanelUpdater(tournament, finalPanel, labelTeam, progressTeam)).start();
 	}
 	
 	public void showFinish(){

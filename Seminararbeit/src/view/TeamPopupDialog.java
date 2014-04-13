@@ -7,6 +7,7 @@ import javax.swing.*;
 import viewControl.*;
 import model.*;
 
+@SuppressWarnings("serial")
 public class TeamPopupDialog extends JDialog
 {
 	

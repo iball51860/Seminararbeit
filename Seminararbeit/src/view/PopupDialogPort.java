@@ -4,8 +4,8 @@ import javax.swing.*;
 
 import viewControl.*;
 
-import java.awt.*;
 
+@SuppressWarnings("serial")
 public class PopupDialogPort extends PopupDialog
 {
 	

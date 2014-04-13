@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import viewControl.*;
 
+@SuppressWarnings("serial")
 public class PopupDialogTestClients extends PopupDialog
 {
 	
