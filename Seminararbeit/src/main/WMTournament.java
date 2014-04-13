@@ -1,6 +1,5 @@
 package main;
 
-import control.Logger;
 import view.*;
 
 public class WMTournament {

@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import model.*;
 
+@SuppressWarnings("serial")
 public class FinishedWindow extends JFrame {
 	
 	public FinishedWindow(final Tournament t){

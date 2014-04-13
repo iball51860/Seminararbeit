@@ -5,7 +5,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import javax.swing.JCheckBox;
 
 import view.ServerWindow;
 

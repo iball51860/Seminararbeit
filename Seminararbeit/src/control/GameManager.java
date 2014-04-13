@@ -37,9 +37,9 @@ public class GameManager extends Thread{
 		{
 			t.setCurrentRound(roundCount);
 			t.getMasterWindow().updateMetaData(t);
-			if(roundCount == 1)
+			if(roundCount == 2)
 			{
-				t.getMasterWindow().removeLoosingTeams();
+				t.getMasterWindow().showFinal();
 			}
 			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase() + " - " + t.getPlaying().size() + " teams playing.", Logger.ROUND);
 			
@@ -224,5 +224,10 @@ public class GameManager extends Thread{
 	public static void interruptGame()
 	{
 		roundCount = 1;
+	}
+	
+	public static int getRoundCout()
+	{
+		return roundCount;
 	}
 }

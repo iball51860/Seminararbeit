@@ -1,9 +1,6 @@
 package viewControl;
 
-import java.awt.Point;
 import java.awt.event.*;
-
-import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import model.*;
@@ -29,7 +26,7 @@ public class ShowTeamListener implements ActionListener
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				serverWindow.setEnabled(false);
-				TeamPopupDialog p = new TeamPopupDialog(serverWindow, t);
+				new TeamPopupDialog(serverWindow, t);
 			}
 		});
 		

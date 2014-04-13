@@ -1,8 +1,6 @@
 package viewControl;
 
-import java.awt.Point;
 import java.awt.event.*;
-import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import view.*;

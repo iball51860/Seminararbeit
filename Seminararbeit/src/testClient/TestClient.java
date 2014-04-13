@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 import control.*;
-import main.WMTournament;
 
 
 public class TestClient extends Thread{
