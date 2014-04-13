@@ -634,5 +634,15 @@ public class ServerWindow extends JFrame {
 	public JPanel getTeamView() {
 		return teamView;
 	}
+
+
+	public JButton getAddTestClients() {
+		return addTestClients;
+	}
+
+
+	public JButton getPlusTestClient() {
+		return plusTestClient;
+	}
 	
 }

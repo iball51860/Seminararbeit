@@ -56,6 +56,8 @@ public class PopupShotListener implements ActionListener
 				serverWindow.getTabPane().setComponentAt(0, serverWindow.getTeamView());
 				serverWindow.getTabPane().setTitleAt(0, "Matrix");
 				serverWindow.getStartButton().setEnabled(false);
+				serverWindow.getAddTestClients().setEnabled(false);
+				serverWindow.getPlusTestClient().setEnabled(false);
 			}
 		});	
 	}
