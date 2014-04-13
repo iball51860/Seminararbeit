@@ -28,6 +28,8 @@ public class ServerWindow extends JFrame {
 	private JButton resetServer;
 	private JButton addTestClients;
 	private JButton plusTestClient;
+	private JLabel reactionTimeLabel;
+	private JSlider reactionTime;
 	private JProgressBar progress;
 	 
 	
@@ -100,15 +102,28 @@ public class ServerWindow extends JFrame {
 		startButton.setEnabled(false);
 		west.add(startButton);
 		
-		//create panels and Buttons for starting TestClients
+		//create panel and Buttons for starting TestClients
 		testClientPanel = new JPanel(new BorderLayout());
 		addTestClients = new JButton("Add Test Clients");
 		addTestClients.addActionListener(new AddTestClientsListener(ServerWindow.this));
 		plusTestClient = new JButton("+");
 		plusTestClient.addActionListener(new PopupTestClientsListener(ServerWindow.this));
-		west.add(testClientPanel);
+		reactionTimeLabel = new JLabel("Reaction Time (ms): " + 0);
+		reactionTime = new JSlider();
+		reactionTime.setName("Reaction Time");
+		reactionTime.setMaximum(500);
+		reactionTime.setValue(0);
+		reactionTime.setMajorTickSpacing(100);
+		reactionTime.setPaintTicks(true);
+		reactionTime.setPaintLabels(true);
+		reactionTime.addChangeListener(new ChangeReactionTimeListener(reactionTime, reactionTimeLabel));
 		testClientPanel.add(addTestClients, BorderLayout.CENTER);
 		testClientPanel.add(plusTestClient, BorderLayout.EAST);
+		
+		west.add(testClientPanel);
+		west.add(reactionTimeLabel);
+		west.add(reactionTime);
+		
 				
 		//create Labels for information
 		currentRound = new JLabel("Round: 0");
@@ -137,7 +152,7 @@ public class ServerWindow extends JFrame {
 		west.add(shotsPerMatch);
 		
 		//create finishButton for interrupting Game after the current round
-		finishButton = new JButton("Interrupt Game");
+		finishButton = new JButton("Stop Game after current Round");
 		finishButton.addActionListener(new FinishGameListener());
 		west.add(finishButton);
 		
@@ -161,12 +176,12 @@ public class ServerWindow extends JFrame {
 		startPanel = new JPanel(new GridLayout(2, 1));
 		try {
 			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-			showIp.setFont(new Font("Arial", Font.BOLD, 55));
+			showIp.setFont(new Font("Arial", Font.BOLD, 50));
 		} catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
 		showPort = new JLabel("Port: XXXX");
-		showPort.setFont(new Font("Arial", Font.BOLD, 55));
+		showPort.setFont(new Font("Arial", Font.BOLD, 50));
 		startPanel.add(showIp);
 		startPanel.add(showPort);
 		
@@ -271,9 +286,8 @@ public class ServerWindow extends JFrame {
 	public void updateTeamView(final Tournament t)
 	{
 		this.tournament = t;
-		int noOfShotsLog = (int) (Math.log(t.getNoOfShots()) / Math.log(2) * 1000);
-		int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
-		progress.setMaximum(noOfShotsLog - noOfShotsPerMatchLog);
+		progress.setMaximum(Analyser.calculateTotalWeightedShots(t));
+		System.out.println(Analyser.calculateTotalWeightedShots(t));
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
@@ -392,7 +406,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	/**
-	 * removes all teams who loose from the teamView-Panel
+	 * removes all teams who have lost from the teamView-Panel
 	 * 
 	 * @deprecated
 	 */
@@ -455,9 +469,7 @@ public class ServerWindow extends JFrame {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
 						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-						int noOfFinishedShotsLog = (int) (Math.log(t.getFinishedShots()) / Math.log(2) * 1000);
-						int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
-						progress.setValue(noOfFinishedShotsLog - noOfShotsPerMatchLog);
+						progress.setValue(t.getWeightedFinishedShots());
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {

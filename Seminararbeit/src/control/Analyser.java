@@ -186,4 +186,19 @@ public class Analyser {
 				return "Last " + (int) Math.pow(2, currentRound);
 		}
 	}
+	
+	
+	public static int calculateTotalWeightedShots(Tournament t)
+	{
+		int weightedShots = 0;
+		int divider = 2;
+		int shotsWithoutFinal = t.getNoOfShotsPerMatch() * t.getNoOfMatches();
+		for(int i = 0; i <= t.getNoOfRounds()-1; i++)
+		{
+			weightedShots += shotsWithoutFinal / divider * Math.pow(2, i);
+			divider = divider * 2;
+		}
+		weightedShots += (t.getNoOfShots() - shotsWithoutFinal) * Math.pow(2, t.getNoOfRounds()-1);
+		return weightedShots;
+	}
 }
