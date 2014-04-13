@@ -17,7 +17,7 @@ public class PopupDialogShots extends PopupDialog
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				info.setText("No of Shots");
-				input.setText("100000");
+				input.setText("20000");
 				start.setText("OK");
 				pIL = new PopupShotListener(PopupDialogShots.this, serverWindow);
 				input.addActionListener(pIL);
