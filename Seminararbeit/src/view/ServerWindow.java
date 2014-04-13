@@ -20,10 +20,11 @@ public class ServerWindow extends JFrame {
 	private WMServer wmServer;
 	private Tournament tournament;
 	
-	//private JPanel north;
+	//JPanel west;
 	private JPanel west;
 	private JPanel testClientPanel;
 	private JButton startButton;
+	private JButton finishButton;
 	private JButton resetServer;
 	private JButton addTestClients;
 	private JButton plusTestClient;
@@ -93,7 +94,7 @@ public class ServerWindow extends JFrame {
 		c.add(west, BorderLayout.WEST);
 		west.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
-		//create Buttons for starting game, show Result list and show log
+		//create Buttons for starting game
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(new StartTournamentListener(ServerWindow.this));
 		startButton.setEnabled(false);
@@ -135,6 +136,11 @@ public class ServerWindow extends JFrame {
 		shotsPerMatch = new JLabel("Shots per Match: ");
 		west.add(shotsPerMatch);
 		
+		//create finishButton for interrupting Game after the current round
+		finishButton = new JButton("Interrupt Game");
+		finishButton.addActionListener(new FinishGameListener());
+		west.add(finishButton);
+		
 		//create reset-Server-Button
 		resetServer = new JButton("Reset Server");
 		resetServer.addActionListener(new ResetServerListener(ServerWindow.this));
@@ -155,12 +161,12 @@ public class ServerWindow extends JFrame {
 		startPanel = new JPanel(new GridLayout(2, 1));
 		try {
 			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-			showIp.setFont(new Font("Arial", Font.BOLD, 60));
+			showIp.setFont(new Font("Arial", Font.BOLD, 55));
 		} catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
 		showPort = new JLabel("Port: XXXX");
-		showPort.setFont(new Font("Arial", Font.BOLD, 60));
+		showPort.setFont(new Font("Arial", Font.BOLD, 55));
 		startPanel.add(showIp);
 		startPanel.add(showPort);
 		
