@@ -44,7 +44,7 @@ public class PopupShotListener implements ActionListener
 		{
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					popup.getInput().setText("100000");
+					popup.getInput().setText("20000");
 				}
 			});
 		}

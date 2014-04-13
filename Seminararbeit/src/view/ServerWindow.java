@@ -408,7 +408,6 @@ public class ServerWindow extends JFrame {
 	/**
 	 * removes all teams who have lost from the teamView-Panel
 	 * 
-	 * @deprecated
 	 */
 	public void removeLoosingTeams()
 	{
