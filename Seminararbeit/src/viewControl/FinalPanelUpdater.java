@@ -43,7 +43,7 @@ public class FinalPanelUpdater extends Thread
 		
 		copy = t.getPlaying().clone();
 		
-		do
+		while(GameManager.getRoundCout() != 0)
 		{
 			try 
 			{
@@ -65,8 +65,27 @@ public class FinalPanelUpdater extends Thread
 			}
 			finalPanel.updateUI();
 		}
-		while(GameManager.getRoundCout() != 0);
 		
+		try 
+		{
+			sleep(200);
+		}
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		finalPanel.removeAll();
+		Collections.sort(copy);
+		for(int i = 0; i < copy.size(); i++)
+		{
+			labelTeam[i].setText(copy.get(i).getName() + " | Won Matches: " + copy.get(i).getWonMatches() + 
+					" | Goal Difference in current Match: " + (copy.get(i).getGoalsInCurrentRound()-copy.get(i).getGoalsAgainstInCurrentRound()));
+			progressTeam[i].setValue(copy.get(i).getGoalsInCurrentRound()-copy.get(i).getGoalsAgainstInCurrentRound());
+			finalPanel.add(labelTeam[i]);
+			finalPanel.add(progressTeam[i]);
+		}
+		finalPanel.updateUI();
 	}
 	
 }
