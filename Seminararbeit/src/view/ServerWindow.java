@@ -137,7 +137,7 @@ public class ServerWindow extends JFrame {
 		west.add(shotsPerMatch);
 		
 		//create finishButton for interrupting Game after the current round
-		finishButton = new JButton("Interrupt Game");
+		finishButton = new JButton("Stop Game after current Round");
 		finishButton.addActionListener(new FinishGameListener());
 		west.add(finishButton);
 		
@@ -271,9 +271,8 @@ public class ServerWindow extends JFrame {
 	public void updateTeamView(final Tournament t)
 	{
 		this.tournament = t;
-		int noOfShotsLog = (int) (Math.log(t.getNoOfShots()) / Math.log(2) * 1000);
-		int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
-		progress.setMaximum(noOfShotsLog - noOfShotsPerMatchLog);
+		progress.setMaximum(Analyser.calculateTotalWeightedShots(t));
+		System.out.println(Analyser.calculateTotalWeightedShots(t));
 		this.teamSet = t.getPlaying().clone();
 		final ArrayTeamSet<Team> clone = this.teamSet;
 		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
@@ -392,7 +391,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	/**
-	 * removes all teams who loose from the teamView-Panel
+	 * removes all teams who have lost from the teamView-Panel
 	 * 
 	 * @deprecated
 	 */
@@ -455,9 +454,7 @@ public class ServerWindow extends JFrame {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
 						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-						int noOfFinishedShotsLog = (int) (Math.log(t.getFinishedShots()) / Math.log(2) * 1000);
-						int noOfShotsPerMatchLog = (int) (Math.log(t.getNoOfShotsPerMatch()) / Math.log(2) * 1000);
-						progress.setValue(noOfFinishedShotsLog - noOfShotsPerMatchLog);
+						progress.setValue(t.getWeightedFinishedShots());
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {

@@ -16,6 +16,8 @@ public class TestClient extends Thread{
 	private boolean runForrestRun = true;
 	private String name;
 	
+	private static int waitForIt = 0;
+	
 	
 	public TestClient(int port)
 	{
@@ -122,17 +124,17 @@ public class TestClient extends Thread{
 	 */
 	private void sendToServer(String msg)
 	{
+		try {
+			sleep(waitForIt);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		toServer.println(msg);
 	}
 	
 	private String generateDecision()
 	{
-//		try {
-//			sleep(0);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		double random = Math.random();
 		if(random < 1.0/3.0) 
 		{
@@ -153,5 +155,12 @@ public class TestClient extends Thread{
 	public void setRunForrestRun(boolean b){
 		this.runForrestRun = b;
 	}
+	
+	
+	
+	public static void setWaitForIt (int wait){
+		waitForIt = wait;
+	}
+	
 	
 }

@@ -14,9 +14,11 @@ public class Tournament {
 	private ServerWindow masterWindow;
 	private WMServer server;
 	private int currentRound;
+	private int currentRound2;
 	private int noOfMatches;
 	private int finishedMatches;
 	private int finishedShots;
+	private int weightedFinishedShots;
 	private int goals;
 	
 	private boolean isRunning;
@@ -31,8 +33,11 @@ public class Tournament {
 		this.masterWindow = masterWindow;
 		this.server = masterWindow.getWMServer();
 		this.currentRound = 0;
+		this.currentRound2 = -1;
 		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
 		this.finishedMatches = 0;
+		this.finishedShots = 0;
+		this.weightedFinishedShots = 0;
 		this.isRunning = true;
 	}
 
@@ -146,6 +151,14 @@ public class Tournament {
 	 */
 	public synchronized void setCurrentRound(int currentRound) {
 		this.currentRound = currentRound;
+		this.currentRound2 += 1;
+	}
+	
+	/**
+	 * @return the currentRound2
+	 */
+	public synchronized int getCurrentRound2() {
+		return currentRound2;
 	}
 
 	/**
@@ -196,6 +209,14 @@ public class Tournament {
 	
 	public synchronized void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
+		this.weightedFinishedShots += increment * Math.pow(2, currentRound2);
+	}
+	
+	/**
+	 * @return the finishedShotsInRound
+	 */
+	public synchronized int getWeightedFinishedShots() {
+		return weightedFinishedShots;
 	}
 	
 	/**

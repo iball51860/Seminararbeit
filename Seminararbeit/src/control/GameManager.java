@@ -79,19 +79,6 @@ public class GameManager extends Thread{
 				threadList.add(newSubManager);
 			}
 			
-//			for(SubManager thread : threadList)
-//			{
-//				if(!thread.isAlive())
-//				{
-//					try {
-//						thread.join();
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-			
 			while(!threadList.isEmpty())
 			{
 				for(SubManager thread : threadList)
