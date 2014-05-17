@@ -68,7 +68,7 @@ public class FinalPanelUpdater extends Thread
 		
 		try 
 		{
-			sleep(200);
+			sleep(1000);
 		}
 		catch (InterruptedException e) 
 		{

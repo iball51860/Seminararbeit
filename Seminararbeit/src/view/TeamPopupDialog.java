@@ -27,8 +27,7 @@ public class TeamPopupDialog extends JDialog
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				setSize(200, 180);
-				setLocation(serverWindow.getLocationOnScreen().x + 300,
-						serverWindow.getLocationOnScreen().y + 150); //TODO set Location in relation to invoking Button
+				setLocation(MouseInfo.getPointerInfo().getLocation());
 				c = getContentPane();
 				c.setLayout(new GridLayout(0, 1));
 				name = new JLabel(t.getName());
