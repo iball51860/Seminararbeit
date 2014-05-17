@@ -21,7 +21,7 @@ public class GameManager extends Thread{
 		playGame(tournament);
 	}
 	
-	public static void playGame(Tournament t)
+	public static void playGame(Tournament t) throws NullPointerException
 	{
 		long start = System.currentTimeMillis();
 		for(Team te : t.getPlaying())

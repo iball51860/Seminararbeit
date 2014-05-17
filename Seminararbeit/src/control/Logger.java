@@ -180,7 +180,7 @@ public class Logger {
 		return log;
 	}
 	
-	public static String getLog(String[] instanceNames, boolean[] types)
+	public static String getLog(String[] instanceNames, boolean[] types) throws NullPointerException
 	{
 		for(String name : instanceNames){
 			if(name.equalsIgnoreCase("all Teams"))

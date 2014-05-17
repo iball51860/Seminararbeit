@@ -17,8 +17,8 @@ public class Tournament {
 	private int currentRound2;
 	private int noOfMatches;
 	private int finishedMatches;
+	private int finishedMatchesInFinishedRounds;
 	private int finishedShots;
-	private int weightedFinishedShots;
 	private int goals;
 	
 	private boolean isRunning;
@@ -37,7 +37,7 @@ public class Tournament {
 		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
 		this.finishedMatches = 0;
 		this.finishedShots = 0;
-		this.weightedFinishedShots = 0;
+//		this.weightedFinishedShots = 0;
 		this.isRunning = true;
 	}
 
@@ -150,6 +150,7 @@ public class Tournament {
 	 * @param currentRound the currentRound to set
 	 */
 	public synchronized void setCurrentRound(int currentRound) {
+		finishedMatchesInFinishedRounds = finishedMatches;
 		this.currentRound = currentRound;
 		this.currentRound2 += 1;
 	}
@@ -209,15 +210,15 @@ public class Tournament {
 	
 	public synchronized void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
-		this.weightedFinishedShots += increment * Math.pow(2, currentRound2);
+//		this.weightedFinishedShots += increment * Math.pow(2, currentRound2);
 	}
 	
-	/**
-	 * @return the finishedShotsInRound
-	 */
-	public synchronized int getWeightedFinishedShots() {
-		return weightedFinishedShots;
-	}
+//	/**
+//	 * @return the finishedShotsInRound
+//	 */
+//	public synchronized int getWeightedFinishedShots() {
+//		return weightedFinishedShots;
+//	}
 	
 	/**
 	 * @return the goals
@@ -274,5 +275,14 @@ public class Tournament {
 		}
 		avgReaction = avgReaction / getMasterWindow().getTeamSet().size();
 		return avgReaction;
+	}
+
+	public int getFinishedMatchesInFinishedRounds() {
+		return finishedMatchesInFinishedRounds;
+	}
+
+	public void setFinishedMatchesInFinishedRounds(
+			int finishedMatchesInFinishedRounds) {
+		this.finishedMatchesInFinishedRounds = finishedMatchesInFinishedRounds;
 	}
 }
