@@ -36,10 +36,7 @@ public class ServerWindow extends JFrame {
 	private TeamMatrixPanel teamMatrixPanel;
 	
 	//TabbedPane Result-List
-	private JPanel result;
-	private JTextArea resultList;
-	private JScrollPane spResultList;
-	private JButton updateResult;
+	private ResultListPanel resultListPanel;
 	
 	//TabbedPane Log
 	private LogPanel logPanel;
@@ -81,16 +78,7 @@ public class ServerWindow extends JFrame {
 		matchPanel = new MatchesPanel();
 		
 		//create Panel for "Result-List"
-		resultList = new JTextArea();
-		resultList.setEditable(false);
-		updateResult = new JButton("Update Result");
-		updateResult.setEnabled(false);
-		updateResult.addActionListener(new UpdateResultListener(ServerWindow.this));
-		spResultList = new JScrollPane();
-		spResultList.setViewportView(resultList);
-		result = new JPanel(new BorderLayout());
-		result.add(spResultList, BorderLayout.CENTER);
-		result.add(updateResult, BorderLayout.SOUTH);
+		resultListPanel = new ResultListPanel(ServerWindow.this);
 		
 		//create Pane for "Log"
 		logPanel = new LogPanel(ServerWindow.this);
@@ -98,7 +86,7 @@ public class ServerWindow extends JFrame {
 		//build JTabbedPane
 		tabPane.add("Start", startPanel);
 		tabPane.addTab("Matches", matchPanel);
-		tabPane.add("Result", result);
+		tabPane.add("Result", resultListPanel);
 		tabPane.add("Log", logPanel);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
 			
@@ -129,7 +117,7 @@ public class ServerWindow extends JFrame {
 		tabPane.setComponentAt(0, teamMatrixPanel);
 		tabPane.setTitleAt(0, "Matrix");
 		updateResultList();
-		updateResult.setEnabled(true);
+		resultListPanel.getUpdateResult().setEnabled(true);
 	}
 	
 	/**
@@ -184,27 +172,7 @@ public class ServerWindow extends JFrame {
 	
 	public void updateResultList()
 	{
-		if(teamSet == null)
-		{
-			return;
-		}
-		int count = 1;
-		Collections.sort(teamSet);
-		final StringBuffer sb = new StringBuffer();
-		for(Team t : teamSet)
-		{
-			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
-			long avg;
-			sb.append(count++ + ". " + t.getName() + "\t" + t.getWonMatches() + " Victories\t" + t.getGoals() + " Goals\t" +
-					"Success Rate: " + rate + " %\t" + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\tAvg. Reaction: " + 
-					(avg = t.getAvgReactionTime()) + " ms\tStandard Deviation: " + t.getStandardDeviation(avg) + "ms\n");
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				resultList.setText(sb.toString());
-				resultList.setCaretPosition(0);
-			}
-		});
+		resultListPanel.updateResultList(teamSet);
 	}
 	
 	
@@ -293,7 +261,7 @@ public class ServerWindow extends JFrame {
 	}
 
 	public JTextArea getResultList() {
-		return resultList;
+		return resultListPanel.getResultList();
 	}
 	
 	public JLabel getShowPort() {
