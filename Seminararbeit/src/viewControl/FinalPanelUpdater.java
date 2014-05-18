@@ -43,7 +43,7 @@ public class FinalPanelUpdater extends Thread
 		
 		copy = t.getPlaying().clone();
 		
-		while(GameManager.getRoundCout() != 0)
+		while(GameManager.getRoundCount() != 0)
 		{
 			try 
 			{

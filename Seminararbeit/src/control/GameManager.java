@@ -4,23 +4,47 @@ import model.*;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The GameManager class manages the whole tournament. 
+ * 
+ * @author Jan Fritze, Manuel Kaiser
+ *
+ */
 public class GameManager extends Thread{	
 	
 	private static int roundCount;
 	
 	private Tournament tournament;
 	
+	/**
+	 * In the constructor the GameManager gets an instance of the tournament that will played.
+	 * 
+	 * @param tournament - The tournament which will played.
+	 */
 	public GameManager(Tournament t)
 	{
 		this.tournament = t;
 		this.setName("GameManagerThread");
 	}
 	
+	/**
+	 * Starts the static method "playGame(Tournament t)".
+	 */
 	public void run()
 	{
 		playGame(tournament);
 	}
 	
+	/**
+	 * This method is the core of the whole WMTournament. In each round all remaining teams play against an other
+	 * random choosen team. Therefore a Set with all remaining teams gets shuffeld and for every match 
+	 * one SubManager-Thread gets started. After each match the loosing team gets removed from the "playing-set".
+	 * As soon as all matches are finished the next round starts.
+	 * After the last round the game is over.
+	 * 
+	 * @param tournament - The tournament which will played
+	 * @throws NullPointerException
+	 */
 	public static void playGame(Tournament t) throws NullPointerException
 	{
 		long start = System.currentTimeMillis();
@@ -117,6 +141,17 @@ public class GameManager extends Thread{
 		t.getMasterWindow().showFinish();
 	}
 	
+	/**
+	 * Team a shoots and Team b keeps. After one Shot Team b shoots and Team s keeps.
+	 * After the specific number of shots (given as a parameter) the match ends and returns the winning team (team
+	 * with more goals)
+	 * 
+	 * @param Team a - One team that plays a match
+	 * @param Team b - Other team that plays a match
+	 * @param shots - Number of shots in the match
+	 * @param tournament - To update the game information (e.g. finished shots, total goals)
+	 * @return Returns the winning team.
+	 */
 	public static Team playMatch(Team a, Team b, int shots, Tournament t)
 	{
 		Logger.log(a.getName() + " vs. " + b.getName(), a, Logger.MATCH);
@@ -221,12 +256,20 @@ public class GameManager extends Thread{
 		return goal;
 	}
 	
+	/**
+	 * Interrupts game by setting the round to the last one.
+	 */
 	public static void interruptGame()
 	{
 		roundCount = 1;
 	}
 	
-	public static int getRoundCout()
+	/**
+	 * Returns the current Round.
+	 * 
+	 * @return Integer - Returns the current round.
+	 */
+	public static int getRoundCount()
 	{
 		return roundCount;
 	}

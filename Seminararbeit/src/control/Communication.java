@@ -5,6 +5,13 @@ import java.util.*;
 
 import model.*;
 
+
+/**
+ * The communication class offers methods to send and receive messages to an from the clients.
+ * 
+ * @author Jan Fritze, Manuel Kaiser
+ *
+ */
 public class Communication 
 {	
 	public static final String NAME 		= "NME";
@@ -22,7 +29,12 @@ public class Communication
 	public static final long ALLOWEDAVGREACTION = 400;
 	
 	
-	
+	/**
+	 * This method sends a message to each team.
+	 * 
+	 * @param The collection "teams" is needed to send a message to all of the teams.
+	 * @param The string is the message with which will be send to all teams.
+	 */
 	public static void broadcast(Collection<Team> teams, String msg)
 	{
 		Logger.log("Broadcasting: \"" + msg + "\" to " + teams.size() + " Teams.", Logger.COMMUNICATION);
@@ -32,14 +44,19 @@ public class Communication
 		}
 	}
 	
-	
+	/**
+	 * This method sends a message to one selected team.
+	 * 
+	 * @param team
+	 * @param message
+	 */
 	public static void sendMsg(Team team, String msg)
 	{
 		team.write(msg);
 	}
 	
 	/**
-	 * Sents the decision String to the specified Team(Client), gets an answer and 
+	 * Sends the decision String to the specified Team(Client), gets an answer and 
 	 * reverts it to an integer that represents the decision. (L,l=0; M,m=1; R,r=2).
 	 * If the answer doesn't fit the decision scheme, the method returns -1 to signal
 	 * a wrong answer.
@@ -93,7 +110,12 @@ public class Communication
 		}		
 	}
 	
-	
+	/**
+	 * Request the name of one specific team. If the reaction time is more than 5000 milliseconds the 
+	 * server removes the team from the server instance of the list with all contestants on the server.
+	 * 
+	 * @param team
+	 */
 	public static void requestName(Team team)
 	{
 		team.setLastInput(null);
@@ -132,9 +154,14 @@ public class Communication
 		}
 	}
 	
+	/**
+	 * Sends the calculated Strengths in a certain format (e.g. STRENGTH586062) to the specific team.
+	 * 
+	 * @param team which receive strengths
+	 */
 	public static void sendStrengths(Team team)
 	{
-		String s = STRENGTH + team.getStrength()[0] + team.getStrength()[1] + team.getStrength()[2];//TODO overthink format 
+		String s = STRENGTH + team.getStrength()[0] + team.getStrength()[1] + team.getStrength()[2];
 		sendMsg(team, s);
 	}
 	

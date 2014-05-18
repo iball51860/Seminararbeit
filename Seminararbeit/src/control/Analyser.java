@@ -187,6 +187,13 @@ public class Analyser {
 		}
 	}
 
+	/**
+	 * Returns the finished share of the shots with the following principle:
+	 * share of shots in current round + progress from the last rounds (+ added shots in the final)
+	 * 
+	 * @param tournament: A Tournament for which the progress shall be calculated 
+	 * @return Returns an Integer which shows the progress of the tournament
+	 */
 	public static int calculateProgress(Tournament t) 
 	{	
 		int progress = (int) (calculateNoOfShotsPerMatch(t)
