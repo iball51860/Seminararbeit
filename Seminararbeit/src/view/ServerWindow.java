@@ -41,10 +41,9 @@ public class ServerWindow extends JFrame {
 	private JLabel showIp;
 	private JLabel showPort;
 	
-	//TabbedPane Final
-	private JPanel finalPanel;
-	private JLabel[] labelTeam;
-	private JProgressBar[] progressTeam;
+	//TabbedPane Matches
+	private JPanel matchPanel;
+	private ArrayList<MatchPanelUpdater> threadList;
 	
 	
 	//TabbedPane Team-Matrix
@@ -192,16 +191,8 @@ public class ServerWindow extends JFrame {
 		startPanel.add(showPort);
 		
 		//create Panel for the final
-		finalPanel = new JPanel(new GridLayout(0, 1));
-		progressTeam = new JProgressBar[4];
-		labelTeam = new JLabel[4];
-		for(int i = 0; i < 4; i++)
-		{
-			labelTeam[i] = new JLabel("Team " + i);
-			progressTeam[i] = new JProgressBar(-50, 50);
-			finalPanel.add(labelTeam[i]);
-			finalPanel.add(progressTeam[i]);
-		}
+		matchPanel = new JPanel(new GridLayout(0, 2));
+		threadList = new ArrayList<MatchPanelUpdater>();
 		
 		//create Panel for "Team-Matrix"
 		teamView = new JPanel();
@@ -264,6 +255,7 @@ public class ServerWindow extends JFrame {
 		
 		//build JTabbedPane
 		tabPane.add("Start", startPanel);
+		tabPane.addTab("Matches", matchPanel);
 		tabPane.add("Result", result);
 		tabPane.add("Log", log);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
@@ -277,7 +269,7 @@ public class ServerWindow extends JFrame {
 		setEnabled(false);
 			}
 		});
-		Logger.setTarget(this);
+//		Logger.setTarget(this);
 	}
 	
 	
@@ -552,16 +544,38 @@ public class ServerWindow extends JFrame {
 		}
 	}
 	
-	public void showFinal()
+	public void showFinish()
 	{
-		tabPane.add(finalPanel, 0);
-		tabPane.setTitleAt(0, "Final");
-		tabPane.setSelectedIndex(0);
-		(new FinalPanelUpdater(tournament, finalPanel, labelTeam, progressTeam)).start();
+		new FinishedWindow(this.tournament);
 	}
 	
-	public void showFinish(){
-		new FinishedWindow(this.tournament);
+	public void addMatch(final Team a, final Team b)
+	{
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				JLabel text = new JLabel(a.getName() + " " + a.getGoalsInCurrentRound() + " : " 
+						+ b.getGoalsInCurrentRound() + " " + b.getName());
+				JProgressBar bar = new JProgressBar();
+				bar.setMinimum(-50);
+				bar.setMaximum(50);
+				matchPanel.add(text);
+				matchPanel.add(bar);
+				MatchPanelUpdater newThread = new MatchPanelUpdater(a, b, text, bar);
+				newThread.start();
+				matchPanel.updateUI();
+				threadList.add(newThread);
+			}
+		});
+	}
+	
+	public void cleanMatchPanel()
+	{
+		matchPanel.removeAll();
+		for(MatchPanelUpdater t : threadList)
+		{
+			t.setFlag(false);
+		}
 	}
 	
 	//////////////////////// Getter and Setter ////////////////////////
