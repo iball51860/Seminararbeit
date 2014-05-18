@@ -5,7 +5,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -13,7 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
@@ -44,7 +42,6 @@ public class ControlPanel extends JPanel {
 	private JButton plusTestClient;
 	private JLabel reactionTimeLabel;
 	private JSlider reactionTime;
-	private JProgressBar progress;
 	
 	//Label for Meta Data
 	private JLabel currentRound;

@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.border.*;
 
 import model.*;
 import control.*;
@@ -31,9 +30,10 @@ public class ServerWindow extends JFrame {
 	private JTabbedPane tabPane;
 	
 	//TabbedPane Start
-	private JPanel startPanel;
-	private JLabel showIp;
-	private JLabel showPort;
+	private StartPanel startPanel;
+//	private JPanel startPanel;
+//	private JLabel showIp;
+//	private JLabel showPort;
 	
 	//TabbedPane Matches
 	private JPanel matchPanel;
@@ -64,7 +64,6 @@ public class ServerWindow extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 						//set up basic frame
-
 		setTitle("WM Server");
 		setSize(1000, 600);
 		Container c = getContentPane();
@@ -86,17 +85,17 @@ public class ServerWindow extends JFrame {
 		c.add(tabPane, BorderLayout.CENTER);
 		
 		//create Panel for "Start"
-		startPanel = new JPanel(new GridLayout(2, 1));
-		try {
-			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-			showIp.setFont(new Font("Arial", Font.BOLD, 50));
-		} catch (UnknownHostException uhe) {
-			uhe.printStackTrace();
-		}
-		showPort = new JLabel("Port: XXXX");
-		showPort.setFont(new Font("Arial", Font.BOLD, 50));
-		startPanel.add(showIp);
-		startPanel.add(showPort);
+		startPanel = new StartPanel();
+//		try {
+//			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
+//			showIp.setFont(new Font("Arial", Font.BOLD, 50));
+//		} catch (UnknownHostException uhe) {
+//			uhe.printStackTrace();
+//		}
+//		showPort = new JLabel("Port: XXXX");
+//		showPort.setFont(new Font("Arial", Font.BOLD, 50));
+//		startPanel.add(showIp);
+//		startPanel.add(showPort);
 		
 		//create Panel for the final
 		matchPanel = new JPanel(new GridLayout(0, 2));
@@ -406,7 +405,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JLabel getShowPort() {
-		return showPort;
+		return startPanel.getShowPort();
 	}
 	
 	public JTabbedPane getTabPane() {
