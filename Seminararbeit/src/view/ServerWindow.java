@@ -115,8 +115,7 @@ public class ServerWindow extends JFrame {
 
 		tabPane.setComponentAt(0, teamMatrixPanel);
 		tabPane.setTitleAt(0, "Matrix");
-		updateResultList();
-		resultListPanel.getUpdateResult().setEnabled(true);
+		resultListPanel.activateResultListUpdater(ServerWindow.this);
 	}
 	
 	/**

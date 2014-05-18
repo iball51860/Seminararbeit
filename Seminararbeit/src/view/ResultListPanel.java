@@ -6,7 +6,6 @@ package view;
 import java.awt.BorderLayout;
 import java.util.Collections;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -15,29 +14,44 @@ import javax.swing.SwingUtilities;
 import model.ArrayTeamSet;
 import model.Team;
 
-import control.listeners.UpdateResultListener;
-
 /**
  * @author Jan
  *
  */
+@SuppressWarnings("serial")
 public class ResultListPanel extends JPanel {
 
 	private JTextArea resultList;
 	private JScrollPane spResultList;
-	private JButton updateResult;
+	private Thread updater;
 	
-	public ResultListPanel(ServerWindow serverWindow){
+	public ResultListPanel(final ServerWindow serverWindow){
 		super(new BorderLayout());
 		resultList = new JTextArea();
 		resultList.setEditable(false);
-		updateResult = new JButton("Update Result");
-		updateResult.setEnabled(false);
-		updateResult.addActionListener(new UpdateResultListener(serverWindow));
 		spResultList = new JScrollPane();
 		spResultList.setViewportView(resultList);
 		add(spResultList, BorderLayout.CENTER);
-		add(updateResult, BorderLayout.SOUTH);
+		
+	}
+	
+	public void activateResultListUpdater(final ServerWindow serverWindow){
+		updater = new Thread(){
+			public void run(){
+				while(serverWindow.getTournament().isRunning()){
+					if(serverWindow.getTabPane().getSelectedIndex()==2)
+					{
+						updateResultList(serverWindow.getTeamSet());
+					}
+					try {
+						sleep(80);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		updater.start();
 	}
 	
 	public void updateResultList(ArrayTeamSet<Team> teamSet)
@@ -63,10 +77,6 @@ public class ResultListPanel extends JPanel {
 				resultList.setCaretPosition(0);
 			}
 		});
-	}
-	
-	public JButton getUpdateResult() {
-		return updateResult;
 	}
 	
 	public JTextArea getResultList() {

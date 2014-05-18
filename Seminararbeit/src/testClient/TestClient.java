@@ -64,19 +64,11 @@ public class TestClient extends Thread{
 		{
 			String message = "default";
 			String frontSubString = "default";
-//			String backSubString = "default";
 			try
 			{
 				if((message = fromServer.readLine()) != null)
 				{
-//					try {
-//						sleep(40);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
 					frontSubString = message.substring(0, 3);
-					//backSubString = message.substring(3);
 				}
 			}
 			catch(IOException ioe)
@@ -126,7 +118,6 @@ public class TestClient extends Thread{
 		try {
 			sleep(waitForIt);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		toServer.println(msg);

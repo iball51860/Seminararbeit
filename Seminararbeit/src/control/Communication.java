@@ -148,7 +148,6 @@ public class Communication
 			try {
 				team.getClientSocket().close();
 			} catch (IOException ioe) {
-				// TODO Auto-generated catch block
 				ioe.printStackTrace();
 			}
 		}

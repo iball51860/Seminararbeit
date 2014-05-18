@@ -11,13 +11,24 @@ import java.net.*;
 
 import javax.swing.SwingUtilities;
 
+/**
+ * Listener connected to the initial Dialog asking for the Port to use.
+ * Stars a server.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class StartServerListener implements ActionListener {
 	
-	
+	/**Dialog asking for the port*/
 	private PopupDialogPort popup;
+	/**ServerWindow representing the new Server*/
 	private ServerWindow serverWindow;
 	
-	
+	/**
+	 * Constructor setting the ServerWindow and the Popupdialog
+	 * @param popup
+	 * @param serverWindow
+	 */
 	public StartServerListener(PopupDialogPort popup, ServerWindow serverWindow)
 	{
 		super();
@@ -25,7 +36,9 @@ public class StartServerListener implements ActionListener {
 		this.serverWindow = serverWindow;
 	}
 
-	
+	/**
+	 * retrieves the Portnumber and starts a server at that port.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{
 		int port = 4444;

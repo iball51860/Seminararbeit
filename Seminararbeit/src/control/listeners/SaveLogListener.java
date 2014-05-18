@@ -8,17 +8,29 @@ import java.util.*;
 
 import view.ServerWindow;
 
+/**
+ * Listener triggered by the SaveLog Button in the LogPane.
+ * Formats and saves an existing log as .txt file.
+ * @author Jan Fritze & Manuel Kaiser *
+ */
 public class SaveLogListener implements ActionListener
 {
-	ServerWindow sW;
+	/**ServerWindow from which Listener is triggered*/
+	ServerWindow serverWindow;
 	
-	
+	/**
+	 * Constructor setting the ServerWindow
+	 * @param serverWindow
+	 */
 	public SaveLogListener(ServerWindow serverWindow)
 	{
-		this.sW = serverWindow;
+		this.serverWindow = serverWindow;
 	}
 	
-	
+	/**
+	 * Retrieves the options for the current log that is shown in the LogPanel of the ServerWindow,
+	 * creates a header for the log and saves it to the Users Desktop in a Folder WMServer_Logs.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{
 		String directory = System.getProperty("user.home") + "/Desktop/WMServer_Logs";
@@ -28,11 +40,11 @@ public class SaveLogListener implements ActionListener
 		SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd.MMMM yyyy' at 'HH.mm");
 		File file = new File(directory, "WMServerLog_" + dateFormat1.format(new Date()));
 		
-		String teams = "Teams: " + sW.getTeamBox1().getSelectedItem() + " and " +
-				"" + sW.getTeamBox2().getSelectedItem();
-		String settings = "Settings: Server " + sW.getLogPanel().getType()[1].isSelected() + " | Communication " + sW.getLogPanel().getType()[2].isSelected() +
-				" | Game " + sW.getLogPanel().getType()[3].isSelected() + " | Round " + sW.getLogPanel().getType()[4].isSelected() +
-				" | Match " + sW.getLogPanel().getType()[5].isSelected();
+		String teams = "Teams: " + serverWindow.getTeamBox1().getSelectedItem() + " and " +
+				"" + serverWindow.getTeamBox2().getSelectedItem();
+		String settings = "Settings: Server " + serverWindow.getLogPanel().getType()[1].isSelected() + " | Communication " + serverWindow.getLogPanel().getType()[2].isSelected() +
+				" | Game " + serverWindow.getLogPanel().getType()[3].isSelected() + " | Round " + serverWindow.getLogPanel().getType()[4].isSelected() +
+				" | Match " + serverWindow.getLogPanel().getType()[5].isSelected();
 		
 		FileWriter writer;
 		try {
@@ -41,9 +53,9 @@ public class SaveLogListener implements ActionListener
 			writer.write(teams + "\n");
 			writer.write(settings + "\n");
 			writer.write("____________________________________________________________________________________\n\n");
-			writer.write(sW.getLogConsole().getText());
+			writer.write(serverWindow.getLogConsole().getText());
 			writer.write("\n\n>> RESULTS: --------------------------------------------------------------------\n\n");
-			writer.write(sW.getResultList().getText());
+			writer.write(serverWindow.getResultList().getText());
 			writer.flush();
 		} 
 		catch (IOException e1) 
