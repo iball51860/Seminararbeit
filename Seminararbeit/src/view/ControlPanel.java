@@ -21,13 +21,13 @@ import javax.swing.border.BevelBorder;
 import model.Tournament;
 
 import control.Analyser;
+import control.listeners.AddTestClientsListener;
+import control.listeners.ChangeReactionTimeListener;
+import control.listeners.FinishGameListener;
+import control.listeners.PopupTestClientsListener;
+import control.listeners.ResetServerListener;
+import control.listeners.StartTournamentListener;
 
-import viewControl.AddTestClientsListener;
-import viewControl.ChangeReactionTimeListener;
-import viewControl.FinishGameListener;
-import viewControl.PopupTestClientsListener;
-import viewControl.ResetServerListener;
-import viewControl.StartTournamentListener;
 
 /**
  * @author Jan

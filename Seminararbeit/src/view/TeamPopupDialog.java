@@ -4,7 +4,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import viewControl.*;
+import control.listeners.*;
+
 import model.*;
 
 @SuppressWarnings("serial")

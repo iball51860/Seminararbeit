@@ -11,7 +11,7 @@ import javax.swing.border.*;
 
 import model.*;
 import control.*;
-import viewControl.*;
+import control.listeners.*;
 
 @SuppressWarnings("serial")
 public class ServerWindow extends JFrame {
@@ -119,16 +119,14 @@ public class ServerWindow extends JFrame {
 		
 		//create Pane for "Log"
 		logPanel = new LogPanel(ServerWindow.this);
-
-		
+	
 		//build JTabbedPane
 		tabPane.add("Start", startPanel);
 		tabPane.addTab("Matches", matchPanel);
 		tabPane.add("Result", result);
 		tabPane.add("Log", logPanel);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
-		
-		
+			
 		//create popup dialog to request Port
 		popup = new PopupDialogPort(ServerWindow.this);
 		popup.setVisible(true);

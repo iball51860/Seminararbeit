@@ -1,23 +1,22 @@
-package viewControl;
+package control.listeners;
 
 import java.awt.event.*;
+
 import javax.swing.SwingUtilities;
 
-import model.*;
 import view.*;
 
-public class ShowTeamListener implements ActionListener
+
+public class StartTournamentListener implements ActionListener 
 {
 	
 	private ServerWindow serverWindow;
-	private Team t;
 	
 	
-	public ShowTeamListener(ServerWindow serverWindow, Team t)
+	public StartTournamentListener(ServerWindow serverWindow)
 	{
 		super();
 		this.serverWindow = serverWindow;
-		this.t = t;
 	}
 	
 	
@@ -26,12 +25,10 @@ public class ShowTeamListener implements ActionListener
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				serverWindow.setEnabled(false);
-				new TeamPopupDialog(serverWindow, t);
+				PopupDialogShots p = new PopupDialogShots(serverWindow);
+				p.setVisible(true);
 			}
 		});
 		
 	}
-	
-	
-	
 }

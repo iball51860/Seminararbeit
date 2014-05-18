@@ -1,4 +1,4 @@
-package viewControl;
+package control.listeners;
 
 import java.awt.event.*;
 import javax.swing.SwingUtilities;

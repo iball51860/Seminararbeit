@@ -13,12 +13,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import control.listeners.SaveLogListener;
+import control.listeners.TeamBoxListener;
+import control.listeners.UpdateLogListener;
+
 import model.LogLine;
 import model.Team;
 
-import viewControl.SaveLogListener;
-import viewControl.TeamBoxListener;
-import viewControl.UpdateLogListener;
 
 public class LogPanel extends JPanel {
 

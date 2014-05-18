@@ -2,7 +2,8 @@ package view;
 
 import javax.swing.*;
 
-import viewControl.*;
+import control.listeners.*;
+
 
 
 @SuppressWarnings("serial")

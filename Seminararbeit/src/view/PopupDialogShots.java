@@ -2,7 +2,8 @@ package view;
 
 import javax.swing.SwingUtilities;
 
-import viewControl.*;
+import control.listeners.*;
+
 
 @SuppressWarnings("serial")
 public class PopupDialogShots extends PopupDialog
