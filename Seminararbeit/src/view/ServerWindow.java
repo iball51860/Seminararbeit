@@ -23,6 +23,7 @@ public class ServerWindow extends JFrame {
 	//JPanel west;
 	private ControlPanel controlPanel;
 	
+	//JProgressBar bottom
 	private JProgressBar progress;
 	 
 	
@@ -49,14 +50,7 @@ public class ServerWindow extends JFrame {
 	private JButton updateResult;
 	
 	//TabbedPane Log
-	private JPanel log;
-	private JPanel logSettings;
-	private JTextArea logConsole;
-	private JLabel infoLog;
-	private JComboBox<String> teamBox1;
-	private JComboBox<String> teamBox2;
-	public JCheckBox[] type;
-	private JButton saveLog;
+	private LogPanel logPanel;
 	
 	private PopupDialogPort popup;
 	
@@ -124,54 +118,14 @@ public class ServerWindow extends JFrame {
 		result.add(updateResult, BorderLayout.SOUTH);
 		
 		//create Pane for "Log"
-		log = new JPanel(new BorderLayout());
-		logConsole = new JTextArea();
-		logConsole.setEditable(false);
-		JScrollPane spLog = new JScrollPane();
-		spLog.setViewportView(logConsole);
-		logSettings = new JPanel(new GridLayout(0, 1));
-		infoLog = new JLabel("Show:");
-		UpdateLogListener updateLogListener = new UpdateLogListener(ServerWindow.this);
-		teamBox1 = new JComboBox<String>();
-		teamBox1.addItem("No Teams");
-		teamBox1.addItem("All Teams");
-		teamBox1.addActionListener(updateLogListener);
-		teamBox1.addActionListener(new TeamBoxListener(ServerWindow.this));
-		teamBox2 = new JComboBox<String>();
-		teamBox2.addItem("No Team");
-		teamBox2.setEnabled(false);
-		teamBox2.addActionListener(updateLogListener);
-		logSettings.add(infoLog);
-		logSettings.add(teamBox1);
-		logSettings.add(teamBox2);
-		type = new JCheckBox[7];
-		type[0] = new JCheckBox("Default");
-		type[1] = new JCheckBox("Server");
-		type[2] = new JCheckBox("Communication");
-		type[3] = new JCheckBox("Game");
-		type[4] = new JCheckBox("Round");
-		type[5] = new JCheckBox("Match");
-		type[6] = new JCheckBox("Shot");
-		for(JCheckBox jCB : type)
-		{
-			jCB.setSelected(true);
-			jCB.addActionListener(updateLogListener);
-			logSettings.add(jCB);
-		}
-		logSettings.remove(type[0]);
-		logSettings.remove(type[6]);
-		saveLog = new JButton("Save Log");
-		saveLog.addActionListener(new SaveLogListener(ServerWindow.this));
-		saveLog.setVisible(true);
-		log.add(spLog, BorderLayout.CENTER);
-		log.add(logSettings, BorderLayout.EAST);
-		log.add(saveLog, BorderLayout.SOUTH);
+		logPanel = new LogPanel(ServerWindow.this);
+
 		
 		//build JTabbedPane
 		tabPane.add("Start", startPanel);
 		tabPane.addTab("Matches", matchPanel);
 		tabPane.add("Result", result);
-		tabPane.add("Log", log);
+		tabPane.add("Log", logPanel);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
 		
 		
@@ -183,7 +137,6 @@ public class ServerWindow extends JFrame {
 		setEnabled(false);
 			}
 		});
-//		Logger.setTarget(this);
 	}
 	
 	
@@ -194,7 +147,6 @@ public class ServerWindow extends JFrame {
 	public void updateTeamView(final Tournament t)
 	{
 		this.tournament = t;
-//		progress.setMaximum(Analyser.calculateTotalWeightedShots(t));
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		progress.setMaximum(Analyser.calculateNoOfRounds(t) * Analyser.calculateNoOfShotsPerMatch(t) + finalExtraShots);
 		this.teamSet = t.getPlaying().clone();
@@ -224,8 +176,7 @@ public class ServerWindow extends JFrame {
 							teamButtons[t.getID()].setToolTipText(t.getName()
 									+ t.getID());
 							teamView.add(teamButtons[t.getID()]);
-							teamBox1.addItem(t.getName() + t.getID());
-							teamBox2.addItem(t.getName() + t.getID());
+							logPanel.registerTeam(t);
 						}
 					}
 					updateResultList();
@@ -233,7 +184,6 @@ public class ServerWindow extends JFrame {
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -360,20 +310,7 @@ public class ServerWindow extends JFrame {
 	
 	public void appendLogLine(final LogLine ll)
 	{
-		boolean validInstance = (ll.getInstanceName() == null || getTeamBox1().getSelectedItem().toString().equalsIgnoreCase("All Teams") ||
-					getTeamBox1().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()) || 
-					getTeamBox2().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()));
-		
-		//check whether Log is selected, type applies, and message is about a blocked instance a la (LogIsShowing && typeIsSelected && (name==null || allTeams || nameIsInBox1 || nameIsInBox2) )
-		if(tabPane.getComponentAt(2).isShowing() && type[ll.getType()].isSelected() && validInstance)
-		{
-			SwingUtilities.invokeLater(new Runnable(){
-				public void run()
-				{
-					logConsole.append("\n" + ll.getMessage());
-				}
-			});
-		}
+		logPanel.appendLogLine(ll, tabPane);
 	}
 	
 	public void showFinish()
@@ -428,30 +365,29 @@ public class ServerWindow extends JFrame {
 		return this.tournament;
 	}
 
+	public LogPanel getLogPanel(){
+		return logPanel;
+	}
+	
 	public JComboBox<String> getTeamBox1() {
-		return teamBox1;
+		return logPanel.getTeamBox1();
 	}
 
 	public JComboBox<String> getTeamBox2() {
-		return teamBox2;
+		return logPanel.getTeamBox2();
 	}
 	
 	public JTextArea getLogString(){
-		return logConsole;
+		return logPanel.getLogConsole();
 	}
 	
 	public JButton getSaveLog() {
-		return saveLog;
+		return logPanel.getSaveLog();
 	}
 	
 	public JTextArea getLogConsole() {
-		return logConsole;
+		return logPanel.getLogConsole();
 	}
-	
-//	public JCheckBox[] getType(){		//TODO Methode zum laufen kriegen | Ich hab keine Ahnung warum die nicht will
-//		return type;
-//	}
-
 
 	/**
 	 * @return the teamSet of the ServerWindow in natural Order
@@ -491,6 +427,5 @@ public class ServerWindow extends JFrame {
 
 	public JButton getPlusTestClient() {
 		return controlPanel.getPlusTestClient();
-	}
-	
+	}	
 }

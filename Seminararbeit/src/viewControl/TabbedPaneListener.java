@@ -30,7 +30,7 @@ public class TabbedPaneListener implements ChangeListener
 		names[1] = (String) serverWindow.getTeamBox2().getSelectedItem();
 		for(int i = 0; i < types.length; i++)
 		{
-			types[i] = serverWindow.type[i].isSelected();
+			types[i] = serverWindow.getLogPanel().getType()[i].isSelected();
 		}
 		serverWindow.getLogString().setText(Logger.getLog(names, types));
 	}

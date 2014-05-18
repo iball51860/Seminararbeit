@@ -30,9 +30,9 @@ public class SaveLogListener implements ActionListener
 		
 		String teams = "Teams: " + sW.getTeamBox1().getSelectedItem() + " and " +
 				"" + sW.getTeamBox2().getSelectedItem();
-		String settings = "Settings: Server " + sW.type[1].isSelected() + " | Communication " + sW.type[2].isSelected() +
-				" | Game " + sW.type[3].isSelected() + " | Round " + sW.type[4].isSelected() +
-				" | Match " + sW.type[5].isSelected();
+		String settings = "Settings: Server " + sW.getLogPanel().getType()[1].isSelected() + " | Communication " + sW.getLogPanel().getType()[2].isSelected() +
+				" | Game " + sW.getLogPanel().getType()[3].isSelected() + " | Round " + sW.getLogPanel().getType()[4].isSelected() +
+				" | Match " + sW.getLogPanel().getType()[5].isSelected();
 		
 		FileWriter writer;
 		try {
