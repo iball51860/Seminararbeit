@@ -16,7 +16,9 @@ public class Team implements Comparable<Team>
 	public static final int MIDDLE = 1;
 	public static final int STRONGEST = 2;
 	
+	/**Count to create IDs**/
 	private static int count = 0;
+	
 	private int id;
 	private String name = "noName";
 	
@@ -38,7 +40,6 @@ public class Team implements Comparable<Team>
 	private WMServer server;
 	private boolean isOnline = true;
 	private ArrayBlockingQueue<Long> LastReactionTimes = new ArrayBlockingQueue<Long>(50);
-//	private int registeredReactions = 0;
 	
 	public Team(Socket clientSocket)
 	{
@@ -71,13 +72,12 @@ public class Team implements Comparable<Team>
 	{
 		try
 		{
-			String read = reader.readLine();
-			if (read == null)
+			String inputMessage = reader.readLine();
+			if (inputMessage == null)
 			{
-				read = "x";
+				inputMessage = "x";
 			}
-//			Logger.log("Reading \"" + read + "\" from " + name + ".", this, Logger.COMMUNICATION);
-			return read;
+			return inputMessage;
 		}
 		catch(SocketException se)
 		{
@@ -93,7 +93,6 @@ public class Team implements Comparable<Team>
 	
 	public void write(String msg)
 	{
-//		Logger.log("Sending \"" + msg + "\" to " + name + ".", this, Logger.COMMUNICATION);
 		writer.println(msg);
 	}
 	
@@ -109,9 +108,9 @@ public class Team implements Comparable<Team>
 			return false;
 		}
 		Team otherTeam = (Team) o;
-//		try { //check, if other Team is a testclient (own InetAddress)
-//			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("192.168.2.194"))
-//			{
+		try { //check, if other Team is a testclient (own InetAddress)
+			if(InetAddress.getLocalHost().getHostAddress().equals(this.getClientSocket().getInetAddress().getHostAddress()) || this.getClientSocket().getInetAddress().getHostAddress().equals("192.168.2.194"))
+			{
 				if(this.getID() == otherTeam.getID())
 				{
 					return true;
@@ -120,17 +119,17 @@ public class Team implements Comparable<Team>
 				{
 					return false;
 				}
-//			}
+			}
 			//check, if the teams have the same IP
-//			if(this.getClientSocket().getInetAddress().getHostAddress().equals(otherTeam.getClientSocket().getInetAddress().getHostAddress()))
-//			{
-//				return true;
-//			}
-//		} catch (UnknownHostException uhe) {
-//			uhe.printStackTrace();
-//		}
-//		
-//		return false;
+			if(this.getClientSocket().getInetAddress().getHostAddress().equals(otherTeam.getClientSocket().getInetAddress().getHostAddress()))
+			{
+				return true;
+			}
+		} catch (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	public int compareTo(Team otherTeam) 

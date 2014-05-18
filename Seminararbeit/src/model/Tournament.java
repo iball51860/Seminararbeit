@@ -37,7 +37,6 @@ public class Tournament {
 		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
 		this.finishedMatches = 0;
 		this.finishedShots = 0;
-//		this.weightedFinishedShots = 0;
 		this.isRunning = true;
 	}
 
@@ -210,15 +209,7 @@ public class Tournament {
 	
 	public synchronized void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
-//		this.weightedFinishedShots += increment * Math.pow(2, currentRound2);
 	}
-	
-//	/**
-//	 * @return the finishedShotsInRound
-//	 */
-//	public synchronized int getWeightedFinishedShots() {
-//		return weightedFinishedShots;
-//	}
 	
 	/**
 	 * @return the goals

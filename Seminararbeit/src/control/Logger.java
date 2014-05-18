@@ -30,9 +30,6 @@ public class Logger {
 
 	private static ArrayList<LogLine> logbook = new ArrayList<LogLine>();
 	
-//	private static ServerWindow target;
-//	private static boolean targetEnabled = false;
-	
 	
 	/**
 	 * 
@@ -43,30 +40,18 @@ public class Logger {
 	{
 		LogLine ll = new LogLine(message);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
 	public static void log(String message, int type)
 	{
 		LogLine ll = new LogLine(message, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
 	public static void log(String message, Object o, int type)
 	{
 		LogLine ll = new LogLine(message, o, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
 	public static void log(String message, Team team)
@@ -78,10 +63,6 @@ public class Logger {
 	{
 		LogLine ll = new LogLine(message, team, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
 	public static String getLog()
@@ -255,15 +236,4 @@ public class Logger {
 	{
 		logbook = new ArrayList<LogLine>();
 	}
-	
-//	public static void setTarget(ServerWindow target) {
-//		Logger.target = target;
-//		if (target != null) {
-//			Logger.targetEnabled = true;
-//		}
-//		else
-//		{
-//			Logger.targetEnabled = false;
-//		}
-//	}
 }
