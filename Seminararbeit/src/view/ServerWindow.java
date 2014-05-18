@@ -16,34 +16,33 @@ public class ServerWindow extends JFrame {
 	
 	private WMServer wmServer;
 	private Tournament tournament;
+	private ArrayTeamSet<Team> teamSet;	
 	
-	/**Panel on the left where Gamedata is shown and Settings are made**/
+	/**Panel on the left where Gamedata is shown and Settings are made*/
 	private ControlPanel controlPanel;
 	
-	//JProgressBar bottom
+	/**Progressbar at the bottom, showing the Progress of the game*/
 	private JProgressBar progress;
 	 	
-	//TabbedPane
+	/**Tabbedpane holding the Panels for different Game Visualizations*/
 	private JTabbedPane tabPane;
 	
-	//StartPanel
+	/**Panel showing big IP-Address and Port Number at the Beginning*/
 	private StartPanel startPanel;
 	
-	//TabbedPane Matches
+	/**Panel showing the current standings of all Matches*/
 	private MatchesPanel matchPanel;
 	
-	//TabbedPane Team-Matrix
+	/**Panel showing the Status of all Teams*/
 	private TeamMatrixPanel teamMatrixPanel;
 	
-	//TabbedPane Result-List
+	/**Panel showing a Resultlist*/
 	private ResultListPanel resultListPanel;
 	
-	//TabbedPane Log
+	/**Panel showing the Log*/
 	private LogPanel logPanel;
 	
 	private PopupDialogPort popup;
-	
-	private ArrayTeamSet<Team> teamSet;	
 	
 	public ServerWindow()
 	{

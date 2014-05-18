@@ -157,7 +157,7 @@ public class Communication
 	/**
 	 * Sends the calculated Strengths in a certain format (e.g. STR 586062) to the specific team.
 	 * 
-	 * @param team which receive strengths
+	 * @param team which receives strengths
 	 */
 	public static void sendStrengths(Team team)
 	{
