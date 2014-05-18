@@ -26,12 +26,11 @@ public class ServerWindow extends JFrame {
 	//TabbedPane
 	private JTabbedPane tabPane;
 	
+	//StartPanel
 	private StartPanel startPanel;
 	
 	//TabbedPane Matches
-	private JPanel matchPanel;
-	private ArrayList<MatchPanelUpdater> threadList;
-	
+	private MatchesPanel matchPanel;
 	
 	//TabbedPane Team-Matrix
 	private TeamMatrixPanel teamMatrixPanel;
@@ -79,8 +78,7 @@ public class ServerWindow extends JFrame {
 		startPanel = new StartPanel();
 		
 		//create Panel for the final
-		matchPanel = new JPanel(new GridLayout(0, 2));
-		threadList = new ArrayList<MatchPanelUpdater>();
+		matchPanel = new MatchesPanel();
 		
 		//create Panel for "Result-List"
 		resultList = new JTextArea();
@@ -231,31 +229,12 @@ public class ServerWindow extends JFrame {
 	
 	public void addMatch(final Team a, final Team b)
 	{
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				JLabel text = new JLabel(a.getName() + " " + a.getGoalsInCurrentRound() + " : " 
-						+ b.getGoalsInCurrentRound() + " " + b.getName());
-				JProgressBar bar = new JProgressBar();
-				bar.setMinimum(-50);
-				bar.setMaximum(50);
-				matchPanel.add(text);
-				matchPanel.add(bar);
-				MatchPanelUpdater newThread = new MatchPanelUpdater(a, b, text, bar);
-				newThread.start();
-				matchPanel.updateUI();
-				threadList.add(newThread);
-			}
-		});
+		matchPanel.addMatch(a, b);
 	}
 	
 	public void cleanMatchPanel()
 	{
-		matchPanel.removeAll();
-		for(MatchPanelUpdater t : threadList)
-		{
-			t.setFlag(false);
-		}
+		matchPanel.cleanMatchPanel();
 	}
 	
 	//////////////////////// Getter and Setter ////////////////////////
@@ -312,7 +291,6 @@ public class ServerWindow extends JFrame {
 	public JLabel getServerPort() {
 		return controlPanel.getServerPort();
 	}
-
 
 	public JTextArea getResultList() {
 		return resultList;
