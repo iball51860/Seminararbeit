@@ -2,8 +2,6 @@ package view;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
 import javax.swing.*;
@@ -19,21 +17,16 @@ public class ServerWindow extends JFrame {
 	private WMServer wmServer;
 	private Tournament tournament;
 	
-	//JPanel west;
+	/**Panel on the left where Gamedata is shown and Settings are made**/
 	private ControlPanel controlPanel;
 	
 	//JProgressBar bottom
 	private JProgressBar progress;
-	 
-	
+	 	
 	//TabbedPane
 	private JTabbedPane tabPane;
 	
-	//TabbedPane Start
 	private StartPanel startPanel;
-//	private JPanel startPanel;
-//	private JLabel showIp;
-//	private JLabel showPort;
 	
 	//TabbedPane Matches
 	private JPanel matchPanel;
@@ -41,7 +34,7 @@ public class ServerWindow extends JFrame {
 	
 	
 	//TabbedPane Team-Matrix
-	private JPanel teamView;
+	private TeamMatrixPanel teamMatrixPanel;
 	
 	//TabbedPane Result-List
 	private JPanel result;
@@ -54,9 +47,7 @@ public class ServerWindow extends JFrame {
 	
 	private PopupDialogPort popup;
 	
-	private ArrayTeamSet<Team> teamSet;
-	private JButton[] teamButtons;
-	
+	private ArrayTeamSet<Team> teamSet;	
 	
 	public ServerWindow()
 	{
@@ -86,23 +77,10 @@ public class ServerWindow extends JFrame {
 		
 		//create Panel for "Start"
 		startPanel = new StartPanel();
-//		try {
-//			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-//			showIp.setFont(new Font("Arial", Font.BOLD, 50));
-//		} catch (UnknownHostException uhe) {
-//			uhe.printStackTrace();
-//		}
-//		showPort = new JLabel("Port: XXXX");
-//		showPort.setFont(new Font("Arial", Font.BOLD, 50));
-//		startPanel.add(showIp);
-//		startPanel.add(showPort);
 		
 		//create Panel for the final
 		matchPanel = new JPanel(new GridLayout(0, 2));
 		threadList = new ArrayList<MatchPanelUpdater>();
-		
-		//create Panel for "Team-Matrix"
-		teamView = new JPanel();
 		
 		//create Panel for "Result-List"
 		resultList = new JTextArea();
@@ -138,51 +116,22 @@ public class ServerWindow extends JFrame {
 	
 	
 	/**
-	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
+	 * Initialize the teamMatrixPanel-Panel: Each team gets a Button with a color (green = inGame, red = game over)
 	 * @param tSet
 	 */
-	public void updateTeamView(final Tournament t)
+	public void registerTournament(final Tournament t)
 	{
 		this.tournament = t;
+		controlPanel.updateMetaData(t);
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		progress.setMaximum(Analyser.calculateNoOfRounds(t) * Analyser.calculateNoOfShotsPerMatch(t) + finalExtraShots);
 		this.teamSet = t.getPlaying().clone();
-		final ArrayTeamSet<Team> clone = this.teamSet;
-		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					
-					teamView.removeAll();
-					controlPanel.updateMetaData(t);
-					
-					teamView.setLayout(new GridLayout(size, size, 1, 1));
-					teamButtons = new JButton[Team.getCount() + 1];
-					Iterator<Team> it = clone.iterator();
-					while (it.hasNext()) {
-						Team t = it.next();
-						if (!t.getName().equals("bottt"))
-						{
-							teamButtons[t.getID()] = new JButton(t.getName());
-							teamButtons[t.getID()].setBackground(Color.GREEN);
-							teamButtons[t.getID()].setOpaque(true);
-							teamButtons[t.getID()].setBorderPainted(false);
-							teamButtons[t.getID()]
-									.addActionListener(new ShowTeamListener(
-											ServerWindow.this, t));
-							teamButtons[t.getID()].setToolTipText(t.getName()
-									+ t.getID());
-							teamView.add(teamButtons[t.getID()]);
-							logPanel.registerTeam(t);
-						}
-					}
-					updateResultList();
-					updateResult.setEnabled(true);
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			e.printStackTrace();
-		}
+		teamMatrixPanel = new TeamMatrixPanel(ServerWindow.this, t);
+
+		tabPane.setComponentAt(0, teamMatrixPanel);
+		tabPane.setTitleAt(0, "Matrix");
+		updateResultList();
+		updateResult.setEnabled(true);
 	}
 	
 	/**
@@ -192,47 +141,12 @@ public class ServerWindow extends JFrame {
 	 */
 	public void updateTeamView(final Team t)
 	{
-		if(!t.getName().equals("bottt"))
-		{
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					public void run() {
-						if (!t.isInGame()) {
-							teamButtons[t.getID()].setBackground(Color.RED);
-							teamButtons[t.getID()].setForeground(Color.BLACK);
-						} else {
-							teamButtons[t.getID()].setBackground(Color.GREEN);
-							teamButtons[t.getID()].setForeground(Color.BLACK);
-						}
-						teamButtons[t.getID()].repaint();
-					}
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		teamMatrixPanel.updateTeamView(t);
 	}
 	
 	public void updateTeamInMatchView(final Team a, final Team b)
 	{
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					if (!a.getName().equals("bottt")) {
-						teamButtons[a.getID()].setBackground(Color.BLUE);
-						teamButtons[a.getID()].setForeground(Color.WHITE);
-						teamButtons[a.getID()].repaint();
-					}
-					if (!b.getName().equals("bottt")) {
-						teamButtons[b.getID()].setBackground(Color.BLUE);
-						teamButtons[b.getID()].setForeground(Color.WHITE);
-						teamButtons[b.getID()].repaint();
-					}
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			e.printStackTrace();
-		}
+		teamMatrixPanel.updateTeamInMatchView(a, b);
 	}
 	
 	public void updateClientsAtServer(int clientsAtServer)
@@ -413,7 +327,7 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JPanel getTeamView() {
-		return teamView;
+		return teamMatrixPanel;
 	}
 
 

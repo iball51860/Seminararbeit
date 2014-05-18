@@ -52,7 +52,7 @@ public class GameManager extends Thread{
 		{
 			te.setIsInGame(true);
 		}
-		t.getMasterWindow().updateTeamView(t);
+		t.getMasterWindow().registerTournament(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " " +
 				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		
