@@ -155,13 +155,13 @@ public class Communication
 	}
 	
 	/**
-	 * Sends the calculated Strengths in a certain format (e.g. STRENGTH586062) to the specific team.
+	 * Sends the calculated Strengths in a certain format (e.g. STR 586062) to the specific team.
 	 * 
 	 * @param team which receive strengths
 	 */
 	public static void sendStrengths(Team team)
 	{
-		String s = STRENGTH + team.getStrength()[0] + team.getStrength()[1] + team.getStrength()[2];
+		String s = STRENGTH + " " + team.getStrength()[0] + team.getStrength()[1] + team.getStrength()[2];
 		sendMsg(team, s);
 	}
 	

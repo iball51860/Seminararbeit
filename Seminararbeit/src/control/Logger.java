@@ -6,14 +6,17 @@ package control;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import view.ServerWindow;
+//import view.ServerWindow;
 
 import model.LogLine;
 import model.Team;
 
 /**
- * @author Jan
- *
+ * The Logger class manages the information that will be logged in separate log lines.
+ * Each logline has a time stamp and an attribute (e.g. server, communication, etc.) to order all loglines.
+ * All method are static for a better access.
+ * 
+ * @author Jan Fritze, Manuel Kaiser
  */
 public class Logger {
 
@@ -27,43 +30,43 @@ public class Logger {
 
 	private static ArrayList<LogLine> logbook = new ArrayList<LogLine>();
 	
-	private static ServerWindow target;
-	private static boolean targetEnabled = false;
+//	private static ServerWindow target;
+//	private static boolean targetEnabled = false;
 	
 	
+	/**
+	 * 
+	 * 
+	 * @param message - Message that will be saved in a logline.
+	 */
 	public static void log(String message)
 	{
 		LogLine ll = new LogLine(message);
 		logbook.add(ll);
-		if(targetEnabled)
-		{
-			target.appendLogLine(ll);
-		}
+//		if(targetEnabled)
+//		{
+//			target.appendLogLine(ll);
+//		}
 	}
 	
 	public static void log(String message, int type)
 	{
 		LogLine ll = new LogLine(message, type);
 		logbook.add(ll);
-		if(targetEnabled)
-		{
-			target.appendLogLine(ll);
-		}
+//		if(targetEnabled)
+//		{
+//			target.appendLogLine(ll);
+//		}
 	}
-	
-//	public static void log(String message, Object o)
-//	{
-//		logbook.add(new LogLine(message, o));
-//	}
 	
 	public static void log(String message, Object o, int type)
 	{
 		LogLine ll = new LogLine(message, o, type);
 		logbook.add(ll);
-		if(targetEnabled)
-		{
-			target.appendLogLine(ll);
-		}
+//		if(targetEnabled)
+//		{
+//			target.appendLogLine(ll);
+//		}
 	}
 	
 	public static void log(String message, Team team)
@@ -75,10 +78,10 @@ public class Logger {
 	{
 		LogLine ll = new LogLine(message, team, type);
 		logbook.add(ll);
-		if(targetEnabled)
-		{
-			target.appendLogLine(ll);
-		}
+//		if(targetEnabled)
+//		{
+//			target.appendLogLine(ll);
+//		}
 	}
 	
 	public static String getLog()
@@ -253,14 +256,14 @@ public class Logger {
 		logbook = new ArrayList<LogLine>();
 	}
 	
-	public static void setTarget(ServerWindow target) {
-		Logger.target = target;
-		if (target != null) {
-			Logger.targetEnabled = true;
-		}
-		else
-		{
-			Logger.targetEnabled = false;
-		}
-	}
+//	public static void setTarget(ServerWindow target) {
+//		Logger.target = target;
+//		if (target != null) {
+//			Logger.targetEnabled = true;
+//		}
+//		else
+//		{
+//			Logger.targetEnabled = false;
+//		}
+//	}
 }

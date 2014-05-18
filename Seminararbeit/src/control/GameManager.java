@@ -61,10 +61,7 @@ public class GameManager extends Thread{
 		{
 			t.setCurrentRound(roundCount);
 			t.getMasterWindow().updateMetaData(t);
-			if(roundCount == 2)
-			{
-				t.getMasterWindow().showFinal();
-			}
+			t.getMasterWindow().cleanMatchPanel();
 			Logger.log("\n" + Analyser.getCurrentRoundName(t).toUpperCase() + " - " + t.getPlaying().size() + " teams playing.", Logger.ROUND);
 			
 			ArrayTeamSet<Team> copy = t.getPlaying().clone();
@@ -103,6 +100,7 @@ public class GameManager extends Thread{
 					goalsToPlayInMatch += finalExtraShots;
 				}
 				SubManager newSubManager = new SubManager(a, b, t, goalsToPlayInMatch);
+				t.getMasterWindow().addMatch(a, b);
 				newSubManager.start();
 				threadList.add(newSubManager);
 			}
