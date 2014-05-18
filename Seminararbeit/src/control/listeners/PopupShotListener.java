@@ -8,21 +8,30 @@ import control.Analyser;
 
 import view.*;
 
+/**
+ * Listener triggered by hitting Return or the OK-Button in the {@link PopupDialogShots}.
+ * Starts a tournament.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class PopupShotListener implements ActionListener
 {
-	
+	/**Popupwindow where the number of shots is entered*/
 	private PopupDialogShots popup;
+	/**ServerWindow from which the Popup is opened*/
 	private ServerWindow serverWindow;
 	
-	
+	/**Constructor setting the popupwindow and the ServerWindow*/
 	public PopupShotListener(PopupDialogShots popup, ServerWindow serverWindow)
 	{
 		this.popup = popup;
 		this.serverWindow = serverWindow;
 	}
 	
-	
-	
+	/**
+	 * Retrieves the number of shots to be played and initiates a new tournament with the registered Clients
+	 * and the shots to be played.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{
 		try

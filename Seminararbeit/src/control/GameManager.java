@@ -237,13 +237,9 @@ public class GameManager extends Thread{
 		boolean goal = false;
 		if(Math.random() < nettoStrength)
 		{
-//			Logger.log(shooting.getName() + " scores against " + keeping.getName(), shooting, Logger.SHOT);
 			goal = true;
 		}
 		else
-		{
-//			Logger.log(keeping.getName() + " keeps a goal from " + shooting.getName(), shooting, Logger.SHOT);
-		}
 		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
 		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
 		
