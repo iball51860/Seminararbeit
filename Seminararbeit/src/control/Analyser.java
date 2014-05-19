@@ -200,13 +200,13 @@ public class Analyser {
 				* (t.getFinishedShots() - t.getFinishedMatchesInFinishedRounds() * calculateNoOfShotsPerMatch(t))
 				/ (calculateNoOfShotsPerMatch(t) * Math.pow(2, t.getCurrentRound() - 1)));
 		
-		if(t.getCurrentRound2() == 0)
+		if(t.getNoOfRoundsPlayed() == 0)
 		{
 			progress = calculateNoOfShotsPerMatch(t) * t.getFinishedShots()
 					/ (calculateNoOfShotsPerMatch(t) * t.getMasterWindow().getTeamSet().size()/2);
 		}
 		
-		progress += calculateNoOfShotsPerMatch(t) * (t.getCurrentRound2());
+		progress += calculateNoOfShotsPerMatch(t) * (t.getNoOfRoundsPlayed());
 		
 		if(t.getCurrentRound() == 1)
 		{
