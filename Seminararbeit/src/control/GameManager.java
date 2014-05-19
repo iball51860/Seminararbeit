@@ -5,15 +5,19 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * The GameManager class manages the whole tournament. 
+ * The GameManager class manages the whole tournament. It extends {@link Thread}
+ * and is designed to manage one tournament per Thread.
  * 
  * @author Jan Fritze, Manuel Kaiser
- *
+ * @see Tournament
  */
 public class GameManager extends Thread{	
 	
+	/**Integer representing the current Round. 
+	 * Counts down and shows the Rounds left to play, including the current Round.*/
 	private static int roundCount;
 	
+	/**The instance of Tournament this Game Manager manages*/
 	private Tournament tournament;
 	
 	/**
@@ -24,7 +28,7 @@ public class GameManager extends Thread{
 	public GameManager(Tournament t)
 	{
 		this.tournament = t;
-		this.setName("GameManagerThread");
+		this.setName("WMGameManagerThread");
 	}
 	
 	/**
@@ -36,9 +40,9 @@ public class GameManager extends Thread{
 	}
 	
 	/**
-	 * This method is the core of the whole WMTournament. In each round all remaining teams play against an other
-	 * random choosen team. Therefore a Set with all remaining teams gets shuffeld and for every match 
-	 * one SubManager-Thread gets started. After each match the loosing team gets removed from the "playing-set".
+	 * This method holds the core logic of the whole WMTournament. In each round all remaining teams play against an other
+	 * randomly choosen team. Therefore a Set with all remaining teams gets shuffled and for every match 
+	 * one SubManager-Thread is started. After each round the teams that lost are removed from the "playing-set".
 	 * As soon as all matches are finished the next round starts.
 	 * After the last round the game is over.
 	 * 
@@ -52,7 +56,7 @@ public class GameManager extends Thread{
 		{
 			te.setIsInGame(true);
 		}
-		t.getMasterWindow().updateTeamView(t);
+		t.getMasterWindow().registerTournament(t);
 		Logger.log("\nStarting Game.\n" + t.getNoOfRounds() + " Rounds to play.\n" + t.getNoOfMatches() + " " +
 				"Matches to Play.\n" + t.getNoOfShotsPerMatch() + " Shots per Match.", Logger.GAME);
 		
@@ -140,8 +144,8 @@ public class GameManager extends Thread{
 	}
 	
 	/**
-	 * Team a shoots and Team b keeps. After one Shot Team b shoots and Team s keeps.
-	 * After the specific number of shots (given as a parameter) the match ends and returns the winning team (team
+	 * Team a shoots and Team b keeps. After one Shot Team b shoots and Team a keeps.
+	 * After the specific number of shots (given as parameter {@code shots}) the match ends and returns the winning team (team
 	 * with more goals)
 	 * 
 	 * @param Team a - One team that plays a match
@@ -202,7 +206,7 @@ public class GameManager extends Thread{
 	
 	/**
 	 * Simulates a shot of the first Team shooting against the second Team keeping. 
-	 * Returns a boolean, whether a goal was scored by the attacking team.
+	 * Returns a boolean, telling if a goal was scored by the attacking team.
 	 * Chances of success for a shot are determined by whether the striker and keeper 
 	 * of the teams choose the same side to shoot/jump and their strengths. Sides to 
 	 * choose from are left, middle and right.
@@ -213,7 +217,7 @@ public class GameManager extends Thread{
 	 * strikers strength in percent.
 	 * @param shooting - The team attacking
 	 * @param keeping - The team defending
-	 * @return Variable of type boolean, whether a goal was scored.
+	 * @return Variable of type boolean, true, if goal was scored
 	 */
 	public static boolean playShot(Team shooting, Team keeping)
 	{
@@ -233,13 +237,9 @@ public class GameManager extends Thread{
 		boolean goal = false;
 		if(Math.random() < nettoStrength)
 		{
-//			Logger.log(shooting.getName() + " scores against " + keeping.getName(), shooting, Logger.SHOT);
 			goal = true;
 		}
 		else
-		{
-//			Logger.log(keeping.getName() + " keeps a goal from " + shooting.getName(), shooting, Logger.SHOT);
-		}
 		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
 		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
 		

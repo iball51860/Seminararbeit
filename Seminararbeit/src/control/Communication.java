@@ -64,7 +64,7 @@ public class Communication
 	 * @param msg that calls for decision, must be Communication.SHOOT or Communication.KEEP
 	 * @return int with value of {0, 1, 2} meaning, in this order left, middle, right or -1 for wrong feedback
 	 */
-	public static int requestDecision(Team team, String msg) //TODO add response time handling
+	public static int requestDecision(Team team, String msg)
 	{
 		if(!team.isOnline())
 		{
@@ -148,7 +148,6 @@ public class Communication
 			try {
 				team.getClientSocket().close();
 			} catch (IOException ioe) {
-				// TODO Auto-generated catch block
 				ioe.printStackTrace();
 			}
 		}
@@ -157,7 +156,7 @@ public class Communication
 	/**
 	 * Sends the calculated Strengths in a certain format (e.g. STR 586062) to the specific team.
 	 * 
-	 * @param team which receive strengths
+	 * @param team which receives strengths
 	 */
 	public static void sendStrengths(Team team)
 	{

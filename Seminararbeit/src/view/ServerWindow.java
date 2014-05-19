@@ -2,175 +2,88 @@ package view;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.border.*;
 
 import model.*;
 import control.*;
-import viewControl.*;
+import control.listeners.*;
 
+/**
+ * The Base Window. The Serverwindow is the main frame used for the GUI of the WMTournament.
+ * It is the first to be initiated and the other instances of logic and GUI, such as the 
+ * {@link WMServer} or the Panels are called from it.<br><br>
+ * The Window consist of a left column holding all controls and information about server, tournament and Testclients.<br>
+ * The Bottom contains a ProgressBar showing the Progress of the Tournament.<br>
+ * The Tabbedpane that uses most of the space holds 4 Panels.<br>The first panel shows the server-access information in the beginning
+ * and switches to a view of the TeamMatrix that shows information about each teams status later.<br>The second Tab shows all currently
+ * running matches with its standing and visualized as Progressbar.<br>The third Tab shows a List of all teams and detailed information about them.
+ * This list is sorted and the best team is displayed at the top.<br>The fourth Tab show a log of the major events happening in the Game.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 @SuppressWarnings("serial")
 public class ServerWindow extends JFrame {
 	
-	
+	/**Instance of the Server providing the data and platform*/
 	private WMServer wmServer;
+	/**Instance of the Tournament providing current data*/
 	private Tournament tournament;
+	/**Instance of the Teams informations are displayed about*/
+	private ArrayTeamSet<Team> teamSet;	
 	
-	//JPanel west;
-	private JPanel west;
-	private JPanel testClientPanel;
-	private JButton startButton;
-	private JButton finishButton;
-	private JButton resetServer;
-	private JButton addTestClients;
-	private JButton plusTestClient;
-	private JLabel reactionTimeLabel;
-	private JSlider reactionTime;
+	/**Panel on the left where Gamedata is shown and Settings are made*/
+	private ControlPanel controlPanel;
+	
+	/**Progressbar at the bottom, showing the Progress of the game*/
 	private JProgressBar progress;
-	 
-	
-	//TabbedPane
+	 	
+	/**Tabbedpane holding the Panels for different Game Visualizations*/
 	private JTabbedPane tabPane;
 	
-	//TabbedPane Start
-	private JPanel startPanel;
-	private JLabel showIp;
-	private JLabel showPort;
+	/**Panel showing big IP-Address and Port Number at the Beginning*/
+	private StartPanel startPanel;
 	
-	//TabbedPane Matches
-	private JPanel matchPanel;
-	private ArrayList<MatchPanelUpdater> threadList;
+	/**Panel showing the current standings of all Matches*/
+	private MatchesPanel matchPanel;
 	
+	/**Panel showing the Status of all Teams*/
+	private TeamMatrixPanel teamMatrixPanel;
 	
-	//TabbedPane Team-Matrix
-	private JPanel teamView;
+	/**Panel showing a Resultlist*/
+	private ResultListPanel resultListPanel;
 	
-	//TabbedPane Result-List
-	private JPanel result;
-	private JTextArea resultList;
-	private JScrollPane spResultList;
-	private JButton updateResult;
+	/**Panel showing the Log*/
+	private LogPanel logPanel;
 	
-	//TabbedPane Log
-	private JPanel log;
-	private JPanel logSettings;
-	private JTextArea logConsole;
-	private JLabel infoLog;
-	private JComboBox<String> teamBox1;
-	private JComboBox<String> teamBox2;
-	public JCheckBox[] type;
-	private JButton saveLog;
-	
-	//Label for Meta Data
-	private JLabel currentRound;
-	private JLabel noOfClients;
-	private JLabel serverIP;
-	private JLabel serverPort;
-	private JLabel noOfTestClients;
-	private JLabel noPlaying;
-	private JLabel noOfPlayedMatches;
-	private JLabel noOfGoals;
-	private JLabel successRate;
-	private JLabel shotsPerMatch;
-	
+	/**Initial dialog asking for the Serverport*/
 	private PopupDialogPort popup;
 	
-	private ArrayTeamSet<Team> teamSet;
-	private JButton[] teamButtons;
-	
-	
+	/**
+	 * Constructs a ServerWindow as described in {@link ServerWindow}. It holds the controls on the left, 
+	 * tabbedPane on the right and Progressbar at the bottom.
+	 */
 	public ServerWindow()
 	{
 		super();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 						//set up basic frame
-
 		setTitle("WM Server");
 		setSize(1000, 600);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		//create right panel with information about the tournament
-		west = new JPanel(new GridLayout(0, 1));
-		c.add(west, BorderLayout.WEST);
-		west.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		
-		//create Buttons for starting game
-		startButton = new JButton("Start Game");
-		startButton.addActionListener(new StartTournamentListener(ServerWindow.this));
-		startButton.setEnabled(false);
-		west.add(startButton);
-		
-		//create panel and Buttons for starting TestClients
-		testClientPanel = new JPanel(new BorderLayout());
-		addTestClients = new JButton("Add Test Clients");
-		addTestClients.addActionListener(new AddTestClientsListener(ServerWindow.this));
-		plusTestClient = new JButton("+");
-		plusTestClient.addActionListener(new PopupTestClientsListener(ServerWindow.this));
-		reactionTimeLabel = new JLabel("Reaction Time (ms): " + 0);
-		reactionTime = new JSlider();
-		reactionTime.setName("Reaction Time");
-		reactionTime.setMaximum(500);
-		reactionTime.setValue(0);
-		reactionTime.setMajorTickSpacing(100);
-		reactionTime.setPaintTicks(true);
-		reactionTime.setPaintLabels(true);
-		reactionTime.addChangeListener(new ChangeReactionTimeListener(reactionTime, reactionTimeLabel));
-		testClientPanel.add(addTestClients, BorderLayout.CENTER);
-		testClientPanel.add(plusTestClient, BorderLayout.EAST);
-		
-		west.add(testClientPanel);
-		west.add(reactionTimeLabel);
-		west.add(reactionTime);
-		
-				
-		//create Labels for information
-		currentRound = new JLabel("Round: 0");
-		west.add(currentRound);
-		noOfClients = new JLabel("Clients at Server: 0");
-		west.add(noOfClients);
-		try {
-			serverIP = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-		} catch (UnknownHostException uhe) {
-			uhe.printStackTrace();
-		}
-		west.add(serverIP);
-		serverPort = new JLabel("Port: XXXX");
-		west.add(serverPort);
-		noOfTestClients = new JLabel("TestClients at Server: 0");
-		west.add(noOfTestClients);
-		noPlaying = new JLabel("Teams playing: 0");
-		west.add(noPlaying);
-		noOfPlayedMatches = new JLabel("Matches played: 0");
-		west.add(noOfPlayedMatches);
-		noOfGoals = new JLabel("Goals: 0");
-		west.add(noOfGoals);
-		successRate = new JLabel("Success Rate: 0 %");
-		west.add(successRate);
-		shotsPerMatch = new JLabel("Shots per Match: ");
-		west.add(shotsPerMatch);
-		
-		//create finishButton for interrupting Game after the current round
-		finishButton = new JButton("Stop Game after current Round");
-		finishButton.addActionListener(new FinishGameListener());
-		west.add(finishButton);
-		
-		//create reset-Server-Button
-		resetServer = new JButton("Reset Server");
-		resetServer.addActionListener(new ResetServerListener(ServerWindow.this));
-		west.add(resetServer);
+		//create left panel with information about the tournament
+		controlPanel = new ControlPanel(ServerWindow.this);
+		c.add(controlPanel, BorderLayout.WEST);
 		
 		
 		//create ProgressBar
 		progress = new JProgressBar();
 		c.add(progress, BorderLayout.SOUTH);
-		//progress.setStringPainted(true);
 		
 		
 		//create JTabbedPane 
@@ -178,89 +91,24 @@ public class ServerWindow extends JFrame {
 		c.add(tabPane, BorderLayout.CENTER);
 		
 		//create Panel for "Start"
-		startPanel = new JPanel(new GridLayout(2, 1));
-		try {
-			showIp = new JLabel("IP-Address: " + InetAddress.getLocalHost().getHostAddress());
-			showIp.setFont(new Font("Arial", Font.BOLD, 50));
-		} catch (UnknownHostException uhe) {
-			uhe.printStackTrace();
-		}
-		showPort = new JLabel("Port: XXXX");
-		showPort.setFont(new Font("Arial", Font.BOLD, 50));
-		startPanel.add(showIp);
-		startPanel.add(showPort);
+		startPanel = new StartPanel();
 		
 		//create Panel for the final
-		matchPanel = new JPanel(new GridLayout(0, 2));
-		threadList = new ArrayList<MatchPanelUpdater>();
-		
-		//create Panel for "Team-Matrix"
-		teamView = new JPanel();
+		matchPanel = new MatchesPanel();
 		
 		//create Panel for "Result-List"
-		resultList = new JTextArea();
-		resultList.setEditable(false);
-		updateResult = new JButton("Update Result");
-		updateResult.setEnabled(false);
-		updateResult.addActionListener(new UpdateResultListener(ServerWindow.this));
-		spResultList = new JScrollPane();
-		spResultList.setViewportView(resultList);
-		result = new JPanel(new BorderLayout());
-		result.add(spResultList, BorderLayout.CENTER);
-		result.add(updateResult, BorderLayout.SOUTH);
+		resultListPanel = new ResultListPanel(ServerWindow.this);
 		
 		//create Pane for "Log"
-		log = new JPanel(new BorderLayout());
-		logConsole = new JTextArea();
-		logConsole.setEditable(false);
-		JScrollPane spLog = new JScrollPane();
-		spLog.setViewportView(logConsole);
-		logSettings = new JPanel(new GridLayout(0, 1));
-		infoLog = new JLabel("Show:");
-		UpdateLogListener updateLogListener = new UpdateLogListener(ServerWindow.this);
-		teamBox1 = new JComboBox<String>();
-		teamBox1.addItem("No Teams");
-		teamBox1.addItem("All Teams");
-		teamBox1.addActionListener(updateLogListener);
-		teamBox1.addActionListener(new TeamBoxListener(ServerWindow.this));
-		teamBox2 = new JComboBox<String>();
-		teamBox2.addItem("No Team");
-		teamBox2.setEnabled(false);
-		teamBox2.addActionListener(updateLogListener);
-		logSettings.add(infoLog);
-		logSettings.add(teamBox1);
-		logSettings.add(teamBox2);
-		type = new JCheckBox[7];
-		type[0] = new JCheckBox("Default");
-		type[1] = new JCheckBox("Server");
-		type[2] = new JCheckBox("Communication");
-		type[3] = new JCheckBox("Game");
-		type[4] = new JCheckBox("Round");
-		type[5] = new JCheckBox("Match");
-		type[6] = new JCheckBox("Shot");
-		for(JCheckBox jCB : type)
-		{
-			jCB.setSelected(true);
-			jCB.addActionListener(updateLogListener);
-			logSettings.add(jCB);
-		}
-		logSettings.remove(type[0]);
-		logSettings.remove(type[6]);
-		saveLog = new JButton("Save Log");
-		saveLog.addActionListener(new SaveLogListener(ServerWindow.this));
-		saveLog.setVisible(true);
-		log.add(spLog, BorderLayout.CENTER);
-		log.add(logSettings, BorderLayout.EAST);
-		log.add(saveLog, BorderLayout.SOUTH);
-		
+		logPanel = new LogPanel(ServerWindow.this);
+	
 		//build JTabbedPane
 		tabPane.add("Start", startPanel);
 		tabPane.addTab("Matches", matchPanel);
-		tabPane.add("Result", result);
-		tabPane.add("Log", log);
+		tabPane.add("Result", resultListPanel);
+		tabPane.add("Log", logPanel);
 		tabPane.addChangeListener(new TabbedPaneListener(ServerWindow.this));
-		
-		
+			
 		//create popup dialog to request Port
 		popup = new PopupDialogPort(ServerWindow.this);
 		popup.setVisible(true);
@@ -269,87 +117,25 @@ public class ServerWindow extends JFrame {
 		setEnabled(false);
 			}
 		});
-//		Logger.setTarget(this);
 	}
 	
 	
-//	public void redirectConsoleOutput() {
-//		// Redirect console output to TextArea
-//
-//		final JTextArea area = logString;
-//		PrintStream stream = new PrintStream(System.out) {
-//
-//			@Override
-//			public void print(String s) {
-//				area.append(s + "\n");
-//			}
-//		};
-//		System.setOut(stream);
-//	}
-	
-	
 	/**
-	 * initialise the teamView-Panel: Each team gets a Button with a color (green = inGame, red = game over)
+	 * Initialize the teamMatrixPanel-Panel: Each team gets a Button with a color (green = inGame, red = game over)
 	 * @param tSet
 	 */
-	public void updateTeamView(final Tournament t)
+	public void registerTournament(final Tournament t)
 	{
 		this.tournament = t;
-//		progress.setMaximum(Analyser.calculateTotalWeightedShots(t));
+		controlPanel.updateMetaData(t);
 		int finalExtraShots = t.getNoOfShots() - (t.getNoOfShotsPerMatch() * t.getNoOfMatches());
 		progress.setMaximum(Analyser.calculateNoOfRounds(t) * Analyser.calculateNoOfShotsPerMatch(t) + finalExtraShots);
 		this.teamSet = t.getPlaying().clone();
-		final ArrayTeamSet<Team> clone = this.teamSet;
-		final int size = (int) Math.ceil(Math.sqrt(this.teamSet.size()));
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					
-					teamView.removeAll();
-					//Orders from updateMetaData() for the first setup
-					ServerWindow.this.currentRound.setText("Round: "
-							+ Analyser.getCurrentRoundName(t));
-					ServerWindow.this.noPlaying.setText("Teams playing: "
-							+ t.getPlaying().size());
-					ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
-							+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
-					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-					int rate = (int) ((double) t.getGoals()
-							/ (double) t.getFinishedShots() * 100);
-					ServerWindow.this.successRate.setText("Success Rate: " + rate
-							+ " %");
-					ServerWindow.this.shotsPerMatch.setText("Shots per Match: "
-							+ t.getNoOfShotsPerMatch());
-					
-					teamView.setLayout(new GridLayout(size, size, 1, 1));
-					teamButtons = new JButton[Team.getCount() + 1];
-					Iterator<Team> it = clone.iterator();
-					while (it.hasNext()) {
-						Team t = it.next();
-						if (!t.getName().equals("bottt"))
-						{
-							teamButtons[t.getID()] = new JButton(t.getName());
-							teamButtons[t.getID()].setBackground(Color.GREEN);
-							teamButtons[t.getID()].setOpaque(true);
-							teamButtons[t.getID()].setBorderPainted(false);
-							teamButtons[t.getID()]
-									.addActionListener(new ShowTeamListener(
-											ServerWindow.this, t));
-							teamButtons[t.getID()].setToolTipText(t.getName()
-									+ t.getID());
-							teamView.add(teamButtons[t.getID()]);
-							teamBox1.addItem(t.getName() + t.getID());
-							teamBox2.addItem(t.getName() + t.getID());
-						}
-					}
-					updateResultList();
-					updateResult.setEnabled(true);
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		teamMatrixPanel = new TeamMatrixPanel(ServerWindow.this, t);
+
+		tabPane.setComponentAt(0, teamMatrixPanel);
+		tabPane.setTitleAt(0, "Matrix");
+		resultListPanel.activateResultListUpdater(ServerWindow.this);
 	}
 	
 	/**
@@ -359,226 +145,120 @@ public class ServerWindow extends JFrame {
 	 */
 	public void updateTeamView(final Team t)
 	{
-		if(!t.getName().equals("bottt"))
+		teamMatrixPanel.updateTeamView(t);
+	}
+	
+	/**
+	 * Updates the in-Game-Status of the given Teams. Switches color, etc.
+	 * @param a
+	 * @param b
+	 */
+	public void updateTeamInMatchView(final Team a, final Team b)
+	{
+		teamMatrixPanel.updateTeamInMatchView(a, b);
+	}
+	
+	/**
+	 * Updates the Number of Clients at Server displayed in the panel on the left.
+	 * @param clientsAtServer
+	 */
+	public void updateClientsAtServer(int clientsAtServer)
+	{
+		controlPanel.updateClientsAtServer(clientsAtServer);
+	}
+	
+	/**
+	 * Updates the MetaData for the given tournament
+	 * @param tournament
+	 */
+	public void updateMetaData(final Tournament tournament)
+	{
+		this.tournament = tournament;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				controlPanel.updateMetaData(tournament);
+			}
+		});
+	}
+	
+	/**
+	 * Updates the number of played shots in a label in the left control panel
+	 * @param tournament
+	 */
+	public void updateShots(final Tournament tournament)
+	{
 		{
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
-						if (!t.isInGame()) {
-							teamButtons[t.getID()].setBackground(Color.RED);
-							teamButtons[t.getID()].setForeground(Color.BLACK);
-						} else {
-							teamButtons[t.getID()].setBackground(Color.GREEN);
-							teamButtons[t.getID()].setForeground(Color.BLACK);
-						}
-						teamButtons[t.getID()].repaint();
+						controlPanel.updateGoals(tournament);
+						progress.setValue(Analyser.calculateProgress(tournament));
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
-	}
-	
-	public void updateTeamInMatchView(final Team a, final Team b)
-	{
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					if (!a.getName().equals("bottt")) {
-						teamButtons[a.getID()].setBackground(Color.BLUE);
-						teamButtons[a.getID()].setForeground(Color.WHITE);
-						teamButtons[a.getID()].repaint();
-					}
-					if (!b.getName().equals("bottt")) {
-						teamButtons[b.getID()].setBackground(Color.BLUE);
-						teamButtons[b.getID()].setForeground(Color.WHITE);
-						teamButtons[b.getID()].repaint();
-					}
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void updateClientsAtServer(int clientsAtServer)
-	{
-		this.noOfClients.setText("Clients at server: " + clientsAtServer);
-		if(clientsAtServer >=2)
-		{
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					ServerWindow.this.startButton.setEnabled(true);
-				}
-			});
 		}
 	}
 	
 	/**
-	 * removes all teams who have lost from the teamView-Panel
-	 * 
-	 * @deprecated
+	 * Updates the resultlist in the Resultlistpanel.
 	 */
-	public void removeLoosingTeams()
-	{
-		teamView.removeAll();
-		Iterator<Team> it = teamSet.iterator();
-		teamButtons = new JButton[teamSet.size() + 1];
-		while(it.hasNext())
-		{
-			Team t = it.next();
-			if(t.isInGame())
-			{
-				teamButtons[t.getID()] = new JButton(t.getName() + t.getID());
-				teamButtons[t.getID()].setBackground(Color.GREEN);
-				teamButtons[t.getID()].setOpaque(true);
-				teamButtons[t.getID()].setBorderPainted(false);
-				teamButtons[t.getID()].addActionListener(new ShowTeamListener(this, t));
-				teamButtons[t.getID()].setToolTipText(t.getName());
-				teamView.add(teamButtons[t.getID()]);
-			}
-		}
-	}
-	
-	
-	public void updateMetaData(final Tournament t)
-	{
-		this.tournament = t;
-		/*JLabel currentRound = this.currentRound;
-		JLabel noPlaying = this.noPlaying;
-		JLabel noOfPlayedMatches = this.noOfPlayedMatches;
-		JLabel*/
-		//try {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					ServerWindow.this.currentRound.setText("Round: "
-							+ Analyser.getCurrentRoundName(t));
-					ServerWindow.this.noPlaying.setText("Teams playing: "
-							+ t.getPlaying().size());
-					ServerWindow.this.noOfPlayedMatches.setText("Matches played: "
-							+ t.getFinishedMatches() + " / " + t.getNoOfMatches());
-					ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-					int rate = (int) ((double) t.getGoals()
-							/ (double) t.getFinishedShots() * 100);
-					ServerWindow.this.successRate.setText("Success Rate: " + rate
-							+ " %");
-				}
-			});
-//		} catch (InvocationTargetException | InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
-	
-	
-	public void updateShots(final Tournament t)
-	{
-		{
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					public void run() {
-						ServerWindow.this.noOfGoals.setText("Goals: " + t.getGoals());
-						progress.setValue(Analyser.calculateProgress(t));
-					}
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
 	public void updateResultList()
 	{
-		if(teamSet == null)
-		{
-			return;
-		}
-		int count = 1;
-		Collections.sort(teamSet);
-		final StringBuffer sb = new StringBuffer();
-		for(Team t : teamSet)
-		{
-			int rate = (int) ((double)t.getGoals() * 100 / (double)t.getFinishedShots());
-			long avg;
-			sb.append(count++ + ". " + t.getName() + "\t" + t.getWonMatches() + " Victories\t" + t.getGoals() + " Goals\t" +
-					"Success Rate: " + rate + " %\t" + " Goal Difference: " + (t.getGoals()-t.getGoalsAgainst()) + "\tAvg. Reaction: " + 
-					(avg = t.getAvgReactionTime()) + " ms\tStandard Deviation: " + t.getStandardDeviation(avg) + "ms\n");
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				resultList.setText(sb.toString());
-				resultList.setCaretPosition(0);
-			}
-		});
+		resultListPanel.updateResultList(teamSet);
 	}
 	
-	
+	/**
+	 * Updates the Label showing the number of TestClients at the Server.
+	 * @param testClients
+	 */
 	public void updateNoOfTestClients(final int testClients)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				ServerWindow.this.noOfTestClients
-						.setText("TestClients at Server: " + testClients);
+				controlPanel.updateNoOfTestClients(testClients);
 			}
 		});
 	}
 	
-	public void appendLogLine(final LogLine ll)
+	/**
+	 * Appends a LogLine to the Log in the LogPanel
+	 * @param logLine
+	 */
+	public void appendLogLine(final LogLine logLine)
 	{
-		boolean validInstance = (ll.getInstanceName() == null || getTeamBox1().getSelectedItem().toString().equalsIgnoreCase("All Teams") ||
-					getTeamBox1().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()) || 
-					getTeamBox2().getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()));
-		
-		//check whether Log is selected, type applies, and message is about a blocked instance a la (LogIsShowing && typeIsSelected && (name==null || allTeams || nameIsInBox1 || nameIsInBox2) )
-		if(tabPane.getComponentAt(2).isShowing() && type[ll.getType()].isSelected() && validInstance)
-		{
-			SwingUtilities.invokeLater(new Runnable(){
-				public void run()
-				{
-					logConsole.append("\n" + ll.getMessage());
-				}
-			});
-		}
+		logPanel.appendLogLine(logLine, tabPane);
 	}
 	
+	/**
+	 * Opens a new Finish-Window displaying the glorious information about the first three teams.
+	 */
 	public void showFinish()
 	{
 		new FinishedWindow(this.tournament);
 	}
 	
-	public void addMatch(final Team a, final Team b)
+	/**
+	 * Adds a new Progress bar for the match in the matchPanel
+	 * @param teamA
+	 * @param teamB
+	 */
+	public void addMatch(final Team teamA, final Team teamB)
 	{
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				JLabel text = new JLabel(a.getName() + " " + a.getGoalsInCurrentRound() + " : " 
-						+ b.getGoalsInCurrentRound() + " " + b.getName());
-				JProgressBar bar = new JProgressBar();
-				bar.setMinimum(-50);
-				bar.setMaximum(50);
-				matchPanel.add(text);
-				matchPanel.add(bar);
-				MatchPanelUpdater newThread = new MatchPanelUpdater(a, b, text, bar);
-				newThread.start();
-				matchPanel.updateUI();
-				threadList.add(newThread);
-			}
-		});
+		matchPanel.addMatch(teamA, teamB);
 	}
 	
+	/**
+	 * Cleans the MatchPanel of all Progressbar and its threads.
+	 */
 	public void cleanMatchPanel()
 	{
-		matchPanel.removeAll();
-		for(MatchPanelUpdater t : threadList)
-		{
-			t.setFlag(false);
-		}
+		matchPanel.cleanMatchPanel();
 	}
 	
-	//////////////////////// Getter and Setter ////////////////////////
+	/////////////////////////get-, set and increment-methods///////////////////////////////
+	/* FOR REASONS OF SAVING TIME WE WILL NOT PROVIDE DETAILED JAVADOC DOCUMENTATION FOR GETTERS AND SETTER. THANK YOU FOR UNDERSTANDING*/
 	
 	public void setWMServer(WMServer wmServer){
 		this.wmServer = wmServer;
@@ -589,37 +269,36 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JButton getStartButton(){
-		return startButton;
+		return controlPanel.getStartButton();
 	}
 	
 	public Tournament getTournament(){
 		return this.tournament;
 	}
 
+	public LogPanel getLogPanel(){
+		return logPanel;
+	}
+	
 	public JComboBox<String> getTeamBox1() {
-		return teamBox1;
+		return logPanel.getTeamBox1();
 	}
 
 	public JComboBox<String> getTeamBox2() {
-		return teamBox2;
+		return logPanel.getTeamBox2();
 	}
 	
 	public JTextArea getLogString(){
-		return logConsole;
+		return logPanel.getLogConsole();
 	}
 	
 	public JButton getSaveLog() {
-		return saveLog;
+		return logPanel.getSaveLog();
 	}
 	
 	public JTextArea getLogConsole() {
-		return logConsole;
+		return logPanel.getLogConsole();
 	}
-	
-//	public JCheckBox[] getType(){		//TODO Methode zum laufen kriegen | Ich hab keine Ahnung warum die nicht will
-//		return type;
-//	}
-
 
 	/**
 	 * @return the teamSet of the ServerWindow in natural Order
@@ -631,16 +310,15 @@ public class ServerWindow extends JFrame {
 
 
 	public JLabel getServerPort() {
-		return serverPort;
+		return controlPanel.getServerPort();
 	}
 
-
 	public JTextArea getResultList() {
-		return resultList;
+		return resultListPanel.getResultList();
 	}
 	
 	public JLabel getShowPort() {
-		return showPort;
+		return startPanel.getShowPort();
 	}
 	
 	public JTabbedPane getTabPane() {
@@ -648,17 +326,16 @@ public class ServerWindow extends JFrame {
 	}
 	
 	public JPanel getTeamView() {
-		return teamView;
+		return teamMatrixPanel;
 	}
 
 
 	public JButton getAddTestClients() {
-		return addTestClients;
+		return controlPanel.getAddTestClients();
 	}
 
 
 	public JButton getPlusTestClient() {
-		return plusTestClient;
-	}
-	
+		return controlPanel.getPlusTestClient();
+	}	
 }

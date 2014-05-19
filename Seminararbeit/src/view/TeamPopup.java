@@ -4,25 +4,43 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import viewControl.*;
+import control.listeners.*;
+
 import model.*;
 
+/**
+ * Popup that provides information about a single team. Opens when the teams Button in the teamMatrix is clicked. Provided Information:<br>
+ * Team Name<br>IP-Address<br>Strengths<br>Goals<br>Victories<br>Success Rate<br><br>Close-Button to close the frame.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 @SuppressWarnings("serial")
-public class TeamPopupDialog extends JDialog
+public class TeamPopup extends JDialog
 {
-	
+	/**Base Container holds all components*/
 	private Container c;
 	
+	/**Label with the name on it*/
 	private JLabel name;
+	/**Label with the IP on it*/
 	private JLabel ip;
+	/**Label with the strengths "Left: xx | Middle: xx | Right: xx"*/
 	private JLabel strength;
+	/**Label with the number of scored goals.*/
 	private JLabel goals;
+	/**Label with the number of victories*/
 	private JLabel victories;
+	/**Label with the success Rate of the teams shots*/
 	private JLabel success;
+	/**Button to close frame*/
 	private JButton close;
 	
-	
-	public TeamPopupDialog(final ServerWindow serverWindow, final Team t)
+	/**
+	 * Constructs a frame that shows information about a team. For more detailed Information see {@link TeamPopup}
+	 * @param serverWindow
+	 * @param t
+	 */
+	public TeamPopup(final ServerWindow serverWindow, final Team t)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -42,9 +60,9 @@ public class TeamPopupDialog extends JDialog
 				success = new JLabel("Success Rate: " + rate + " %");
 				close = new JButton("close");
 				close.addActionListener(new ClosePopupListener(serverWindow,
-						TeamPopupDialog.this));
+						TeamPopup.this));
 				close.addKeyListener(new ClosePopupListener(serverWindow,
-						TeamPopupDialog.this));
+						TeamPopup.this));
 				c.add(name);
 				c.add(ip);
 				c.add(strength);

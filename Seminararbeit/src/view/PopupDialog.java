@@ -4,15 +4,27 @@ import javax.swing.*;
 
 import java.awt.*;
 
+/**
+ * Generic Dialog to retrieve single Datatype information from the user. 
+ * Known inheriting classes: {@link PopupDialogPort}, {@link PopupDialogShots}, {@link PopupDialogTestClients}
+ * @author Jan Fritze & Manuel Kaiser<br>
+ */
 @SuppressWarnings("serial")
 public class PopupDialog extends JDialog
 {
-	
+	/**Base Container of the Popup*/
 	Container c;
+	/**Button to confirm input*/
 	JButton start;
+	/**TextField to type information*/
 	JTextField input;
+	/**Label asking for the information*/
 	JLabel info;
 	
+	/**
+	 * Constructs a simple Popup at the top in the middle of the ServerWindow asking for Simple Information, such as an Integer or a String.
+	 * @param serverWindow
+	 */
 	public PopupDialog(ServerWindow serverWindow)
 	{
 		this();
@@ -25,6 +37,9 @@ public class PopupDialog extends JDialog
 		});
 	}
 
+	/**
+	 * Creates a simple Popup asking for Simple Information such as an Integer or a String.
+	 */
 	public PopupDialog()
 	{
 		SwingUtilities.invokeLater(new Runnable() {
@@ -47,11 +62,18 @@ public class PopupDialog extends JDialog
 		});	
 	}
 	
-	
+	/**
+	 * 
+	 * @return TextField with Input
+	 */
 	public JTextField getInput(){
 		return input;
 	}
 	
+	/**
+	 * 
+	 * @return Label
+	 */
 	public JLabel getInfoLabel(){
 		return this.info;
 	}

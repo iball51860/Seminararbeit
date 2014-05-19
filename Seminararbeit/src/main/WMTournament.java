@@ -10,8 +10,6 @@ public class WMTournament {
 	 * @param args
 	 *///TODO complete Javadoc
 	
-	//TODO create final variables for further use
-	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ServerWindow serverWindow = new ServerWindow();

@@ -1,4 +1,4 @@
-package viewControl;
+package control.listeners;
 
 import java.awt.event.*;
 
@@ -6,7 +6,12 @@ import javax.swing.SwingUtilities;
 
 import view.*;
 
-
+/**
+ * Listener related to the StartGame Button.
+ * Opens a Dialog asking for the number of shots to simulate for the Tournament.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class StartTournamentListener implements ActionListener 
 {
 	

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package control;
 
 import java.util.ArrayList;
@@ -30,12 +27,9 @@ public class Logger {
 
 	private static ArrayList<LogLine> logbook = new ArrayList<LogLine>();
 	
-//	private static ServerWindow target;
-//	private static boolean targetEnabled = false;
-	
 	
 	/**
-	 * 
+	 * logs a simple message without furhter specifications.
 	 * 
 	 * @param message - Message that will be saved in a logline.
 	 */
@@ -43,47 +37,57 @@ public class Logger {
 	{
 		LogLine ll = new LogLine(message);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
+	/**
+	 * Logs a message of a certain type of information.
+	 * @param message
+	 * @param type
+	 */
 	public static void log(String message, int type)
 	{
 		LogLine ll = new LogLine(message, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
+	/**
+	 * Logs a message related to a certain Object and a certain information type
+	 * @param message
+	 * @param o
+	 * @param type
+	 */
 	public static void log(String message, Object o, int type)
 	{
 		LogLine ll = new LogLine(message, o, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
+	/**
+	 * Logs a message related to a certain team.
+	 * @param message
+	 * @param team
+	 */
 	public static void log(String message, Team team)
 	{
 		logbook.add(new LogLine(message, team));
 	}
 	
+	/**
+	 * Logs a message related to a certain team and information-type
+	 * @param message
+	 * @param team
+	 * @param type
+	 */
 	public static void log(String message, Team team, int type)
 	{
 		LogLine ll = new LogLine(message, team, type);
 		logbook.add(ll);
-//		if(targetEnabled)
-//		{
-//			target.appendLogLine(ll);
-//		}
 	}
 	
+	/**
+	 * Returns the whole log up to this point, where each logged message is seperated by a newline character
+	 * @return
+	 */
 	public static String getLog()
 	{
 		Collections.sort(logbook);
@@ -94,8 +98,14 @@ public class Logger {
 		return log;
 	}
 	
+	/**
+	 * Returns the log with messages of the specified types.
+	 * @param types
+	 * @return
+	 */
 	public static String getLog(boolean[] types)
 	{
+		//Checks whether any of the types are specified as false
 		boolean oneFalse = true;
 		for(boolean b : types){
 			if(!b)
@@ -160,6 +170,11 @@ public class Logger {
 		return log;
 	}
 
+	/**
+	 * Returns the Log with messages related to the specified Instances of Objects
+	 * @param instanceNames
+	 * @return
+	 */
 	public static String getLog(String[] instanceNames)
 	{
 		for(String name : instanceNames){
@@ -183,6 +198,14 @@ public class Logger {
 		return log;
 	}
 	
+	/**
+	 * Returns Logs with messages of the specified types and related to the specified instances of Objects
+	 * 
+	 * @param instanceNames
+	 * @param types
+	 * @return
+	 * @throws NullPointerException
+	 */
 	public static String getLog(String[] instanceNames, boolean[] types) throws NullPointerException
 	{
 		for(String name : instanceNames){
@@ -251,19 +274,11 @@ public class Logger {
 		return log;
 	}
 	
+	/**
+	 * Resets the log and deletes all previous log-messages.
+	 */
 	public static void clear()
 	{
 		logbook = new ArrayList<LogLine>();
 	}
-	
-//	public static void setTarget(ServerWindow target) {
-//		Logger.target = target;
-//		if (target != null) {
-//			Logger.targetEnabled = true;
-//		}
-//		else
-//		{
-//			Logger.targetEnabled = false;
-//		}
-//	}
 }

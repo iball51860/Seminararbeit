@@ -4,43 +4,70 @@ import view.ServerWindow;
 
 import control.*;
 
+/**
+ * Represents a Tournament with all the necessary metadata, e.g. which teams are playing.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class Tournament {
 	
+	/**Teams that are still playing in this round. See also {@link Team}.*/
 	private ArrayTeamSet<Team> playing;
+	/**Teams that have lost until now (independent of current Round). Teams might reenter the tournament in case of relegation.  See also {@link Team}.*/
 	private ArrayTeamSet<Team> lost;
+	/**Number of Shot to be played in this tournament*/
 	private int noOfShots;
+	/**No of Shots to be played in a normal match. Only Exception: final*/
 	private int noOfShotsPerMatch;
+	/**No of Rounds necessary to determine a winner. Usually less than 10.*/
 	private int noOfRounds;
-	private ServerWindow masterWindow;
+	/**Instance of the {@link ServerWindow} with the visualisation to this Tournament*/
+	private ServerWindow serverWindow;
+	/**Instance of the {@link WMServer} providing the platform for this Tournament*/
 	private WMServer server;
+	/**Round the Tournament is currently in represented as Integer. 1 = Final, 2 = Seminfinal, etc. Number usually represents number of matches Played. Exception: Relegation*/
 	private int currentRound;
-	private int currentRound2;
+	/**Number of Matches to be played throughout the tournament*/
 	private int noOfMatches;
+	/**Number of Matches finished so far in the tournament*/
 	private int finishedMatches;
+	/**Number of Matches finished before current round*/
 	private int finishedMatchesInFinishedRounds;
+	/**Number of shots finished so far in the tournament*/
 	private int finishedShots;
+	/**Number of goals scored in this match so far*/
 	private int goals;
 	
+	/**Flag showing whether the tournament has finished or not.*/
 	private boolean isRunning;
+	/**The duration, how long the tournament needed to conduct. Is just set after the tournament has finished.*/
 	private long duration = 0;
 
-	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow masterWindow){
+	/**
+	 * Constructs a new Tournament from the given data: Teams, Shots to play and the serverWindow where it is visualized.
+	 * Calculates basic data such as the Number of necessary matchs, rounds and Shots per Match.
+	 * @param contestants
+	 * @param noOfShots
+	 * @param serverWindow
+	 */
+	public Tournament(ArrayTeamSet<Team> contestants, int noOfShots, ServerWindow serverWindow){
 		this.playing = contestants;
 		this.lost = new ArrayTeamSet<Team>();
 		this.noOfShots = noOfShots;
 		this.noOfShotsPerMatch = Analyser.calculateNoOfShotsPerMatch(contestants.size(), noOfShots);
 		this.noOfRounds = Analyser.calculateNoOfRounds(contestants.size());
-		this.masterWindow = masterWindow;
-		this.server = masterWindow.getWMServer();
+		this.serverWindow = serverWindow;
+		this.server = serverWindow.getWMServer();
 		this.currentRound = 0;
-		this.currentRound2 = -1;
 		this.noOfMatches = Analyser.calculateNoOfMatches(playing.size());
 		this.finishedMatches = 0;
 		this.finishedShots = 0;
-//		this.weightedFinishedShots = 0;
 		this.isRunning = true;
 	}
 
+	/////////////////////////get-, set and increment-methods///////////////////////////////
+	/* FOR REASONS OF SAVING TIME WE WILL NOT PROVIDE DETAILED JAVADOC DOCUMENTATION FOR GETTERS AND SETTERS. THANK YOU FOR UNDERSTANDING*/
+	
 	/**
 	 * @return the playing
 	 */
@@ -112,17 +139,17 @@ public class Tournament {
 	}
 
 	/**
-	 * @return the masterWindow
+	 * @return the serverWindow
 	 */
 	public synchronized ServerWindow getMasterWindow() {
-		return masterWindow;
+		return serverWindow;
 	}
 
 	/**
-	 * @param masterWindow the masterWindow to set
+	 * @param serverWindow the serverWindow to set
 	 */
 	public synchronized void setMasterWindow(ServerWindow masterWindow) {
-		this.masterWindow = masterWindow;
+		this.serverWindow = masterWindow;
 	}
 
 	/**
@@ -152,14 +179,14 @@ public class Tournament {
 	public synchronized void setCurrentRound(int currentRound) {
 		finishedMatchesInFinishedRounds = finishedMatches;
 		this.currentRound = currentRound;
-		this.currentRound2 += 1;
 	}
 	
 	/**
+	 * Returns the Rounds played in the tournament so far, including the current Round.
 	 * @return the currentRound2
 	 */
-	public synchronized int getCurrentRound2() {
-		return currentRound2;
+	public synchronized int getNoOfRoundsPlayed() {
+		return noOfRounds - currentRound;// + 1;
 	}
 
 	/**
@@ -210,15 +237,7 @@ public class Tournament {
 	
 	public synchronized void incrementFinishedShots(int increment) {
 		this.finishedShots += increment;
-//		this.weightedFinishedShots += increment * Math.pow(2, currentRound2);
 	}
-	
-//	/**
-//	 * @return the finishedShotsInRound
-//	 */
-//	public synchronized int getWeightedFinishedShots() {
-//		return weightedFinishedShots;
-//	}
 	
 	/**
 	 * @return the goals
@@ -266,6 +285,10 @@ public class Tournament {
 		this.duration = duration;
 	}
 	
+	/**
+	 * Returns the average of all Clients average Latency.
+	 * @return overallAverageLatency
+	 */
 	public synchronized long getAverageClientLatency() {
 		long avgReaction  = 0;
 		

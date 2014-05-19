@@ -1,4 +1,4 @@
-package viewControl;
+package control.listeners;
 
 import java.awt.event.*;
 
@@ -8,21 +8,30 @@ import control.Analyser;
 
 import view.*;
 
+/**
+ * Listener triggered by hitting Return or the OK-Button in the {@link PopupDialogShots}.
+ * Starts a tournament.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class PopupShotListener implements ActionListener
 {
-	
+	/**Popupwindow where the number of shots is entered*/
 	private PopupDialogShots popup;
+	/**ServerWindow from which the Popup is opened*/
 	private ServerWindow serverWindow;
 	
-	
+	/**Constructor setting the popupwindow and the ServerWindow*/
 	public PopupShotListener(PopupDialogShots popup, ServerWindow serverWindow)
 	{
 		this.popup = popup;
 		this.serverWindow = serverWindow;
 	}
 	
-	
-	
+	/**
+	 * Retrieves the number of shots to be played and initiates a new tournament with the registered Clients
+	 * and the shots to be played.
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{
 		try
@@ -53,8 +62,6 @@ public class PopupShotListener implements ActionListener
 			public void run() {
 				popup.dispose();
 				serverWindow.setEnabled(true);
-				serverWindow.getTabPane().setComponentAt(0, serverWindow.getTeamView());
-				serverWindow.getTabPane().setTitleAt(0, "Matrix");
 				serverWindow.getStartButton().setEnabled(false);
 				serverWindow.getAddTestClients().setEnabled(false);
 				serverWindow.getPlusTestClient().setEnabled(false);
