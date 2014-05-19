@@ -1,6 +1,3 @@
-/**
- * 
- */
 package view;
 
 import java.awt.Font;
@@ -12,15 +9,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * @author Jan
+ * Presents the information necessary to sign on to the Server in large Font (IP and Port).
+ * @author Jan Fritze & Manuel Kaiser
  *
  */
 @SuppressWarnings("serial")
 public class StartPanel extends JPanel {
 
+	/**Label with the IP*/
 	private JLabel showIp;
+	/**Label with the Portnumber*/
 	private JLabel showPort;
 	
+	/**
+	 * Constructs a simple Panel with two large Labels showing IP-Adress and Port
+	 */
 	public StartPanel(){
 		super(new GridLayout(2, 1));
 		
@@ -36,6 +39,10 @@ public class StartPanel extends JPanel {
 		add(showPort);
 	}
 	
+	/**
+	 * Returns the Label showing the Port.
+	 * @return
+	 */
 	public JLabel getShowPort(){
 		return showPort;
 	}

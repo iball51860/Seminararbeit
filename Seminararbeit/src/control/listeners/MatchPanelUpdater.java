@@ -54,7 +54,7 @@ public class MatchPanelUpdater extends Thread
 	 * Sets the running flag. Once set to false, the thread terminates.
 	 * @param flag
 	 */
-	public void setFlag(boolean flag) {
+	public void setRunning(boolean flag) {
 		this.running = flag;
 	}
 	

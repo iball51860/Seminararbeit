@@ -39,7 +39,7 @@ public class ShowTeamListener implements ActionListener
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				serverWindow.setEnabled(false);
-				new TeamPopupDialog(serverWindow, team);
+				new TeamPopup(serverWindow, team);
 			}
 		});
 		

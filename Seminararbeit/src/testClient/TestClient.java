@@ -5,24 +5,43 @@ import java.net.*;
 
 import control.*;
 
-
+/**
+ * Threads that acts as a client from the same computer as the server.
+ * Can be used to create opponents when testing clients.
+ * TestClients are not supposed to be very effective, they just implement basic strategies.
+ * However, the random strategy is simple yet might be effective if not objected by the opponent.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class TestClient extends Thread{
 	
+	/**Counts the number of initiated TestClients*/
 	private static int count;
+	/**Socket for ServerCommunication*/
 	private Socket socket;
+	/**Reader for incoming messages from Server*/
 	private BufferedReader fromServer;
+	/**Writer for sending messages to the Server*/
 	private PrintWriter toServer;
+	/**Life is like a box of chocolates. As long as this flag is true, the client is running.*/
 	private boolean runForrestRun = true;
+	/**Name of this client, "dummy" by default*/
 	private String name;
 	
+	/**Legen...<br>Represents the Latency to simulate more realistic conditions.<br>...dary! Legendary!*/
 	private static int waitForIt = 0;
 	
-	
+	/**Constructs a TestClient connecting to the given port with name "dummy".*/
 	public TestClient(int port)
 	{
 		this(port, "dummy");
 	}
 	
+	/**
+	 * Constructs a TestClient connecting to the given port with the given name.
+	 * @param port
+	 * @param name
+	 */
 	public TestClient(int port, String name)
 	{
 		try 
@@ -43,10 +62,10 @@ public class TestClient extends Thread{
 	}
 	
 	/**
-	 * Communication with Server
-	 * 1. Reader + Writer gets initialized
-	 * 2. Reader reads String from Server
-	 * 3. Switch case generates some answers with using the method below
+	 * Communication with Server<br>
+	 * 1. Reader + Writer get initialized<br>
+	 * 2. Reader reads String from Server<br>
+	 * 3. Switch case generates some answers by using the method below
 	 */
 	public void run()
 	{
@@ -123,6 +142,10 @@ public class TestClient extends Thread{
 		toServer.println(msg);
 	}
 	
+	/**
+	 * Generates a random decision with equal chances of each side.
+	 * @return
+	 */
 	private String generateDecision()
 	{
 		double random = Math.random();
@@ -137,17 +160,28 @@ public class TestClient extends Thread{
 		return "r";
 	}
 	
+	/**
+	 * 
+	 * @return socket for communication
+	 */
 	public Socket getSocket()
 	{
 		return this.socket;
 	}
 	
-	public void setRunForrestRun(boolean b){
-		this.runForrestRun = b;
+	/**
+	 * 
+	 * @param running
+	 */
+	public void setRunForrestRun(boolean running){
+		this.runForrestRun = running;
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @param wait - latency
+	 */
 	public static void setWaitForIt (int wait){
 		waitForIt = wait;
 	}

@@ -15,16 +15,24 @@ import model.ArrayTeamSet;
 import model.Team;
 
 /**
- * @author Jan
+ * Panel holding the ResultList.
+ * @author Jan Fritze & Manuel Kaiser
  *
  */
 @SuppressWarnings("serial")
 public class ResultListPanel extends JPanel {
 
+	/**TextArea showing the List*/
 	private JTextArea resultList;
+	/**Scrollpane providing a scrolling-option to the Textarea holding the resultlist*/
 	private JScrollPane spResultList;
+	/**Thread for continuously updating the resultList if it is visible*/
 	private Thread updater;
 	
+	/**
+	 * Constructs the panel showing the resultlist. The panel only contains the list (JTextArea).
+	 * @param serverWindow
+	 */
 	public ResultListPanel(final ServerWindow serverWindow){
 		super(new BorderLayout());
 		resultList = new JTextArea();
@@ -35,7 +43,11 @@ public class ResultListPanel extends JPanel {
 		
 	}
 	
-	public void activateResultListUpdater(final ServerWindow serverWindow){
+	/**
+	 * 
+	 * @param serverWindow
+	 */
+	public void activateResultListUpdater(final ServerWindow serverWindow){ //TODO move to TabbedPaneListener and kill thread everytime resultlist is deselected
 		updater = new Thread(){
 			public void run(){
 				while(serverWindow.getTournament().isRunning()){
@@ -54,6 +66,10 @@ public class ResultListPanel extends JPanel {
 		updater.start();
 	}
 	
+	/**
+	 * updates the Result List with recent information and reorders
+	 * @param teamSet
+	 */
 	public void updateResultList(ArrayTeamSet<Team> teamSet)
 	{
 		if(teamSet == null)
@@ -61,7 +77,7 @@ public class ResultListPanel extends JPanel {
 			return;
 		}
 		int count = 1;
-		Collections.sort(teamSet);
+		Collections.sort(teamSet); //TODO use sortingAlgorithm that is more efficient if list is NEARLY in order already
 		final StringBuffer sb = new StringBuffer();
 		for(Team t : teamSet)
 		{
@@ -79,6 +95,10 @@ public class ResultListPanel extends JPanel {
 		});
 	}
 	
+	/**
+	 * 
+	 * @return TextArea Resultlist
+	 */
 	public JTextArea getResultList() {
 		return resultList;
 	}

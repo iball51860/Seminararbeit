@@ -16,14 +16,14 @@ public class ClosePopupListener implements ActionListener, KeyListener
 	/**Instance of the Server Window from which the Listener is triggered*/
 	ServerWindow serverWindow;
 	/**Instance of the dialog asking for the value*/
-	TeamPopupDialog popup;
+	TeamPopup popup;
 	
 	/**
-	 * Constructor setting an instance of {@link ServerWindow} and {@link TeamPopupDialog} to hold.
+	 * Constructor setting an instance of {@link ServerWindow} and {@link TeamPopup} to hold.
 	 * @param serverWindow
 	 * @param popup
 	 */
-	public ClosePopupListener(ServerWindow serverWindow, TeamPopupDialog popup)
+	public ClosePopupListener(ServerWindow serverWindow, TeamPopup popup)
 	{
 		this.serverWindow = serverWindow;
 		this.popup = popup;

@@ -10,12 +10,27 @@ import model.*;
 import control.*;
 import control.listeners.*;
 
+/**
+ * The Base Window. The Serverwindow is the main frame used for the GUI of the WMTournament.
+ * It is the first to be initiated and the other instances of logic and GUI, such as the 
+ * {@link WMServer} or the Panels are called from it.<br><br>
+ * The Window consist of a left column holding all controls and information about server, tournament and Testclients.<br>
+ * The Bottom contains a ProgressBar showing the Progress of the Tournament.<br>
+ * The Tabbedpane that uses most of the space holds 4 Panels.<br>The first panel shows the server-access information in the beginning
+ * and switches to a view of the TeamMatrix that shows information about each teams status later.<br>The second Tab shows all currently
+ * running matches with its standing and visualized as Progressbar.<br>The third Tab shows a List of all teams and detailed information about them.
+ * This list is sorted and the best team is displayed at the top.<br>The fourth Tab show a log of the major events happening in the Game.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 @SuppressWarnings("serial")
 public class ServerWindow extends JFrame {
 	
-	
+	/**Instance of the Server providing the data and platform*/
 	private WMServer wmServer;
+	/**Instance of the Tournament providing current data*/
 	private Tournament tournament;
+	/**Instance of the Teams informations are displayed about*/
 	private ArrayTeamSet<Team> teamSet;	
 	
 	/**Panel on the left where Gamedata is shown and Settings are made*/
@@ -42,8 +57,13 @@ public class ServerWindow extends JFrame {
 	/**Panel showing the Log*/
 	private LogPanel logPanel;
 	
+	/**Initial dialog asking for the Serverport*/
 	private PopupDialogPort popup;
 	
+	/**
+	 * Constructs a ServerWindow as described in {@link ServerWindow}. It holds the controls on the left, 
+	 * tabbedPane on the right and Progressbar at the bottom.
+	 */
 	public ServerWindow()
 	{
 		super();
@@ -128,37 +148,51 @@ public class ServerWindow extends JFrame {
 		teamMatrixPanel.updateTeamView(t);
 	}
 	
+	/**
+	 * Updates the in-Game-Status of the given Teams. Switches color, etc.
+	 * @param a
+	 * @param b
+	 */
 	public void updateTeamInMatchView(final Team a, final Team b)
 	{
 		teamMatrixPanel.updateTeamInMatchView(a, b);
 	}
 	
+	/**
+	 * Updates the Number of Clients at Server displayed in the panel on the left.
+	 * @param clientsAtServer
+	 */
 	public void updateClientsAtServer(int clientsAtServer)
 	{
 		controlPanel.updateClientsAtServer(clientsAtServer);
 	}
 	
-	
-	
-	public void updateMetaData(final Tournament t)
+	/**
+	 * Updates the MetaData for the given tournament
+	 * @param tournament
+	 */
+	public void updateMetaData(final Tournament tournament)
 	{
-		this.tournament = t;
+		this.tournament = tournament;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				controlPanel.updateMetaData(t);
+				controlPanel.updateMetaData(tournament);
 			}
 		});
 	}
 	
-	
-	public void updateShots(final Tournament t)
+	/**
+	 * Updates the number of played shots in a label in the left control panel
+	 * @param tournament
+	 */
+	public void updateShots(final Tournament tournament)
 	{
 		{
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
-						controlPanel.updateShots(t);
-						progress.setValue(Analyser.calculateProgress(t));
+						controlPanel.updateGoals(tournament);
+						progress.setValue(Analyser.calculateProgress(tournament));
 					}
 				});
 			} catch (InvocationTargetException | InterruptedException e) {
@@ -167,13 +201,18 @@ public class ServerWindow extends JFrame {
 		}
 	}
 	
-	
+	/**
+	 * Updates the resultlist in the Resultlistpanel.
+	 */
 	public void updateResultList()
 	{
 		resultListPanel.updateResultList(teamSet);
 	}
 	
-	
+	/**
+	 * Updates the Label showing the number of TestClients at the Server.
+	 * @param testClients
+	 */
 	public void updateNoOfTestClients(final int testClients)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
@@ -183,27 +222,43 @@ public class ServerWindow extends JFrame {
 		});
 	}
 	
-	public void appendLogLine(final LogLine ll)
+	/**
+	 * Appends a LogLine to the Log in the LogPanel
+	 * @param logLine
+	 */
+	public void appendLogLine(final LogLine logLine)
 	{
-		logPanel.appendLogLine(ll, tabPane);
+		logPanel.appendLogLine(logLine, tabPane);
 	}
 	
+	/**
+	 * Opens a new Finish-Window displaying the glorious information about the first three teams.
+	 */
 	public void showFinish()
 	{
 		new FinishedWindow(this.tournament);
 	}
 	
-	public void addMatch(final Team a, final Team b)
+	/**
+	 * Adds a new Progress bar for the match in the matchPanel
+	 * @param teamA
+	 * @param teamB
+	 */
+	public void addMatch(final Team teamA, final Team teamB)
 	{
-		matchPanel.addMatch(a, b);
+		matchPanel.addMatch(teamA, teamB);
 	}
 	
+	/**
+	 * Cleans the MatchPanel of all Progressbar and its threads.
+	 */
 	public void cleanMatchPanel()
 	{
 		matchPanel.cleanMatchPanel();
 	}
 	
-	//////////////////////// Getter and Setter ////////////////////////
+	/////////////////////////get-, set and increment-methods///////////////////////////////
+	/* FOR REASONS OF SAVING TIME WE WILL NOT PROVIDE DETAILED JAVADOC DOCUMENTATION FOR GETTERS AND SETTER. THANK YOU FOR UNDERSTANDING*/
 	
 	public void setWMServer(WMServer wmServer){
 		this.wmServer = wmServer;

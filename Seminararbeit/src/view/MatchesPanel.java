@@ -16,20 +16,32 @@ import model.Team;
 import control.listeners.MatchPanelUpdater;
 
 /**
- * @author Jan
+ * Displays each Match in form of a Progress Bar that moves to one of the Clients sides, depending on the
+ * current standing.<br>
+ * All Matches are Listed as List in a two-Column GridLayout
+ * @author Jan Fritze & Manuel Kaiser
  *
  */
 @SuppressWarnings("serial")
 public class MatchesPanel extends JPanel {
 
+	/**List of threads that automatically keep updating the Progress Bars, that represent the Matches.*/
 	private ArrayList<MatchPanelUpdater> threadList;
 	
+	/**
+	 * Constructs an empty Panel ready for adding matches.
+	 */
 	public MatchesPanel(){
 		//create Panel for the final
-		super(new GridLayout(0, 2));
+		super(new GridLayout(0, 2)); //TODO move the labels above the progessBar and establis single-column Gridlayout
 		threadList = new ArrayList<MatchPanelUpdater>();
 	}
 	
+	/**
+	 * Adds a new Match to the Panel. Creates Label an Progress Bar and Starts a Thread that keeps updating that Progress Bar.
+	 * @param a - left Team
+	 * @param b - right Team
+	 */
 	public void addMatch(final Team a, final Team b)
 	{
 		SwingUtilities.invokeLater(new Runnable(){
@@ -50,12 +62,15 @@ public class MatchesPanel extends JPanel {
 		});
 	}
 	
+	/**
+	 * Empties Panel from all Matches. Sets the Running flag of the Updater threads to false, so they terminate.
+	 */
 	public void cleanMatchPanel()
 	{
 		removeAll();
 		for(MatchPanelUpdater t : threadList)
 		{
-			t.setFlag(false);
+			t.setRunning(false);
 		}
 	}
 }

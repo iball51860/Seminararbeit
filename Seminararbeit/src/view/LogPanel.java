@@ -20,24 +20,42 @@ import control.listeners.UpdateLogListener;
 import model.LogLine;
 import model.Team;
 
-
+/**
+ * Panel holding the Log that can be found in the Tabbed Pane. Holds a TextArea with the log itself
+ * that can be changed to show information about a certain type of events and certain instances/teams.
+ * 
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
+@SuppressWarnings("serial")
 public class LogPanel extends JPanel {
-
-	private JPanel logSettings;
+	
+	/**Panel on the right holding the controls*/
+	private JPanel logSettingsPanel;
+	/**TextArea for displaying the log*/
 	private JTextArea logConsole;
+	/**Title Label of the logSettingsPanel*/
 	private JLabel infoLog;
+	/**First Combobox for selecting a team or any other instance being logged*/
 	private JComboBox<String> teamBox1;
+	/**Combobox for another team/instance*/
 	private JComboBox<String> teamBox2;
+	/**CheckBoxArray with Checkboxes for each eventtype*/
 	public JCheckBox[] type;
+	/**Button for Saving the displayed log*/
 	private JButton saveLog;
 	
+	/**
+	 * Constructs the whole logPanel with the TextArea, Settings to build the log and a save Button at the bottom.
+	 * @param serverWindow
+	 */
 	public LogPanel(ServerWindow serverWindow){
 		super(new BorderLayout());
 		logConsole = new JTextArea();
 		logConsole.setEditable(false);
 		JScrollPane spLog = new JScrollPane();
 		spLog.setViewportView(logConsole);
-		logSettings = new JPanel(new GridLayout(0, 1));
+		logSettingsPanel = new JPanel(new GridLayout(0, 1));
 		infoLog = new JLabel("Show:");
 		UpdateLogListener updateLogListener = new UpdateLogListener(serverWindow);
 		teamBox1 = new JComboBox<String>();
@@ -49,9 +67,9 @@ public class LogPanel extends JPanel {
 		teamBox2.addItem("No Team");
 		teamBox2.setEnabled(false);
 		teamBox2.addActionListener(updateLogListener);
-		logSettings.add(infoLog);
-		logSettings.add(teamBox1);
-		logSettings.add(teamBox2);
+		logSettingsPanel.add(infoLog);
+		logSettingsPanel.add(teamBox1);
+		logSettingsPanel.add(teamBox2);
 		type = new JCheckBox[7];
 		type[0] = new JCheckBox("Default");
 		type[1] = new JCheckBox("Server");
@@ -64,61 +82,86 @@ public class LogPanel extends JPanel {
 		{
 			jCB.setSelected(true);
 			jCB.addActionListener(updateLogListener);
-			logSettings.add(jCB);
+			logSettingsPanel.add(jCB);
 		}
-		logSettings.remove(type[0]);
-		logSettings.remove(type[6]);
+		logSettingsPanel.remove(type[0]);
+		logSettingsPanel.remove(type[6]);
 		saveLog = new JButton("Save Log");
 		saveLog.addActionListener(new SaveLogListener(serverWindow));
 		saveLog.setVisible(true);
 		add(spLog, BorderLayout.CENTER);
-		add(logSettings, BorderLayout.EAST);
+		add(logSettingsPanel, BorderLayout.EAST);
 		add(saveLog, BorderLayout.SOUTH);
 	}
 	
-	public void registerTeam(Team t){
-		teamBox1.addItem(t.getName() + t.getID());
-		teamBox2.addItem(t.getName() + t.getID());
+	/**
+	 * Registers a new team at the Comboboxes so it can be selected for the log.
+	 * @param team
+	 */
+	public void registerTeam(Team team){
+		teamBox1.addItem(team.getName() + team.getID());
+		teamBox2.addItem(team.getName() + team.getID());
 	}
 	
-	public void appendLogLine(final LogLine ll, JTabbedPane tabPane)
+	/**
+	 * Appends a new logline to the existing Log. Preferably use this method instead of rebuilding the Log everytime a new line is added.
+	 * @param logLine
+	 * @param tabPane
+	 */
+	public void appendLogLine(final LogLine logLine, JTabbedPane tabPane)
 	{
-		boolean validInstance = (ll.getInstanceName() == null || teamBox1.getSelectedItem().toString().equalsIgnoreCase("All Teams") ||
-					teamBox1.getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()) || 
-					teamBox2.getSelectedItem().toString().equals(ll.getInstanceName() + ll.getInstanceID()));
+		boolean validInstance = (logLine.getInstanceName() == null || teamBox1.getSelectedItem().toString().equalsIgnoreCase("All Teams") ||
+					teamBox1.getSelectedItem().toString().equals(logLine.getInstanceName() + logLine.getInstanceID()) || 
+					teamBox2.getSelectedItem().toString().equals(logLine.getInstanceName() + logLine.getInstanceID()));
 		
 		//check whether Log is selected, type applies, and message is about a blocked instance a la (LogIsShowing && typeIsSelected && (name==null || allTeams || nameIsInBox1 || nameIsInBox2) )
-		if(tabPane.getComponentAt(2).isShowing() && type[ll.getType()].isSelected() && validInstance)
+		if(tabPane.getComponentAt(2).isShowing() && type[logLine.getType()].isSelected() && validInstance)
 		{
 			SwingUtilities.invokeLater(new Runnable(){
 				public void run()
 				{
-					logConsole.append("\n" + ll.getMessage());
+					logConsole.append("\n" + logLine.getMessage());
 				}
 			});
 		}
 	}
 	
+	/**
+	 * 
+	 * @return TeamBox1
+	 */
 	public JComboBox<String> getTeamBox1(){
 		return teamBox1;
 	}
 	
+	/**
+	 * 
+	 * @returnTeamBox2
+	 */
 	public JComboBox<String> getTeamBox2() {
 		return teamBox2;
 	}
 	
-	public JTextArea getLogString(){
-		return logConsole;
-	}
-	
+	/**
+	 * 
+	 * @return Save-Button
+	 */
 	public JButton getSaveLog() {
 		return saveLog;
 	}
 	
+	/**
+	 * 
+	 * @return logConsole
+	 */
 	public JTextArea getLogConsole() {
 		return logConsole;
 	}
 	
+	/**
+	 * 
+	 * @return CheckBox to select Eventtypes
+	 */
 	public JCheckBox[] getType(){
 		return type;
 	}

@@ -6,9 +6,26 @@ import javax.swing.*;
 
 import model.*;
 
+/**
+ * The Window poping up at the end showing the winner, second and third client in gold/silver/bronze.
+ * Furthermore displays extra information about these teams and extra information about the tournament, 
+ * such as runtime. 
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 @SuppressWarnings("serial")
 public class FinishedWindow extends JFrame {
 	
+	/**
+	 * Constructs a window showing "Congratulations!" on top of a list of the first 3 teams in the tournament.
+	 * The Winner Panel is colored gold, second silver, third bronze.<br><br>
+	 * For each team further information, achieved Goals, Goals Against, Goal Difference and Success Rate 
+	 * of shots is shown.<br><br>
+	 * At the bottom a small bar shows tournament information of how many Matches were played, how long it took,
+	 * how many goals were scored overall and the average latency in the end.
+	 * 
+	 * @param t
+	 */
 	public FinishedWindow(final Tournament t){
 		super();
 		SwingUtilities.invokeLater(new Runnable(){
