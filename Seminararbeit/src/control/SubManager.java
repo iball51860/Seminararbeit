@@ -2,7 +2,11 @@ package control;
 
 import model.*;
 
-
+/**
+ * Manages one Match, so matches can be run at the same time.
+ * @author Jan Fritze & Manuel Kaiser
+ *
+ */
 public class SubManager extends Thread
 {
 	private Team a;
@@ -10,7 +14,13 @@ public class SubManager extends Thread
 	private Tournament t;
 	private int goalsToPlayInMatch;
 	
-	
+	/**
+	 * Constructs a match with two teams and the given number of shots, the tournament the match is played for.
+	 * @param a
+	 * @param b
+	 * @param t
+	 * @param goalsToPlayInMatch
+	 */
 	public SubManager(Team a, Team b, Tournament t, int goalsToPlayInMatch)
 	{
 		this.a = a;
@@ -19,7 +29,9 @@ public class SubManager extends Thread
 		this.goalsToPlayInMatch = goalsToPlayInMatch;
 	}
 	
-	
+	/**
+	 * Runs a Match as Thread. updates information in the serverWindow too.
+	 */
 	public void run()
 	{
 		Team winner = GameManager.playMatch(a, b, goalsToPlayInMatch, t);

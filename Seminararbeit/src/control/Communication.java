@@ -5,6 +5,7 @@ import java.util.*;
 
 import model.*;
 
+//TODO create extra method parseDecision(String) that parses the characters / String of a decision to an integer -> save redundant code
 
 /**
  * The communication class offers methods to send and receive messages to an from the clients.
@@ -66,6 +67,7 @@ public class Communication
 	 */
 	public static int requestDecision(Team team, String msg)
 	{
+		//create artificial decision for offline teams
 		if(!team.isOnline())
 		{
 			return team.getIndexOfStrength(Team.WEAKEST);
@@ -108,6 +110,159 @@ public class Communication
 				team.setOnline(false);
 				return requestDecision(team, msg);
 		}		
+	}
+	
+	public static int[] requestDecisions(Team shooter, Team keeper){
+		int[] decisions = new int[2];
+		//if one (or both) is offline, generate automated decision and request only from the other team
+		if(!shooter.isOnline())
+		{
+			decisions[0] = shooter.getIndexOfStrength(Team.WEAKEST);
+			decisions[1] = requestDecision(keeper, KEEP);
+			return decisions;
+		}
+		if(!keeper.isOnline())
+		{
+			decisions[1] = keeper.getIndexOfStrength(Team.WEAKEST);
+			decisions[0] = requestDecision(shooter, SHOOT);
+			return decisions;
+		}
+		//null the last input
+		shooter.setLastInput(null);
+		keeper.setLastInput(null);
+		//notify the clients
+		sendMsg(shooter, SHOOT);
+		sendMsg(keeper, KEEP);
+		
+		//prepare variables and get starting time for request
+		long start = System.currentTimeMillis();
+		long shooterReaction;
+		long keeperReaction;
+		boolean maxTimeout = false;
+		boolean shooterAnswered = false;
+		boolean keeperAnswered = false;
+		
+		//wait for answers from both at the same time, flag any answeredTeam once they answered and register reaction time individually
+		//!teamAnswered is true if the team has not answered yet
+		while(!maxTimeout && !(shooterAnswered && keeperAnswered)){
+			if(!shooterAnswered){
+				shooter.setLastInput(shooter.read().substring(0, 1));
+			}
+			if(!keeperAnswered){
+				keeper.setLastInput(keeper.read().substring(0, 1));
+			}
+			if(!shooterAnswered && shooter.getLastInput() != null){
+				shooterAnswered = true;
+				shooterReaction = System.currentTimeMillis() - start;
+				shooter.registerReactionTime(shooterReaction);
+				if(shooter.getAvgReactionTime() > ALLOWEDAVGREACTION)
+				{
+					shooter.setOnline(false);
+					Logger.log(shooter.getName() + ": Timeout by Average Reaction! Average must be less than "
+							+ ALLOWEDAVGREACTION + "ms.", shooter, Logger.SERVER);
+				}
+			}
+			if(!keeperAnswered && keeper.getLastInput() != null){
+				keeperAnswered = true;
+				keeperReaction = System.currentTimeMillis() - start;
+				keeper.registerReactionTime(keeperReaction);
+				if(keeper.getAvgReactionTime() > ALLOWEDAVGREACTION)
+				{
+					keeper.setOnline(false);
+					Logger.log(keeper.getName() + ": Timeout by Average Reaction! Average must be less than "
+							+ ALLOWEDAVGREACTION + "ms.", keeper, Logger.SERVER);
+				}
+			}		
+			maxTimeout = System.currentTimeMillis() - start > MILLISTOTIMEOUT;
+		}
+
+		//if the while-loop was interrupted because of timeout, find the timed-out client and set him offline
+		//then, create an automated answer for that client and, if the other client isn't offline too, use his decision
+		if(maxTimeout){
+			if(!shooterAnswered && !keeperAnswered){
+				shooter.setOnline(false);
+				Logger.log(shooter.getName() + ": Timeout! Reaction must be less than " 
+				+ MILLISTOTIMEOUT + "ms.", shooter, Logger.SERVER);
+				keeper.setOnline(false);
+				Logger.log(shooter.getName() + ": Timeout! Reaction must be less than " 
+				+ MILLISTOTIMEOUT + "ms.", keeper, Logger.SERVER);
+				return requestDecisions(shooter, keeper);
+			}
+			if(!shooterAnswered){
+				shooter.setOnline(false);
+				Logger.log(shooter.getName() + ": Timeout! Reaction must be less than " 
+				+ MILLISTOTIMEOUT + "ms.", shooter, Logger.SERVER);
+				decisions[0] = shooter.getIndexOfStrength(Team.WEAKEST);
+				switch (keeper.getLastInput().toLowerCase())
+				{
+					case "l":
+						decisions[1] = 0;
+					case "m":
+						decisions[1] = 1;
+					case "r":
+						decisions[1] = 2;
+					default:
+						Logger.log(keeper.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+									SHOOT + "' or '" + KEEP + "'.", keeper, Logger.COMMUNICATION);
+						keeper.setOnline(false);
+						decisions[1] = requestDecision(keeper, KEEP);
+				}
+			}
+			if(!keeperAnswered){
+				keeper.setOnline(false);
+				Logger.log(keeper.getName() + ": Timeout! Reaction must be less than " 
+				+ MILLISTOTIMEOUT + "ms.", keeper, Logger.SERVER);
+				decisions[1] = keeper.getIndexOfStrength(Team.WEAKEST);
+				switch (shooter.getLastInput().toLowerCase())
+				{
+					case "l":
+						decisions[0] = 0;
+					case "m":
+						decisions[0] = 1;
+					case "r":
+						decisions[0] = 2;
+					default:
+						Logger.log(shooter.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+									SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
+						keeper.setOnline(false);
+						decisions[0] = requestDecision(shooter, SHOOT);
+				}
+			}
+			return decisions;
+		}
+		
+		//Parse the decisions to int-values
+		switch (shooter.getLastInput().toLowerCase())
+		{
+			case "l":
+				decisions[0] = 0;
+			case "m":
+				decisions[0] = 1;
+			case "r":
+				decisions[0] = 2;
+			default:
+				Logger.log(shooter.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+							SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
+				keeper.setOnline(false);
+				decisions[0] = requestDecision(shooter, SHOOT);
+		}
+		
+		switch (keeper.getLastInput().toLowerCase())
+		{
+			case "l":
+				decisions[1] = 0;
+			case "m":
+				decisions[1] = 1;
+			case "r":
+				decisions[1] = 2;
+			default:
+				Logger.log(keeper.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+							SHOOT + "' or '" + KEEP + "'.", keeper, Logger.COMMUNICATION);
+				keeper.setOnline(false);
+				decisions[1] = requestDecision(keeper, KEEP);
+		}
+		
+		return decisions;
 	}
 	
 	/**

@@ -223,8 +223,10 @@ public class GameManager extends Thread{
 	{
 		String[] decisionCode = {"l", "m", "r"};
 		
-		int decisionA = Communication.requestDecision(shooting, Communication.SHOOT);
-		int decisionB = Communication.requestDecision(keeping, Communication.KEEP);
+		int[] decisions = Communication.requestDecisions(shooting, keeping);
+		
+		int decisionA = decisions[0];  //Communication.requestDecision(shooting, Communication.SHOOT);
+		int decisionB = decisions[1];  //Communication.requestDecision(keeping, Communication.KEEP);
 	
 		//Calculate chances
 		double nettoStrength = shooting.getStrength()[decisionA];
