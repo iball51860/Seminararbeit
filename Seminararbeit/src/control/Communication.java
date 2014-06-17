@@ -112,6 +112,13 @@ public class Communication
 		}		
 	}
 	
+	/**
+	 * Requests the necessary decisions for one shot. The method is programmed to do so parallely for the shooting and
+	 * the keeping team, to reduce time-cost.
+	 * @param shooter
+	 * @param keeper
+	 * @return int-Array with the shooting teams decision at index 0 and the keeping teams decision at index 1
+	 */
 	public static int[] requestDecisions(Team shooter, Team keeper){
 		int[] decisions = new int[2];
 		//if one (or both) is offline, generate automated decision and request only from the other team
