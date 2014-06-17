@@ -52,6 +52,7 @@ public class Communication
 	 */
 	public static void sendMsg(Team team, String msg)
 	{
+		//Logger.log("Sending " + msg + " to " + team.toString(), team, Logger.SHOT);
 		team.write(msg);
 	}
 	
