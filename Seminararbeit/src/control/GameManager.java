@@ -241,7 +241,7 @@ public class GameManager extends Thread{
 		{
 			goal = true;
 		}
-		else
+
 		Communication.sendMsg(shooting, Communication.SHOTRESULT + " " + decisionCode[decisionB] + " " + goal);
 		Communication.sendMsg(keeping, Communication.SHOTRESULT + " " + decisionCode[decisionA] + " " + goal);
 		
