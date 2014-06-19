@@ -238,9 +238,8 @@ public class Communication
 			return decisions;
 		}
 		
-		//Parse the decisions to int-values
-		int shooterCharValue = shooter.getLastInput().toLowerCase().charAt(0);
-		switch (keeper.getLastInput().toLowerCase())
+		//Parse the decisions to int-value
+		switch (shooter.getLastInput().toLowerCase())
 		{
 			case "l":
 				decisions[1] = 0;
@@ -255,14 +254,13 @@ public class Communication
 				decisions[0] = requestDecision(shooter, SHOOT);
 		}
 		
-		int keeperCharValue = keeper.getLastInput().toLowerCase().charAt(0);
-		switch (keeperCharValue)
+		switch (keeper.getLastInput().toLowerCase())
 		{
-			case 108:
+			case "l":
 				decisions[1] = 0;
-			case 109:
+			case "m":
 				decisions[1] = 1;
-			case 114:
+			case "r":
 				decisions[1] = 2;
 			default:
 				Logger.log(keeper.getName() + " sent \""+ keeper.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
