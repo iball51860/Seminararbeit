@@ -239,21 +239,7 @@ public class Communication
 		}
 		
 		//Parse the decisions to int-values
-		switch (shooter.getLastInput().toLowerCase())
-		{
-			case "l":
-				decisions[0] = 0;
-			case "m":
-				decisions[0] = 1;
-			case "r":
-				decisions[0] = 2;
-			default:
-				Logger.log(shooter.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
-							SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
-				keeper.setOnline(false);
-				decisions[0] = requestDecision(shooter, SHOOT);
-		}
-		
+		int shooterCharValue = shooter.getLastInput().toLowerCase().charAt(0);
 		switch (keeper.getLastInput().toLowerCase())
 		{
 			case "l":
@@ -263,7 +249,23 @@ public class Communication
 			case "r":
 				decisions[1] = 2;
 			default:
-				Logger.log(keeper.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+				Logger.log(shooter.getName() + " sent \""+ shooter.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
+							SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
+				shooter.setOnline(false);
+				decisions[0] = requestDecision(shooter, SHOOT);
+		}
+		
+		int keeperCharValue = keeper.getLastInput().toLowerCase().charAt(0);
+		switch (keeperCharValue)
+		{
+			case 108:
+				decisions[1] = 0;
+			case 109:
+				decisions[1] = 1;
+			case 114:
+				decisions[1] = 2;
+			default:
+				Logger.log(keeper.getName() + " sent \""+ keeper.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
 							SHOOT + "' or '" + KEEP + "'.", keeper, Logger.COMMUNICATION);
 				keeper.setOnline(false);
 				decisions[1] = requestDecision(keeper, KEEP);

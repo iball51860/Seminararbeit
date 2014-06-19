@@ -47,6 +47,7 @@ public class SubManager extends Thread
 			looser = a;				
 		}
 		System.out.println("AvgReaction times: " + a.getAvgReactionTime() + "ms and " + b.getAvgReactionTime() + "ms.");
+		System.out.println("A is online: " + a.isOnline() + "  and B is online:  " + b.isOnline());
 		Logger.log(winner.getName() + " wins against " + looser.getName() + "!", winner, Logger.MATCH);
 		Logger.log(winner.getName() + " wins against " + looser.getName() + "!", looser, Logger.MATCH);
 		if(!looser.getName().equals("bottt"))
