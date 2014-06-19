@@ -204,10 +204,13 @@ public class Communication
 				{
 					case "l":
 						decisions[1] = 0;
+						break;
 					case "m":
 						decisions[1] = 1;
+						break;
 					case "r":
 						decisions[1] = 2;
+						break;
 					default:
 						Logger.log(keeper.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
 									SHOOT + "' or '" + KEEP + "'.", keeper, Logger.COMMUNICATION);
@@ -224,10 +227,13 @@ public class Communication
 				{
 					case "l":
 						decisions[0] = 0;
+						break;
 					case "m":
 						decisions[0] = 1;
+						break;
 					case "r":
 						decisions[0] = 2;
+						break;
 					default:
 						Logger.log(shooter.getName() + ": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
 									SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
@@ -243,10 +249,13 @@ public class Communication
 		{
 			case "l":
 				decisions[1] = 0;
+				break;
 			case "m":
 				decisions[1] = 1;
+				break;
 			case "r":
 				decisions[1] = 2;
+				break;
 			default:
 				Logger.log(shooter.getName() + " sent \""+ shooter.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
 							SHOOT + "' or '" + KEEP + "'.", shooter, Logger.COMMUNICATION);
@@ -258,10 +267,13 @@ public class Communication
 		{
 			case "l":
 				decisions[1] = 0;
+				break;
 			case "m":
 				decisions[1] = 1;
+				break;
 			case "r":
 				decisions[1] = 2;
+				break;
 			default:
 				Logger.log(keeper.getName() + " sent \""+ keeper.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
 							SHOOT + "' or '" + KEEP + "'.", keeper, Logger.COMMUNICATION);
