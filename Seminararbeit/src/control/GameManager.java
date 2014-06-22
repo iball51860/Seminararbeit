@@ -119,8 +119,9 @@ public class GameManager extends Thread{
 					}
 				}
 			}
-			
+			System.out.println("Playing: " + t.getPlaying().size());
 			t.getPlaying().removeAll(t.getLost());
+			System.out.println("Playing after remove: " + t.getPlaying().size());
 			
 			if(roundCount == t.getNoOfRounds()) //Relegation in erster Runde
 			{
