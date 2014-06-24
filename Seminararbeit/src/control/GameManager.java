@@ -130,6 +130,7 @@ public class GameManager extends Thread{
 				for(int j=0; j<dif; j++)
 				{
 					Team rescued = t.getLost().get(0);
+					rescued.incrementWonMatches(1);
 					t.getLost().remove(0);
 					t.getPlaying().add(rescued);
 					rescued.setIsInGame(true);
@@ -229,6 +230,9 @@ public class GameManager extends Thread{
 		int decisionA = decisions[0];  //Communication.requestDecision(shooting, Communication.SHOOT);
 		int decisionB = decisions[1];  //Communication.requestDecision(keeping, Communication.KEEP);
 	
+//		Logger.log(shooting.getName() + " shoots on " + decisionA, shooting, Logger.SHOT);
+//		Logger.log(keeping.getName() + " keeps on " + decisionB, keeping, Logger.SHOT);
+
 		//Calculate chances
 		double nettoStrength = shooting.getStrength()[decisionA];
 		if(decisionA == decisionB)

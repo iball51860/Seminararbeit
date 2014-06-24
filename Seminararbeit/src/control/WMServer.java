@@ -137,6 +137,8 @@ public class WMServer extends Thread
 				{
 					team.setOnline(false);
 					Communication.sendMsg(team, Communication.GAMEOVER);
+					int[] looserStrengths = {0,0,0};
+					team.setStrength(looserStrengths);
 					return team;
 				}
 			}

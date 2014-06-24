@@ -161,7 +161,7 @@ public class Communication
 			if(!shooterAnswered && shooter.getLastInput() != null){
 				shooterAnswered = true;
 				shooterReaction = System.currentTimeMillis() - start;
-				shooter.registerReactionTime(shooterReaction);
+				shooter.registerReactionTime(System.currentTimeMillis() - start);
 				if(shooter.getAvgReactionTime() > ALLOWEDAVGREACTION)
 				{
 					shooter.setOnline(false);
@@ -172,7 +172,7 @@ public class Communication
 			if(!keeperAnswered && keeper.getLastInput() != null){
 				keeperAnswered = true;
 				keeperReaction = System.currentTimeMillis() - start;
-				keeper.registerReactionTime(keeperReaction);
+				keeper.registerReactionTime(System.currentTimeMillis() - start);
 				if(keeper.getAvgReactionTime() > ALLOWEDAVGREACTION)
 				{
 					keeper.setOnline(false);
@@ -195,7 +195,7 @@ public class Communication
 				+ MILLISTOTIMEOUT + "ms.", keeper, Logger.SERVER);
 				return requestDecisions(shooter, keeper);
 			}
-			if(!shooterAnswered){
+			if(!shooterAnswered && keeperAnswered){
 				shooter.setOnline(false);
 				Logger.log(shooter.getName() + ": Timeout! Reaction must be less than " 
 				+ MILLISTOTIMEOUT + "ms.", shooter, Logger.SERVER);
@@ -218,7 +218,7 @@ public class Communication
 						decisions[1] = requestDecision(keeper, KEEP);
 				}
 			}
-			if(!keeperAnswered){
+			if(!keeperAnswered && shooterAnswered){
 				keeper.setOnline(false);
 				Logger.log(keeper.getName() + ": Timeout! Reaction must be less than " 
 				+ MILLISTOTIMEOUT + "ms.", keeper, Logger.SERVER);
@@ -248,13 +248,13 @@ public class Communication
 		switch (shooter.getLastInput().toLowerCase())
 		{
 			case "l":
-				decisions[1] = 0;
+				decisions[0] = 0;
 				break;
 			case "m":
-				decisions[1] = 1;
+				decisions[0] = 1;
 				break;
 			case "r":
-				decisions[1] = 2;
+				decisions[0] = 2;
 				break;
 			default:
 				Logger.log(shooter.getName() + " sent \""+ shooter.getLastInput().charAt(0) + "\": no valid decision. Sent 'l', 'm' or 'r' after receiving '" +
