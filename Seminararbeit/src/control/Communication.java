@@ -160,7 +160,6 @@ public class Communication
 			}
 			if(!shooterAnswered && shooter.getLastInput() != null){
 				shooterAnswered = true;
-				shooterReaction = System.currentTimeMillis() - start;
 				shooter.registerReactionTime(System.currentTimeMillis() - start);
 				if(shooter.getAvgReactionTime() > ALLOWEDAVGREACTION)
 				{
@@ -171,8 +170,7 @@ public class Communication
 			}
 			if(!keeperAnswered && keeper.getLastInput() != null){
 				keeperAnswered = true;
-				keeperReaction = System.currentTimeMillis() - start;
-				keeper.registerReactionTime(System.currentTimeMillis() - start);
+				keeper.registerReactionTime(System.currentTimeMillis() - start); //TODO Reaktionszeit wird gestoppt, aber beim langsameren gespeichert
 				if(keeper.getAvgReactionTime() > ALLOWEDAVGREACTION)
 				{
 					keeper.setOnline(false);

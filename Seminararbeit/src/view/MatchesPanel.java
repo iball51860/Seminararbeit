@@ -50,7 +50,7 @@ public class MatchesPanel extends JPanel {
 				JLabel text = new JLabel(a.getName() + " " + a.getGoalsInCurrentRound() + " : " 
 						+ b.getGoalsInCurrentRound() + " " + b.getName());
 				JProgressBar bar = new JProgressBar();
-				bar.setMinimum(-50);
+				bar.setMinimum(-50); //TODO Progressbar relativ einstellen
 				bar.setMaximum(50);
 				add(text);
 				add(bar);
